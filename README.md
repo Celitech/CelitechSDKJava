@@ -1,86 +1,162 @@
-# Template repo for Java SDK  
-This template helps developers get started with publishing the Java SDK to Maven Central package repository.
+# Celitech Java SDK 1.1.92
 
-## Prerequisites
-The user will need the following:
+Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
-- A [Maven Central](https://central.sonatype.org/) account and token credentials generated on the [Account](https://central.sonatype.com/account) page that allow uploading packages to the [Central Maven Repository](https://repo.maven.apache.org/maven2/)
-- Generated [GPG](https://central.sonatype.org/publish/requirements/gpg/#managing-your-credentials) key pair that is used for signing artifacts during the publishing process
+## Versions
 
-## Contents
-This repository contains the following:
+- API version: `1.1.0`
+- SDK version: `1.1.92`
 
-- A `README` that contains the instructions
-- A GitHub Action workflow to publish the Java SDK to Maven Central package repository.
+## About the API
 
+Welcome to the CELITECH API documentation! Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)
 
-## Instructions
+## Table of Contents
 
-1. Create a new target Java SDK Repo by clicking the __Use this template__ button at the top of this repository.
-1. Set `MAVEN_USERMANE` and `MAVEN_PASSWORD` action secrets in the target SDK repo with the values generated from the [Account](https://central.sonatype.com/account) page of the Maven Central Portal. (see [Appendix A](#appendix-a) for more information)
-1. Set `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` action secrets in the target SDK repo (see [Appendix B](#appendix-b) for detailed instructions)
-1. If you already have a Control Repo:
+- [Setup & Configuration](#setup--configuration)
+  - [Supported Language Versions](#supported-language-versions)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+- [Setting a Custom Timeout](#setting-a-custom-timeout)
+- [Sample Usage](#sample-usage)
+- [Services](#services)
+- [Models](#models)
+- [License](#license)
 
-    1. Update your `LIBLAB_GITHUB_TOKEN` actions secret to a new token that has access to all your existing SDK repos, as well as this new one.
+# Setup & Configuration
 
-    1. Update your config file with the field values required for publishing:
+## Supported Language Versions
 
-        1. [`groupId`](https://developers.liblab.com/cli/config-file-overview-language/#groupid) with the value of your approved Central Repository namespace
-        2. [`githubRepoName`](https://developers.liblab.com/cli/config-file-overview-language/#githubreponame) with the name of the target SDK repo
-        3. [`homepage`](https://developers.liblab.com/cli/config-file-overview-language/#homepage) with the valid public URL of the SDK homepage
+This SDK is compatible with the following versions: `Java >= 1.8`
 
-1. Run the GitHub Action `Generate SDKs using liblab` in the Control Repo that builds the SDK, and raises a PR against this target SDK Repo. This will be triggered automatically when you commit and push the update to the liblab config file.
+## Installation
 
-1. Review and merge the PR.
+If you use Maven, place the following within the _dependency_ tag in your `pom.xml` file:
 
-1. Create a release in the target SDK Repo.
+```XML
+<dependency>
+    <groupId>io.github.celitech</groupId>
+    <artifactId>celitech-sdk</artifactId>
+    <version>1.1.92</version>
+</dependency>
+```
 
-1. The GitHub Action `Publish to Maven Central Repository` in the target SDK Repo will be triggered by the release, and deploy the package to Maven Central Repository. 
+If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
-1. Package will immediately appear on the [Deployments](https://central.sonatype.com/publishing/deployments) page under `PUBLISHING` status. After the validation process has been successfully finished, deployment will transition to `PUBLISHED` status, and the package will become available on [Maven Central Repository](https://central.sonatype.com/search). 
+```Gradle
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.1.92
+```
 
+If you use JAR files, package the SDK by running the following command:
 
-## Appendix A - Central Portal Setup
+```shell
+mvn compile assembly:single
+```
 
-Publishing action automates publishing packages via the [Central Portal](https://central.sonatype.org/), which is, as of March 12th, 2024, the default publishing server for Maven packages. We do not support automatic publishing through the Legacy OSSRH.
+Then, add the JAR file to your project's classpath.
 
-### Account Creation
+## Environment Variables
 
-The [Central Portal Account Documentation](https://central.sonatype.org/register/central-portal/) explains how to create an account that is required for claiming namespaces and managing package deployments.
+These are the environment variables for the SDK:
 
-### Namespace Registration
+| Name          | Description             |
+| :------------ | :---------------------- |
+| CLIENT_ID     | Client ID parameter     |
+| CLIENT_SECRET | Client Secret parameter |
 
-Namespace is the crucial prerequisite for publishing a package to the Central Repository as it is the `groupId` of the package.  The [Central Portal Namespace Documentation](https://central.sonatype.org/register/namespace/#switching-to-ossrh-during-portal-early-access) provides detailed instructions for claiming a namespace. 
+Environment variables are a way to configure your application outside the code. You can set these environment variables on the command line or use your project's existing tooling for managing environment variables.
 
-One should note that the namespace verification process is not instant. For own domain namespaces (e.g. `com.liblab`), additional step is required from the user, which involves setting up the verification key as a DNS record in order for the domain name to be verified by the Central Repository. For GitHub namespaces (namespace in the form of `io.github.githuborgname`), though, verification process is automatic if the user is registered using the GitHub SSO.   
+If you are using a `.env` file, a template with the variable names is provided in the `.env.example` file located in the same directory as this README.
 
+## Setting a Custom Timeout
 
-### Generating Maven Credentials
+You can set a custom timeout for the SDK's HTTP requests as follows:
 
-Credentials for `MAVEN_USERNAME` and `MAVEN_PASSWORD` action secrets can be generated from the [Account](https://central.sonatype.com/account/) page.
+```java
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
 
+public class Main {
 
-## Appendix B - GPG Key and Passphrase
+  public static void main(String[] args) {
+    CelitechConfig config = CelitechConfig.builder().timeout(10000).build();
+    Celitech celitech = new Celitech(config);
+  }
+}
 
-The Central Repository requires all artifacts to be signed with GPG. This section explains how to generate your own key pair, distribute it to the key server and obtain the private key.
+```
 
-1. Install [GnuPG](https://www.gnupg.org/download/)\
-    (available through `brew install gnupg`)
+# Sample Usage
 
-1. Initialize the key generation prompt by running:\
-    `gpg --gen-key`
+Below is a comprehensive example demonstrating how to authenticate and call a simple endpoint:
 
-1. Input all necessary data and choose the passphrase
+```java
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
 
-1. Copy the key id - 40 character long value printed out in the second row by the command:\
-    `gpg --list-secret-keys`
+public class Main {
 
-1. Send the key to the key server (in our case `openpgp`) by running:\
-    `gpg --keyserver keys.openpgp.org --send-keys ${key-id}`
+  public static void main(String[] args) {
+    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
 
-1. Export the private key to the file by running:\
-    `gpg --export-secret-keys ${key-id} --armour > key.asc`
+    Celitech celitech = new Celitech(config);
 
-1. Copy the contents of the `key.asc` file and paste it in the `GPG_PRIVATE_KEY` action secret
+    ListDestinationsOkResponse response = celitech.destinationsService.listDestinations();
 
-1. Add chosen passphrase to the `GPG_PASSPHRASE` action secret
+    System.out.println(response);
+  }
+}
+
+```
+
+## Services
+
+The SDK provides various services to interact with the API.
+
+<details> 
+<summary>Below is a list of all available services with links to their detailed documentation:</summary>
+
+| Name                                                                 |
+| :------------------------------------------------------------------- |
+| [DestinationsService](documentation/services/DestinationsService.md) |
+| [PackagesService](documentation/services/PackagesService.md)         |
+| [PurchasesService](documentation/services/PurchasesService.md)       |
+| [ESimService](documentation/services/ESimService.md)                 |
+
+</details>
+
+## Models
+
+The SDK includes several models that represent the data structures used in API requests and responses. These models help in organizing and managing the data efficiently.
+
+<details> 
+<summary>Below is a list of all available models with links to their detailed documentation:</summary>
+
+| Name                                                                                         | Description |
+| :------------------------------------------------------------------------------------------- | :---------- |
+| [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)             |             |
+| [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                     |             |
+| [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                   |             |
+| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                       |             |
+| [CreatePurchaseOkResponse](documentation/models/CreatePurchaseOkResponse.md)                 |             |
+| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                 |             |
+| [TopUpEsimOkResponse](documentation/models/TopUpEsimOkResponse.md)                           |             |
+| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                           |             |
+| [EditPurchaseOkResponse](documentation/models/EditPurchaseOkResponse.md)                     |             |
+| [GetPurchaseConsumptionOkResponse](documentation/models/GetPurchaseConsumptionOkResponse.md) |             |
+| [GetEsimOkResponse](documentation/models/GetEsimOkResponse.md)                               |             |
+| [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                   |             |
+| [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                 |             |
+| [GetEsimMacOkResponse](documentation/models/GetEsimMacOkResponse.md)                         |             |
+| [ListPackagesParameters](documentation/models/ListPackagesParameters.md)                     |             |
+| [ListPurchasesParameters](documentation/models/ListPurchasesParameters.md)                   |             |
+| [GetEsimParameters](documentation/models/GetEsimParameters.md)                               |             |
+
+</details>
+
+## License
+
+This SDK is licensed under the MIT License.
+
+See the [LICENSE](LICENSE) file for more details.
