@@ -28,7 +28,7 @@ public class PackagesService extends BaseService {
    * @return response of {@code ListPackagesOkResponse}
    */
   public ListPackagesOkResponse listPackages() throws ApiException {
-    return listPackages(ListPackagesParameters.builder().build());
+    return this.listPackages(ListPackagesParameters.builder().build());
   }
 
   /**
@@ -40,33 +40,31 @@ public class PackagesService extends BaseService {
   public ListPackagesOkResponse listPackages(@NonNull ListPackagesParameters requestParameters) throws ApiException {
     Request request = this.buildListPackagesRequest(requestParameters);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {});
   }
 
   /**
    * List Packages
    *
-   * @return response of {@code ListPackagesOkResponse}
+   * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
    */
   public CompletableFuture<ListPackagesOkResponse> listPackagesAsync() throws ApiException {
-    return listPackagesAsync(ListPackagesParameters.builder().build());
+    return this.listPackagesAsync(ListPackagesParameters.builder().build());
   }
 
   /**
    * List Packages
    *
    * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
-   * @return response of {@code ListPackagesOkResponse}
+   * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
    */
   public CompletableFuture<ListPackagesOkResponse> listPackagesAsync(@NonNull ListPackagesParameters requestParameters)
     throws ApiException {
     Request request = this.buildListPackagesRequest(requestParameters);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<ListPackagesOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {})
+    );
   }
 
   private Request buildListPackagesRequest(@NonNull ListPackagesParameters requestParameters) {

@@ -39,7 +39,7 @@ public class PurchasesService extends BaseService {
    * @return response of {@code ListPurchasesOkResponse}
    */
   public ListPurchasesOkResponse listPurchases() throws ApiException, ValidationException {
-    return listPurchases(ListPurchasesParameters.builder().build());
+    return this.listPurchases(ListPurchasesParameters.builder().build());
   }
 
   /**
@@ -52,34 +52,32 @@ public class PurchasesService extends BaseService {
     throws ApiException, ValidationException {
     Request request = this.buildListPurchasesRequest(requestParameters);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<ListPurchasesOkResponse>() {});
   }
 
   /**
    * List Purchases
    *
-   * @return response of {@code ListPurchasesOkResponse}
+   * @return response of {@code CompletableFuture<ListPurchasesOkResponse>}
    */
   public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync() throws ApiException, ValidationException {
-    return listPurchasesAsync(ListPurchasesParameters.builder().build());
+    return this.listPurchasesAsync(ListPurchasesParameters.builder().build());
   }
 
   /**
    * List Purchases
    *
    * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
-   * @return response of {@code ListPurchasesOkResponse}
+   * @return response of {@code CompletableFuture<ListPurchasesOkResponse>}
    */
   public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync(
     @NonNull ListPurchasesParameters requestParameters
   ) throws ApiException, ValidationException {
     Request request = this.buildListPurchasesRequest(requestParameters);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<ListPurchasesOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<ListPurchasesOkResponse>() {})
+    );
   }
 
   private Request buildListPurchasesRequest(@NonNull ListPurchasesParameters requestParameters)
@@ -87,7 +85,6 @@ public class PurchasesService extends BaseService {
     new ViolationAggregator()
       .add(new ListPurchasesParametersValidator("requestParameters").optional().validate(requestParameters))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.GET, this.serverUrl, "purchases")
       .setOptionalQueryParameter("iccid", requestParameters.getIccid())
       .setOptionalQueryParameter("afterDate", requestParameters.getAfterDate())
@@ -110,7 +107,6 @@ public class PurchasesService extends BaseService {
     throws ApiException {
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<CreatePurchaseOkResponse>() {});
   }
 
@@ -118,17 +114,16 @@ public class PurchasesService extends BaseService {
    * Create Purchase
    *
    * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
-   * @return response of {@code CreatePurchaseOkResponse}
+   * @return response of {@code CompletableFuture<CreatePurchaseOkResponse>}
    */
   public CompletableFuture<CreatePurchaseOkResponse> createPurchaseAsync(
     @NonNull CreatePurchaseRequest createPurchaseRequest
   ) throws ApiException {
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<CreatePurchaseOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<CreatePurchaseOkResponse>() {})
+    );
   }
 
   private Request buildCreatePurchaseRequest(@NonNull CreatePurchaseRequest createPurchaseRequest) {
@@ -147,7 +142,6 @@ public class PurchasesService extends BaseService {
     throws ApiException, ValidationException {
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<TopUpEsimOkResponse>() {});
   }
 
@@ -155,23 +149,21 @@ public class PurchasesService extends BaseService {
    * Top-up eSIM
    *
    * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
-   * @return response of {@code TopUpEsimOkResponse}
+   * @return response of {@code CompletableFuture<TopUpEsimOkResponse>}
    */
   public CompletableFuture<TopUpEsimOkResponse> topUpEsimAsync(@NonNull TopUpEsimRequest topUpEsimRequest)
     throws ApiException, ValidationException {
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<TopUpEsimOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<TopUpEsimOkResponse>() {})
+    );
   }
 
   private Request buildTopUpEsimRequest(@NonNull TopUpEsimRequest topUpEsimRequest) throws ValidationException {
     new ViolationAggregator()
       .add(new TopUpEsimRequestValidator("topUpEsimRequest").required().validate(topUpEsimRequest))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.POST, this.serverUrl, "purchases/topup")
       .setJsonContent(topUpEsimRequest)
       .build();
@@ -186,7 +178,6 @@ public class PurchasesService extends BaseService {
   public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseRequest editPurchaseRequest) throws ApiException {
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<EditPurchaseOkResponse>() {});
   }
 
@@ -194,16 +185,15 @@ public class PurchasesService extends BaseService {
    * Edit Purchase
    *
    * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
-   * @return response of {@code EditPurchaseOkResponse}
+   * @return response of {@code CompletableFuture<EditPurchaseOkResponse>}
    */
   public CompletableFuture<EditPurchaseOkResponse> editPurchaseAsync(@NonNull EditPurchaseRequest editPurchaseRequest)
     throws ApiException {
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<EditPurchaseOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<EditPurchaseOkResponse>() {})
+    );
   }
 
   private Request buildEditPurchaseRequest(@NonNull EditPurchaseRequest editPurchaseRequest) {
@@ -221,7 +211,6 @@ public class PurchasesService extends BaseService {
   public GetPurchaseConsumptionOkResponse getPurchaseConsumption(@NonNull String purchaseId) throws ApiException {
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
   }
 
@@ -229,16 +218,15 @@ public class PurchasesService extends BaseService {
    * Get Purchase Consumption
    *
    * @param purchaseId String ID of the purchase
-   * @return response of {@code GetPurchaseConsumptionOkResponse}
+   * @return response of {@code CompletableFuture<GetPurchaseConsumptionOkResponse>}
    */
   public CompletableFuture<GetPurchaseConsumptionOkResponse> getPurchaseConsumptionAsync(@NonNull String purchaseId)
     throws ApiException {
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<GetPurchaseConsumptionOkResponse>() {})
+    );
   }
 
   private Request buildGetPurchaseConsumptionRequest(@NonNull String purchaseId) {
