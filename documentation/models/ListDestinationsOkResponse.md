@@ -2,6 +2,6 @@
 
 **Properties**
 
-| Name         | Type               | Required | Description |
-| :----------- | :----------------- | :------- | :---------- |
-| destinations | List<Destinations> | ❌       |             |
+| Name         | Type                 | Required | Description |
+| :----------- | :------------------- | :------- | :---------- |
+| destinations | List\<Destinations\> | ❌       |             |

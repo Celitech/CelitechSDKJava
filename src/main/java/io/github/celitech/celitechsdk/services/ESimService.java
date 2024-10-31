@@ -39,7 +39,6 @@ public class ESimService extends BaseService {
     throws ApiException, ValidationException {
     Request request = this.buildGetEsimRequest(requestParameters);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<GetEsimOkResponse>() {});
   }
 
@@ -47,23 +46,21 @@ public class ESimService extends BaseService {
    * Get eSIM Status
    *
    * @param requestParameters {@link GetEsimParameters} Request Parameters Object
-   * @return response of {@code GetEsimOkResponse}
+   * @return response of {@code CompletableFuture<GetEsimOkResponse>}
    */
   public CompletableFuture<GetEsimOkResponse> getEsimAsync(@NonNull GetEsimParameters requestParameters)
     throws ApiException, ValidationException {
     Request request = this.buildGetEsimRequest(requestParameters);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<GetEsimOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<GetEsimOkResponse>() {})
+    );
   }
 
   private Request buildGetEsimRequest(@NonNull GetEsimParameters requestParameters) throws ValidationException {
     new ViolationAggregator()
       .add(new GetEsimParametersValidator("requestParameters").required().validate(requestParameters))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.GET, this.serverUrl, "esim")
       .setQueryParameter("iccid", requestParameters.getIccid())
       .build();
@@ -78,7 +75,6 @@ public class ESimService extends BaseService {
   public GetEsimDeviceOkResponse getEsimDevice(@NonNull String iccid) throws ApiException, ValidationException {
     Request request = this.buildGetEsimDeviceRequest(iccid);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<GetEsimDeviceOkResponse>() {});
   }
 
@@ -86,23 +82,21 @@ public class ESimService extends BaseService {
    * Get eSIM Device
    *
    * @param iccid String ID of the eSIM
-   * @return response of {@code GetEsimDeviceOkResponse}
+   * @return response of {@code CompletableFuture<GetEsimDeviceOkResponse>}
    */
   public CompletableFuture<GetEsimDeviceOkResponse> getEsimDeviceAsync(@NonNull String iccid)
     throws ApiException, ValidationException {
     Request request = this.buildGetEsimDeviceRequest(iccid);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<GetEsimDeviceOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<GetEsimDeviceOkResponse>() {})
+    );
   }
 
   private Request buildGetEsimDeviceRequest(@NonNull String iccid) throws ValidationException {
     new ViolationAggregator()
       .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.GET, this.serverUrl, "esim/{iccid}/device")
       .setPathParameter("iccid", iccid)
       .build();
@@ -117,7 +111,6 @@ public class ESimService extends BaseService {
   public GetEsimHistoryOkResponse getEsimHistory(@NonNull String iccid) throws ApiException, ValidationException {
     Request request = this.buildGetEsimHistoryRequest(iccid);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<GetEsimHistoryOkResponse>() {});
   }
 
@@ -125,23 +118,21 @@ public class ESimService extends BaseService {
    * Get eSIM History
    *
    * @param iccid String ID of the eSIM
-   * @return response of {@code GetEsimHistoryOkResponse}
+   * @return response of {@code CompletableFuture<GetEsimHistoryOkResponse>}
    */
   public CompletableFuture<GetEsimHistoryOkResponse> getEsimHistoryAsync(@NonNull String iccid)
     throws ApiException, ValidationException {
     Request request = this.buildGetEsimHistoryRequest(iccid);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<GetEsimHistoryOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<GetEsimHistoryOkResponse>() {})
+    );
   }
 
   private Request buildGetEsimHistoryRequest(@NonNull String iccid) throws ValidationException {
     new ViolationAggregator()
       .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.GET, this.serverUrl, "esim/{iccid}/history")
       .setPathParameter("iccid", iccid)
       .build();
@@ -156,7 +147,6 @@ public class ESimService extends BaseService {
   public GetEsimMacOkResponse getEsimMac(@NonNull String iccid) throws ApiException, ValidationException {
     Request request = this.buildGetEsimMacRequest(iccid);
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<GetEsimMacOkResponse>() {});
   }
 
@@ -164,23 +154,21 @@ public class ESimService extends BaseService {
    * Get eSIM MAC
    *
    * @param iccid String ID of the eSIM
-   * @return response of {@code GetEsimMacOkResponse}
+   * @return response of {@code CompletableFuture<GetEsimMacOkResponse>}
    */
   public CompletableFuture<GetEsimMacOkResponse> getEsimMacAsync(@NonNull String iccid)
     throws ApiException, ValidationException {
     Request request = this.buildGetEsimMacRequest(iccid);
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<GetEsimMacOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<GetEsimMacOkResponse>() {})
+    );
   }
 
   private Request buildGetEsimMacRequest(@NonNull String iccid) throws ValidationException {
     new ViolationAggregator()
       .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
       .validateAll();
-
     return new RequestBuilder(HttpMethod.GET, this.serverUrl, "esim/{iccid}/mac")
       .setPathParameter("iccid", iccid)
       .build();

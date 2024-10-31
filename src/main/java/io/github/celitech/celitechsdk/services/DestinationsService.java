@@ -29,22 +29,20 @@ public class DestinationsService extends BaseService {
   public ListDestinationsOkResponse listDestinations() throws ApiException {
     Request request = this.buildListDestinationsRequest();
     Response response = this.execute(request);
-
     return ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {});
   }
 
   /**
    * List Destinations
    *
-   * @return response of {@code ListDestinationsOkResponse}
+   * @return response of {@code CompletableFuture<ListDestinationsOkResponse>}
    */
   public CompletableFuture<ListDestinationsOkResponse> listDestinationsAsync() throws ApiException {
     Request request = this.buildListDestinationsRequest();
-    CompletableFuture<Response> response = this.executeAsync(request);
-
-    return response.thenApplyAsync(res -> {
-      return ModelConverter.convert(res, new TypeReference<ListDestinationsOkResponse>() {});
-    });
+    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    return futureResponse.thenApplyAsync(response ->
+      ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {})
+    );
   }
 
   private Request buildListDestinationsRequest() {
