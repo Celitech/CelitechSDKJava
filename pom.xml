@@ -8,7 +8,7 @@
 
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.1.94</version>
+    <version>1.1.95</version>
 
     <!-- See https://central.sonatype.org/publish/requirements/#project-name-description-and-url -->
     <name>${project.groupId}:${project.artifactId}</name>
@@ -21,6 +21,16 @@
         <developerConnection>scm:git:ssh://github.com/Celitech/CelitechSDKJava.git</developerConnection>
         <url>https://github.com/Celitech/CelitechSDKJava</url>
     </scm>
+
+    <!-- See https://central.sonatype.org/publish/requirements/#developer-information -->
+    <developers>
+        <developer>
+            <name>AZ</name>
+            <email>az@celitech.com</email>
+            <organization>Celitech</organization>
+            <organizationUrl>https://www.celitech.com/</organizationUrl>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
