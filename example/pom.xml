@@ -20,9 +20,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.github.celitech</groupId>
+            <groupId>io.github.Celitech</groupId>
             <artifactId>celitech-sdk</artifactId>
-            <version>1.1.95</version>
+            <version>1.1.96</version>
         </dependency>
     </dependencies>
 

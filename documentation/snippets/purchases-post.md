@@ -1,8 +1,8 @@
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
+import io.github.Celitech.celitechsdk.Celitech;
+import io.github.Celitech.celitechsdk.config.CelitechConfig;
+import io.github.Celitech.celitechsdk.models.CreatePurchaseOkResponse;
+import io.github.Celitech.celitechsdk.models.CreatePurchaseRequest;
 
 public class Main {
 
