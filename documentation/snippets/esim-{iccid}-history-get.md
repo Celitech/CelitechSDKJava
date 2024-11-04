@@ -1,7 +1,7 @@
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetEsimHistoryOkResponse;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
 
 public class Main {
 

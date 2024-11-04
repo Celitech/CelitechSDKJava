@@ -30,10 +30,10 @@ This endpoint can be used to list all the successful purchases made between a gi
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.ListPurchasesOkResponse;
-import io.github.Celitech.celitechsdk.models.ListPurchasesParameters;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.ListPurchasesOkResponse;
+import io.github.celitech.celitechsdk.models.ListPurchasesParameters;
 
 public class Main {
 
@@ -70,10 +70,10 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.CreatePurchaseOkResponse;
-import io.github.Celitech.celitechsdk.models.CreatePurchaseRequest;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
+import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
 
 public class Main {
 
@@ -118,10 +118,10 @@ This endpoint is used to top-up an eSIM with the previously associated destinati
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.TopUpEsimOkResponse;
-import io.github.Celitech.celitechsdk.models.TopUpEsimRequest;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
+import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
 
 public class Main {
 
@@ -166,10 +166,10 @@ This endpoint allows you to modify the dates of an existing package with a futur
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.EditPurchaseOkResponse;
-import io.github.Celitech.celitechsdk.models.EditPurchaseRequest;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
+import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
 
 public class Main {
 
@@ -213,9 +213,9 @@ This endpoint can be called for consumption notifications (e.g. every 1 hour or 
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
 
 public class Main {
 

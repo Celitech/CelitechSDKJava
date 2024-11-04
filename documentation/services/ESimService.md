@@ -29,10 +29,10 @@ Get eSIM Status
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetEsimOkResponse;
-import io.github.Celitech.celitechsdk.models.GetEsimParameters;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetEsimOkResponse;
+import io.github.celitech.celitechsdk.models.GetEsimParameters;
 
 public class Main {
 
@@ -71,9 +71,9 @@ Get eSIM Device
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetEsimDeviceOkResponse;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetEsimDeviceOkResponse;
 
 public class Main {
 
@@ -110,9 +110,9 @@ Get eSIM History
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetEsimHistoryOkResponse;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
 
 public class Main {
 
@@ -149,9 +149,9 @@ Get eSIM MAC
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.GetEsimMacOkResponse;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.GetEsimMacOkResponse;
 
 public class Main {
 
