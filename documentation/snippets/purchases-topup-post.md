@@ -1,8 +1,8 @@
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
-import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
+import io.github.Celitech.celitechsdk.Celitech;
+import io.github.Celitech.celitechsdk.config.CelitechConfig;
+import io.github.Celitech.celitechsdk.models.TopUpEsimOkResponse;
+import io.github.Celitech.celitechsdk.models.TopUpEsimRequest;
 
 public class Main {
 
