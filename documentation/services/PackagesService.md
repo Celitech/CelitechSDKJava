@@ -26,10 +26,10 @@ List Packages
 **Example Usage Code Snippet**
 
 ```java
-import io.github.Celitech.celitechsdk.Celitech;
-import io.github.Celitech.celitechsdk.config.CelitechConfig;
-import io.github.Celitech.celitechsdk.models.ListPackagesOkResponse;
-import io.github.Celitech.celitechsdk.models.ListPackagesParameters;
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
+import io.github.celitech.celitechsdk.models.ListPackagesParameters;
 
 public class Main {
 

@@ -6,9 +6,9 @@
 >
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.Celitech</groupId>
+    <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.1.96</version>
+    <version>1.1.97</version>
 
     <!-- See https://central.sonatype.org/publish/requirements/#project-name-description-and-url -->
     <name>${project.groupId}:${project.artifactId}</name>
