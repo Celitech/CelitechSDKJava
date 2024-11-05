@@ -25,11 +25,14 @@ public class CustomHook implements Hook {
       return request;
     }
 
-    String clientId = additionalParameters.get("client_id");
-    String clientSecret = additionalParameters.get("client_secret");
+    System.out.println("Request:" + request);
+    System.out.println("additionalParameters:" + additionalParameters);
+
+    String clientId = additionalParameters.get("clientId");
+    String clientSecret = additionalParameters.get("clientSecret");
 
     if (clientId == null || clientSecret == null) {
-      System.out.println("Missing client_id and/or client_secret constructor parameters");
+      System.out.println("Missing clientId and/or clientSecret constructor parameters");
       return request;
     }
 
