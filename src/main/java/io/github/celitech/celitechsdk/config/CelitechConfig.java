@@ -24,4 +24,7 @@ public class CelitechConfig {
   /** Timeout in milliseconds */
   @Builder.Default
   private long timeout = 10_000;
+
+  private String clientId;
+  private String clientSecret;
 }
