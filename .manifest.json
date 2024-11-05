@@ -1,16 +1,16 @@
 {
   "liblabVersion": "2.9.3",
-  "date": "2024-11-05T13:00:29.586Z",
+  "date": "2024-11-05T14:00:33.335Z",
   "config": {
-    "apiId": 1387,
+    "apiId": 1389,
     "sdkName": "Celitech",
-    "sdkVersion": "1.1.98",
+    "sdkVersion": "1.1.99",
     "languages": ["java"],
     "auth": ["bearer"],
     "docs": ["snippets"],
     "liblabVersion": "2",
     "deliveryMethods": ["zip"],
-    "apiVersion": "1.1.98",
+    "apiVersion": "1.1.99",
     "apiName": "Celitech",
     "specFilePath": "swagger.yaml",
     "languageOptions": {
@@ -25,10 +25,20 @@
             "organizationUrl": "https://www.celitech.com/"
           }
         ],
+        "additionalConstructorParameters": [
+          {
+            "name": "clientId",
+            "example": "client-id"
+          },
+          {
+            "name": "clientSecret",
+            "example": "client-secret"
+          }
+        ],
         "githubRepoName": "CelitechSDKJava",
         "homepage": "https://docs.celitech.com/",
         "liblabVersion": "2",
-        "sdkVersion": "1.1.98"
+        "sdkVersion": "1.1.99"
       },
       "python": {
         "alwaysInitializeOptionals": true,
@@ -45,7 +55,7 @@
         "pypiPackageName": "celitech-sdk",
         "githubRepoName": "CelitechSDKPython",
         "liblabVersion": "2",
-        "sdkVersion": "1.1.98"
+        "sdkVersion": "1.1.99"
       },
       "php": {
         "packageName": "celitech-sdk/sdk",
@@ -61,7 +71,7 @@
         ],
         "githubRepoName": "CelitechSDKPHP",
         "liblabVersion": "2",
-        "sdkVersion": "1.1.98"
+        "sdkVersion": "1.1.99"
       },
       "typescript": {
         "bundle": true,
@@ -80,7 +90,7 @@
         ],
         "githubRepoName": "CelitechSDKTypeScript",
         "liblabVersion": "2",
-        "sdkVersion": "1.1.98",
+        "sdkVersion": "1.1.99",
         "generateEnumAs": "enum"
       }
     },
@@ -121,7 +131,7 @@
     },
     "multiTenant": true,
     "hooksLocation": {
-      "bucketKey": "7997/hooks.zip",
+      "bucketKey": "7999/hooks.zip",
       "bucketName": "prod-liblab-api-stack-hooks"
     },
     "includeWatermark": false,
@@ -133,6 +143,16 @@
         "email": "az@celitech.com",
         "organization": "Celitech",
         "organizationUrl": "https://www.celitech.com/"
+      }
+    ],
+    "additionalConstructorParameters": [
+      {
+        "name": "clientId",
+        "example": "client-id"
+      },
+      {
+        "name": "clientSecret",
+        "example": "client-secret"
       }
     ],
     "githubRepoName": "CelitechSDKJava",
