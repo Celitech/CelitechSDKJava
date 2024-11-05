@@ -1,15 +1,12 @@
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
-
-    Celitech celitech = new Celitech(config);
+    Celitech celitech = new Celitech();
 
     CreatePurchaseRequest createPurchaseRequest = CreatePurchaseRequest
       .builder()

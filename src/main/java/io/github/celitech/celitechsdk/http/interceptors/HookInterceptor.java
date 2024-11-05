@@ -1,6 +1,5 @@
 package io.github.celitech.celitechsdk.http.interceptors;
 
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.hook.Hook;
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,12 +14,9 @@ public class HookInterceptor implements Interceptor {
 
   private final Map<String, String> additionalParameters = new HashMap<>();
 
-  public HookInterceptor(Hook hook, CelitechConfig config) {
+  public HookInterceptor(Hook hook) {
     super();
     this.hook = hook;
-
-    setClientId(config.getClientId());
-    setClientSecret(config.getClientSecret());
   }
 
   @Override
@@ -37,13 +33,5 @@ public class HookInterceptor implements Interceptor {
 
     response = hook.afterResponse(request, response, additionalParameters);
     return response;
-  }
-
-  public void setClientId(String clientId) {
-    this.additionalParameters.put("clientId", clientId);
-  }
-
-  public void setClientSecret(String clientSecret) {
-    this.additionalParameters.put("clientSecret", clientSecret);
   }
 }
