@@ -16,83 +16,70 @@ import okhttp3.Response;
 public class CustomHook implements Hook {
 
   private static String CURRENT_TOKEN = "";
-  private static Instant CURRENT_EXPIRY = Instant.ofEpochMilli(-1);
-  private final OkHttpClient client = new OkHttpClient();
+  private static long CURRENT_EXPIRY = -1;
 
-  @Override
-  public Request beforeRequest(Request request, Map<String, String> additionalParameters) {
-    if (request.url().toString().endsWith("/oauth/token")) {
-      return request;
+  public JSONObject getToken(String clientId, String clientSecret) throws Exception {
+    String fullUrl = "https://auth.celitech.net/oauth2/token";
+    HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
+    connection.setRequestMethod("POST");
+    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+    connection.setDoOutput(true);
+
+    String data = "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials";
+
+    try (OutputStream os = connection.getOutputStream()) {
+      os.write(data.getBytes());
+      os.flush();
     }
 
-    System.out.println("Request:" + request);
-    System.out.println("additionalParameters:" + additionalParameters);
+    int status = connection.getResponseCode();
+    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+    String inputLine;
+    StringBuilder content = new StringBuilder();
+    while ((inputLine = in.readLine()) != null) {
+      content.append(inputLine);
+    }
 
-    String clientId = additionalParameters.get("clientId");
-    String clientSecret = additionalParameters.get("clientSecret");
+    in.close();
+    connection.disconnect();
+
+    return new JSONObject(content.toString());
+  }
+
+  @Override
+  public Request beforeRequest(Request request, Map<String, String> params) throws Exception {
+    String clientId = params.get("clientId");
+    String clientSecret = params.get("clientSecret");
 
     if (clientId == null || clientSecret == null) {
-      System.out.println("Missing clientId and/or clientSecret constructor parameters");
-      return request;
+      throw new Exception("Missing clientId and/or clientSecret constructor parameters");
     }
 
-    if (CURRENT_TOKEN.isEmpty() || CURRENT_EXPIRY.isBefore(Instant.now())) {
-      try {
-        Map<String, String> input_data = new HashMap<>();
-        input_data.put("client_id", clientId);
-        input_data.put("client_secret", clientSecret);
-        input_data.put("grant_type", "client_credentials");
+    if (CURRENT_TOKEN.isEmpty() || CURRENT_EXPIRY < System.currentTimeMillis()) {
+      JSONObject tokenResponse = getToken(clientId, clientSecret);
 
-        Map<String, Object> token_response = doPost(input_data);
-        if (token_response == null) {
-          System.out.println("There is an issue with getting the oauth token");
-          return request;
-        }
-
-        long expiresIn = (int) token_response.get("expires_in");
-        String accessToken = (String) token_response.get("access_token");
-
-        CURRENT_EXPIRY = Instant.now().plusMillis(expiresIn * 1000);
-        CURRENT_TOKEN = accessToken;
-      } catch (IOException e) {
-        e.printStackTrace();
+      if (tokenResponse.has("error")) {
+        throw new Exception(tokenResponse.getString("error"));
       }
-    }
 
-    Request.Builder builder = request.newBuilder();
-    builder.header("Authorization", "Bearer " + CURRENT_TOKEN);
-    return builder.build();
-  }
+      long expiresIn = tokenResponse.getLong("expires_in");
+      String accessToken = tokenResponse.getString("access_token");
 
-  private Map<String, Object> doPost(Map<String, String> inputData) throws IOException {
-    String fullUrl = "https://auth.celitech.net/oauth2/token";
-    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-    StringBuilder formBodyBuilder = new StringBuilder();
-
-    for (Map.Entry<String, String> entry : inputData.entrySet()) {
-      if (formBodyBuilder.length() > 0) {
-        formBodyBuilder.append("&");
+      if (expiresIn <= 0 || accessToken == null || accessToken.isEmpty()) {
+        throw new Exception("There is an issue with getting the oauth token");
       }
-      formBodyBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+
+      CURRENT_EXPIRY = System.currentTimeMillis() + expiresIn * 1000;
+      CURRENT_TOKEN = accessToken;
     }
 
-    RequestBody body = RequestBody.create(formBodyBuilder.toString(), mediaType);
-    Request request = new Request.Builder().url(fullUrl).post(body).build();
-
-    try (Response response = client.newCall(request).execute()) {
-      if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-      return new ObjectMapper().readValue(response.body().string(), Map.class);
-    } catch (IOException e) {
-      System.out.println("Error in posting the request: " + e.getMessage());
-      return null;
-    }
+    String authorization = "Bearer " + CURRENT_TOKEN;
+    request.getHeaders().put("Authorization", authorization);
   }
 
   @Override
-  public Response afterResponse(Request request, Response response, Map<String, String> additionalParameters) {
-    return response;
-  }
+  public Response afterResponse(Request request, Response response, Map<String, String> params) {}
 
   @Override
-  public void onError(Request request, Exception exception, Map<String, String> additionalParameters) {}
+  public void onError(Exception error, Request request, Response response, Map<String, String> params) {}
 }
