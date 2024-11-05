@@ -1,25 +1,26 @@
 package io.github.celitech.celitechsdk.hook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.time.Instant;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-import org.json.JSONObject;
 
 public class CustomHook implements Hook {
 
   private static String CURRENT_TOKEN = "";
   private static long CURRENT_EXPIRY = -1;
 
-  public JSONObject getToken(String clientId, String clientSecret) throws Exception {
+  private final ObjectMapper objectMapper = new ObjectMapper(); // Jackson's ObjectMapper
+
+  public Map<String, Object> getToken(String clientId, String clientSecret) throws Exception {
     String fullUrl = "https://auth.celitech.net/oauth2/token";
     HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
     connection.setRequestMethod("POST");
@@ -35,8 +36,8 @@ public class CustomHook implements Hook {
 
     int status = connection.getResponseCode();
     BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    String inputLine;
     StringBuilder content = new StringBuilder();
+    String inputLine;
     while ((inputLine = in.readLine()) != null) {
       content.append(inputLine);
     }
@@ -44,7 +45,8 @@ public class CustomHook implements Hook {
     in.close();
     connection.disconnect();
 
-    return new JSONObject(content.toString());
+    // Parse JSON response string to a Map using Jackson's ObjectMapper
+    return objectMapper.readValue(content.toString(), HashMap.class);
   }
 
   @Override
@@ -57,14 +59,14 @@ public class CustomHook implements Hook {
     }
 
     if (CURRENT_TOKEN.isEmpty() || CURRENT_EXPIRY < System.currentTimeMillis()) {
-      JSONObject tokenResponse = getToken(clientId, clientSecret);
+      Map<String, Object> tokenResponse = getToken(clientId, clientSecret);
 
-      if (tokenResponse.has("error")) {
-        throw new Exception(tokenResponse.getString("error"));
+      if (tokenResponse.containsKey("error")) {
+        throw new Exception(tokenResponse.get("error").toString());
       }
 
-      long expiresIn = tokenResponse.getLong("expires_in");
-      String accessToken = tokenResponse.getString("access_token");
+      long expiresIn = ((Number) tokenResponse.get("expires_in")).longValue();
+      String accessToken = (String) tokenResponse.get("access_token");
 
       if (expiresIn <= 0 || accessToken == null || accessToken.isEmpty()) {
         throw new Exception("There is an issue with getting the oauth token");
@@ -76,10 +78,14 @@ public class CustomHook implements Hook {
 
     String authorization = "Bearer " + CURRENT_TOKEN;
     request.getHeaders().put("Authorization", authorization);
+
+    return request;
   }
 
   @Override
-  public Response afterResponse(Request request, Response response, Map<String, String> params) {}
+  public Response afterResponse(Request request, Response response, Map<String, String> params) {
+    return response;
+  }
 
   @Override
   public void onError(Exception error, Request request, Response response, Map<String, String> params) {}
