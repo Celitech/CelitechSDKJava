@@ -1,92 +1,91 @@
 package io.github.celitech.celitechsdk.hook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CustomHook implements Hook {
 
   private static String CURRENT_TOKEN = "";
-  private static long CURRENT_EXPIRY = -1;
-
-  private final ObjectMapper objectMapper = new ObjectMapper(); // Jackson's ObjectMapper
-
-  public Map<String, Object> getToken(String clientId, String clientSecret) throws Exception {
-    String fullUrl = "https://auth.celitech.net/oauth2/token";
-    HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
-    connection.setRequestMethod("POST");
-    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-    connection.setDoOutput(true);
-
-    String data = "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials";
-
-    try (OutputStream os = connection.getOutputStream()) {
-      os.write(data.getBytes());
-      os.flush();
-    }
-
-    int status = connection.getResponseCode();
-    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    StringBuilder content = new StringBuilder();
-    String inputLine;
-    while ((inputLine = in.readLine()) != null) {
-      content.append(inputLine);
-    }
-
-    in.close();
-    connection.disconnect();
-
-    // Parse JSON response string to a Map using Jackson's ObjectMapper
-    return objectMapper.readValue(content.toString(), HashMap.class);
-  }
+  private static Instant CURRENT_EXPIRY = Instant.ofEpochMilli(-1);
+  private final OkHttpClient client = new OkHttpClient();
 
   @Override
-  public Request beforeRequest(Request request, Map<String, String> params) throws Exception {
-    String clientId = params.get("clientId");
-    String clientSecret = params.get("clientSecret");
+  public Request beforeRequest(Request request, Map<String, String> additionalParameters) {
+    String clientId = additionalParameters.get("clientId");
+    String clientSecret = additionalParameters.get("clientSecret");
 
     if (clientId == null || clientSecret == null) {
-      throw new Exception("Missing clientId and/or clientSecret constructor parameters");
+      System.out.println("Missing clientId and/or clientSecret constructor parameters");
+      return request;
     }
 
-    if (CURRENT_TOKEN.isEmpty() || CURRENT_EXPIRY < System.currentTimeMillis()) {
-      Map<String, Object> tokenResponse = getToken(clientId, clientSecret);
+    if (CURRENT_TOKEN.isEmpty() || CURRENT_EXPIRY.isBefore(Instant.now())) {
+      try {
+        Map<String, String> input_data = new HashMap<>();
+        input_data.put("client_id", clientId);
+        input_data.put("client_secret", clientSecret);
+        input_data.put("grant_type", "client_credentials");
 
-      if (tokenResponse.containsKey("error")) {
-        throw new Exception(tokenResponse.get("error").toString());
+        Map<String, Object> token_response = doPost(input_data);
+        if (token_response == null) {
+          System.out.println("There is an issue with getting the oauth token");
+          return request;
+        }
+
+        long expiresIn = (int) token_response.get("expires_in");
+        String accessToken = (String) token_response.get("access_token");
+
+        CURRENT_EXPIRY = Instant.now().plusMillis(expiresIn * 1000);
+        CURRENT_TOKEN = accessToken;
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-
-      long expiresIn = ((Number) tokenResponse.get("expires_in")).longValue();
-      String accessToken = (String) tokenResponse.get("access_token");
-
-      if (expiresIn <= 0 || accessToken == null || accessToken.isEmpty()) {
-        throw new Exception("There is an issue with getting the oauth token");
-      }
-
-      CURRENT_EXPIRY = System.currentTimeMillis() + expiresIn * 1000;
-      CURRENT_TOKEN = accessToken;
     }
 
-    String authorization = "Bearer " + CURRENT_TOKEN;
-    request.getHeaders().put("Authorization", authorization);
+    Request.Builder builder = request.newBuilder();
+    builder.header("Authorization", "Bearer " + CURRENT_TOKEN);
+    return builder.build();
+  }
 
-    return request;
+  private Map<String, Object> doPost(Map<String, String> inputData) throws IOException {
+    String fullUrl = "https://auth.celitech.net/oauth2/token";
+    MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+    StringBuilder formBodyBuilder = new StringBuilder();
+
+    for (Map.Entry<String, String> entry : inputData.entrySet()) {
+      if (formBodyBuilder.length() > 0) {
+        formBodyBuilder.append("&");
+      }
+      formBodyBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+    }
+
+    RequestBody body = RequestBody.create(formBodyBuilder.toString(), mediaType);
+    Request request = new Request.Builder().url(fullUrl).post(body).build();
+
+    try (Response response = client.newCall(request).execute()) {
+      if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+      return new ObjectMapper().readValue(response.body().string(), Map.class);
+    } catch (IOException e) {
+      System.out.println("Error in posting the request: " + e.getMessage());
+      return null;
+    }
   }
 
   @Override
-  public Response afterResponse(Request request, Response response, Map<String, String> params) {
+  public Response afterResponse(Request request, Response response, Map<String, String> additionalParameters) {
     return response;
   }
 
   @Override
-  public void onError(Exception error, Request request, Response response, Map<String, String> params) {}
+  public void onError(Request request, Exception exception, Map<String, String> additionalParameters) {}
 }
