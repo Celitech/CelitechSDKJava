@@ -8,6 +8,7 @@ import io.github.celitech.celitechsdk.http.interceptors.HookInterceptor;
 import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import io.github.celitech.celitechsdk.services.DestinationsService;
 import io.github.celitech.celitechsdk.services.ESimService;
+import io.github.celitech.celitechsdk.services.OAuthService;
 import io.github.celitech.celitechsdk.services.PackagesService;
 import io.github.celitech.celitechsdk.services.PurchasesService;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,7 @@ import okhttp3.OkHttpClient;
 /** Welcome to the CELITECH API documentation!  Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)  */
 public class Celitech {
 
+  public final OAuthService oAuthService;
   public final DestinationsService destinationsService;
   public final PackagesService packagesService;
   public final PurchasesService purchasesService;
@@ -40,6 +42,7 @@ public class Celitech {
       .readTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
       .build();
 
+    this.oAuthService = new OAuthService(httpClient, serverUrl);
     this.destinationsService = new DestinationsService(httpClient, serverUrl);
     this.packagesService = new PackagesService(httpClient, serverUrl);
     this.purchasesService = new PurchasesService(httpClient, serverUrl);
@@ -51,6 +54,7 @@ public class Celitech {
   }
 
   public void setBaseUrl(String baseUrl) {
+    this.oAuthService.setBaseUrl(baseUrl);
     this.destinationsService.setBaseUrl(baseUrl);
     this.packagesService.setBaseUrl(baseUrl);
     this.purchasesService.setBaseUrl(baseUrl);
