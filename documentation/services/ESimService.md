@@ -30,16 +30,13 @@ Get eSIM Status
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.GetEsimOkResponse;
 import io.github.celitech.celitechsdk.models.GetEsimParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
-
-    Celitech celitech = new Celitech(config);
+    Celitech celitech = new Celitech();
 
     GetEsimParameters requestParameters = GetEsimParameters.builder().iccid("1111222233334444555000").build();
 
@@ -72,15 +69,12 @@ Get eSIM Device
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.GetEsimDeviceOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
-
-    Celitech celitech = new Celitech(config);
+    Celitech celitech = new Celitech();
 
     GetEsimDeviceOkResponse response = celitech.eSimService.getEsimDevice("1111222233334444555000");
 
@@ -111,15 +105,12 @@ Get eSIM History
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
-
-    Celitech celitech = new Celitech(config);
+    Celitech celitech = new Celitech();
 
     GetEsimHistoryOkResponse response = celitech.eSimService.getEsimHistory("1111222233334444555000");
 
@@ -150,15 +141,12 @@ Get eSIM MAC
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.GetEsimMacOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("client-id").clientSecret("client-secret").build();
-
-    Celitech celitech = new Celitech(config);
+    Celitech celitech = new Celitech();
 
     GetEsimMacOkResponse response = celitech.eSimService.getEsimMac("1111222233334444555000");
 
