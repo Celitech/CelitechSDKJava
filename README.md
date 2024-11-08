@@ -1,11 +1,11 @@
-# Celitech Java SDK 1.2.5
+# Celitech Java SDK 1.3.1
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
 ## Versions
 
 - API version: `1.1.0`
-- SDK version: `1.2.5`
+- SDK version: `1.3.1`
 
 ## About the API
 
@@ -16,6 +16,8 @@ Welcome to the CELITECH API documentation! Useful links: [Homepage](https://www.
 - [Setup & Configuration](#setup--configuration)
   - [Supported Language Versions](#supported-language-versions)
   - [Installation](#installation)
+- [Authentication](#authentication)
+  - [OAuth Authentication](#oauth-authentication)
   - [Environment Variables](#environment-variables)
 - [Setting a Custom Timeout](#setting-a-custom-timeout)
 - [Sample Usage](#sample-usage)
@@ -37,14 +39,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.2.5</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation group: io.github.celitech, name: celitech-sdk, version: 1.2.5
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.1
 ```
 
 If you use JAR files, package the SDK by running the following command:
@@ -54,6 +56,40 @@ mvn compile assembly:single
 ```
 
 Then, add the JAR file to your project's classpath.
+
+## Authentication
+
+### OAuth Authentication
+
+The Celitech API uses OAuth for authentication.
+
+You need to provide the OAuth parameters when initializing the SDK.
+
+```java
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
+
+public class Main {
+
+  public static void main(String[] args) {
+    CelitechConfig config = CelitechConfig
+      .builder()
+      .clientId("YOUR_CLIENT_ID")
+      .clientSecret("YOUR_CLIENT_SECRET")
+      .build();
+
+    Celitech celitech = new Celitech(config);
+  }
+}
+
+```
+
+If you need to set or update the OAuth parameters after the SDK initialization, you can use:
+
+```java
+celitech.setClientId("YOUR_CLIENT_ID");
+celitech.setClientSecret("YOUR_CLIENT_SECRET");
+```
 
 ## Environment Variables
 
@@ -119,6 +155,7 @@ The SDK provides various services to interact with the API.
 
 | Name                                                                 |
 | :------------------------------------------------------------------- |
+| [OAuthService](documentation/services/OAuthService.md)               |
 | [DestinationsService](documentation/services/DestinationsService.md) |
 | [PackagesService](documentation/services/PackagesService.md)         |
 | [PurchasesService](documentation/services/PurchasesService.md)       |
@@ -135,6 +172,8 @@ The SDK includes several models that represent the data structures used in API r
 
 | Name                                                                                         | Description |
 | :------------------------------------------------------------------------------------------- | :---------- |
+| [GetAccessTokenRequest](documentation/models/GetAccessTokenRequest.md)                       |             |
+| [GetAccessTokenOkResponse](documentation/models/GetAccessTokenOkResponse.md)                 |             |
 | [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)             |             |
 | [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                     |             |
 | [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                   |             |

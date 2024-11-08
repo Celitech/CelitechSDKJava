@@ -21,10 +21,14 @@ public class CelitechConfig {
   @Builder.Default
   private RetryConfig retryConfig = RetryConfig.builder().build();
 
-  /** Timeout in milliseconds */
+  @NonNull
   @Builder.Default
-  private long timeout = 10_000;
+  private Environment baseOAuthUrl = Environment.DEFAULT_OAUTH;
 
   private String clientId;
   private String clientSecret;
+
+  /** Timeout in milliseconds */
+  @Builder.Default
+  private long timeout = 10_000;
 }
