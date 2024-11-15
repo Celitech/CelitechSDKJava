@@ -17,11 +17,11 @@ import okhttp3.OkHttpClient;
 /** Welcome to the CELITECH API documentation!  Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)  */
 public class Celitech {
 
-  public final OAuthService oAuthService;
-  public final DestinationsService destinationsService;
-  public final PackagesService packagesService;
-  public final PurchasesService purchasesService;
-  public final ESimService eSimService;
+  public final OAuthService oAuth;
+  public final DestinationsService destinations;
+  public final PackagesService packages;
+  public final PurchasesService purchases;
+  public final ESimService eSim;
 
   private final TokenManager tokenManager;
 
@@ -53,11 +53,11 @@ public class Celitech {
 
     oauthInterceptor.setTokenManager(tokenManager);
 
-    this.oAuthService = new OAuthService(httpClient, serverUrl);
-    this.destinationsService = new DestinationsService(httpClient, serverUrl);
-    this.packagesService = new PackagesService(httpClient, serverUrl);
-    this.purchasesService = new PurchasesService(httpClient, serverUrl);
-    this.eSimService = new ESimService(httpClient, serverUrl);
+    this.oAuth = new OAuthService(httpClient, serverUrl);
+    this.destinations = new DestinationsService(httpClient, serverUrl);
+    this.packages = new PackagesService(httpClient, serverUrl);
+    this.purchases = new PurchasesService(httpClient, serverUrl);
+    this.eSim = new ESimService(httpClient, serverUrl);
   }
 
   public void setEnvironment(Environment environment) {
@@ -65,11 +65,11 @@ public class Celitech {
   }
 
   public void setBaseUrl(String baseUrl) {
-    this.oAuthService.setBaseUrl(baseUrl);
-    this.destinationsService.setBaseUrl(baseUrl);
-    this.packagesService.setBaseUrl(baseUrl);
-    this.purchasesService.setBaseUrl(baseUrl);
-    this.eSimService.setBaseUrl(baseUrl);
+    this.oAuth.setBaseUrl(baseUrl);
+    this.destinations.setBaseUrl(baseUrl);
+    this.packages.setBaseUrl(baseUrl);
+    this.purchases.setBaseUrl(baseUrl);
+    this.eSim.setBaseUrl(baseUrl);
   }
 
   public void setBaseOAuthEnvironment(Environment environment) {

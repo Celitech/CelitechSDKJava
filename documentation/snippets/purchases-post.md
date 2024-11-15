@@ -1,12 +1,15 @@
 ```java
 import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    Celitech celitech = new Celitech();
+    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+
+    Celitech celitech = new Celitech(config);
 
     CreatePurchaseRequest createPurchaseRequest = CreatePurchaseRequest
       .builder()
@@ -16,7 +19,7 @@ public class Main {
       .endDate("2023-11-20")
       .build();
 
-    CreatePurchaseOkResponse response = celitech.purchasesService.createPurchase(createPurchaseRequest);
+    CreatePurchaseOkResponse response = celitech.purchases.createPurchase(createPurchaseRequest);
 
     System.out.println(response);
   }
