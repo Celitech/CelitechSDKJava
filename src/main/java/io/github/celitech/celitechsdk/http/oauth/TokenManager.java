@@ -46,7 +46,7 @@ public class TokenManager {
   }
 
   private String retrieveAccessToken(Set<String> scopes) {
-    OAuthService oAuthService = new OAuthService(this.httpClient, this.baseOAuthUrl);
+    OAuthService oAuth = new OAuthService(this.httpClient, this.baseOAuthUrl);
 
     GetAccessTokenRequest requestBody = GetAccessTokenRequest
       .builder()
@@ -55,6 +55,6 @@ public class TokenManager {
       .clientSecret(this.clientSecret)
       .build();
 
-    return oAuthService.getAccessToken(requestBody).getAccessToken();
+    return oAuth.getAccessToken(requestBody).getAccessToken();
   }
 }

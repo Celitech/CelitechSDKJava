@@ -1,16 +1,19 @@
 ```java
 import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.GetAccessTokenOkResponse;
 import io.github.celitech.celitechsdk.models.GetAccessTokenRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    Celitech celitech = new Celitech();
+    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+
+    Celitech celitech = new Celitech(config);
 
     GetAccessTokenRequest getAccessTokenRequest = GetAccessTokenRequest.builder().build();
 
-    GetAccessTokenOkResponse response = celitech.oAuthService.getAccessToken(getAccessTokenRequest);
+    GetAccessTokenOkResponse response = celitech.oAuth.getAccessToken(getAccessTokenRequest);
 
     System.out.println(response);
   }

@@ -1,11 +1,11 @@
-# Celitech Java SDK 1.3.6
+# Celitech Java SDK 1.3.8
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
 ## Versions
 
 - API version: `1.1.0`
-- SDK version: `1.3.6`
+- SDK version: `1.3.8`
 
 ## About the API
 
@@ -39,14 +39,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.3.6</version>
+    <version>1.3.8</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.6
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.8
 ```
 
 If you use JAR files, package the SDK by running the following command:
@@ -72,11 +72,7 @@ import io.github.celitech.celitechsdk.config.CelitechConfig;
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig
-      .builder()
-      .clientId("YOUR_CLIENT_ID")
-      .clientSecret("YOUR_CLIENT_SECRET")
-      .build();
+    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
 
     Celitech celitech = new Celitech(config);
   }
@@ -128,14 +124,17 @@ Below is a comprehensive example demonstrating how to authenticate and call a si
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    Celitech celitech = new Celitech();
+    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
 
-    ListDestinationsOkResponse response = celitech.destinationsService.listDestinations();
+    Celitech celitech = new Celitech(config);
+
+    ListDestinationsOkResponse response = celitech.destinations.listDestinations();
 
     System.out.println(response);
   }
