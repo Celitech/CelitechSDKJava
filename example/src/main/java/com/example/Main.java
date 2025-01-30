@@ -2,6 +2,7 @@ package com.example;
 
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.exceptions.ApiException;
 import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
 
 public class Main {
@@ -11,8 +12,14 @@ public class Main {
 
     Celitech celitech = new Celitech(config);
 
-    ListDestinationsOkResponse response = celitech.destinations.listDestinations();
+    try {
+      ListDestinationsOkResponse response = celitech.destinations.listDestinations();
 
-    System.out.println(response);
+      System.out.println(response);
+    } catch (ApiException e) {
+      e.printStackTrace();
+    }
+
+    System.exit(0);
   }
 }

@@ -1,4 +1,4 @@
-# Celitech Java SDK 1.3.23
+# Celitech Java SDK 1.3.33
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -7,7 +7,7 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 ## Versions
 
 - API version: `1.1.0`
-- SDK version: `1.3.23`
+- SDK version: `1.3.33`
 
 ## About the API
 
@@ -41,14 +41,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.3.23</version>
+    <version>1.3.33</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.23
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.33
 ```
 
 If you use JAR files, package the SDK by running the following command:
@@ -127,6 +127,7 @@ Below is a comprehensive example demonstrating how to authenticate and call a si
 ```java
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.exceptions.ApiException;
 import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
 
 public class Main {
@@ -136,9 +137,15 @@ public class Main {
 
     Celitech celitech = new Celitech(config);
 
-    ListDestinationsOkResponse response = celitech.destinations.listDestinations();
+    try {
+      ListDestinationsOkResponse response = celitech.destinations.listDestinations();
 
-    System.out.println(response);
+      System.out.println(response);
+    } catch (ApiException e) {
+      e.printStackTrace();
+    }
+
+    System.exit(0);
   }
 }
 
