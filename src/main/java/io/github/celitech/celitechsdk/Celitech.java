@@ -8,6 +8,7 @@ import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import io.github.celitech.celitechsdk.http.oauth.TokenManager;
 import io.github.celitech.celitechsdk.services.DestinationsService;
 import io.github.celitech.celitechsdk.services.ESimService;
+import io.github.celitech.celitechsdk.services.IFrameService;
 import io.github.celitech.celitechsdk.services.OAuthService;
 import io.github.celitech.celitechsdk.services.PackagesService;
 import io.github.celitech.celitechsdk.services.PurchasesService;
@@ -22,6 +23,7 @@ public class Celitech {
   public final PackagesService packages;
   public final PurchasesService purchases;
   public final ESimService eSim;
+  public final IFrameService iFrame;
 
   private final TokenManager tokenManager;
 
@@ -58,6 +60,7 @@ public class Celitech {
     this.packages = new PackagesService(httpClient, serverUrl);
     this.purchases = new PurchasesService(httpClient, serverUrl);
     this.eSim = new ESimService(httpClient, serverUrl);
+    this.iFrame = new IFrameService(httpClient, serverUrl);
   }
 
   public void setEnvironment(Environment environment) {
@@ -70,6 +73,7 @@ public class Celitech {
     this.packages.setBaseUrl(baseUrl);
     this.purchases.setBaseUrl(baseUrl);
     this.eSim.setBaseUrl(baseUrl);
+    this.iFrame.setBaseUrl(baseUrl);
   }
 
   public void setBaseOAuthEnvironment(Environment environment) {
