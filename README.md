@@ -1,4 +1,4 @@
-# Celitech Java SDK 1.3.34
+# Celitech Java SDK 1.3.37
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -7,7 +7,7 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 ## Versions
 
 - API version: `1.1.0`
-- SDK version: `1.3.34`
+- SDK version: `1.3.37`
 
 ## About the API
 
@@ -41,14 +41,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.3.34</version>
+    <version>1.3.37</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.34
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.37
 ```
 
 If you use JAR files, package the SDK by running the following command:
@@ -165,6 +165,7 @@ The SDK provides various services to interact with the API.
 | [PackagesService](documentation/services/PackagesService.md)         |
 | [PurchasesService](documentation/services/PurchasesService.md)       |
 | [ESimService](documentation/services/ESimService.md)                 |
+| [IFrameService](documentation/services/IFrameService.md)             |
 
 </details>
 
@@ -193,6 +194,7 @@ The SDK includes several models that represent the data structures used in API r
 | [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                   |             |
 | [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                 |             |
 | [GetEsimMacOkResponse](documentation/models/GetEsimMacOkResponse.md)                         |             |
+| [TokenOkResponse](documentation/models/TokenOkResponse.md)                                   |             |
 | [ListPackagesParameters](documentation/models/ListPackagesParameters.md)                     |             |
 | [ListPurchasesParameters](documentation/models/ListPurchasesParameters.md)                   |             |
 | [GetEsimParameters](documentation/models/GetEsimParameters.md)                               |             |

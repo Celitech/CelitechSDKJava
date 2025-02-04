@@ -25,6 +25,7 @@ public class ScopeManager {
         Scope.builder().method("GET").path("/esim/{iccid}/device").scopes(new HashSet<String>()).build(),
         Scope.builder().method("GET").path("/esim/{iccid}/history").scopes(new HashSet<String>()).build(),
         Scope.builder().method("GET").path("/esim/{iccid}/mac").scopes(new HashSet<String>()).build(),
+        Scope.builder().method("POST").path("/iframe/token").scopes(new HashSet<String>()).build(),
       };
   }
 
