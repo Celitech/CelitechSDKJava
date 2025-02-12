@@ -1,10 +1,10 @@
 {
-  "liblabVersion": "2.13.0",
-  "date": "2025-02-03T12:01:55.886Z",
+  "liblabVersion": "2.14.0",
+  "date": "2025-02-12T17:57:22.054Z",
   "config": {
-    "apiId": 1722,
+    "apiId": 1774,
     "sdkName": "Celitech",
-    "sdkVersion": "1.3.34",
+    "sdkVersion": "1.3.39",
     "languages": ["java"],
     "auth": ["oauth"],
     "docs": ["snippets", "enhancedApiSpec"],
@@ -13,7 +13,7 @@
     "rawConfig": {
       "sdkName": "Celitech",
       "apiName": "Celitech",
-      "apiVersion": "1.3.34",
+      "apiVersion": "1.3.39",
       "specFilePath": "swagger.yaml",
       "languages": ["typescript", "python", "php", "java"],
       "docs": ["snippets", "enhancedApiSpec"],
@@ -52,25 +52,25 @@
       "languageOptions": {
         "typescript": {
           "githubRepoName": "CelitechSDKTypeScript",
-          "sdkVersion": "1.3.34",
+          "sdkVersion": "1.3.39",
           "liblabVersion": "2",
           "npmName": "celitech-sdk"
         },
         "python": {
           "githubRepoName": "CelitechSDKPython",
-          "sdkVersion": "1.3.34",
+          "sdkVersion": "1.3.39",
           "liblabVersion": "2",
           "pypiPackageName": "celitech-sdk"
         },
         "php": {
           "githubRepoName": "CelitechSDKPHP",
-          "sdkVersion": "1.3.34",
+          "sdkVersion": "1.3.39",
           "liblabVersion": "2",
           "packageName": "celitech-sdk/sdk"
         },
         "java": {
           "githubRepoName": "CelitechSDKJava",
-          "sdkVersion": "1.3.34",
+          "sdkVersion": "1.3.39",
           "liblabVersion": "2",
           "groupId": "io.github.celitech",
           "artifactId": "celitech-sdk",
@@ -98,13 +98,14 @@
         "githubOrg": "Celitech"
       }
     },
-    "apiVersion": "1.3.34",
+    "apiVersion": "1.3.39",
     "apiName": "Celitech",
     "specFilePath": "swagger.yaml",
     "languageOptions": {
       "java": {
         "groupId": "io.github.celitech",
         "artifactId": "celitech-sdk",
+        "includeKotlinSnippets": true,
         "developers": [
           {
             "name": "CELITECH",
@@ -116,20 +117,20 @@
         "githubRepoName": "CelitechSDKJava",
         "homepage": "https://docs.celitech.com/",
         "liblabVersion": "2",
-        "sdkVersion": "1.3.34"
+        "sdkVersion": "1.3.39"
       },
       "python": {
         "alwaysInitializeOptionals": true,
         "pypiPackageName": "celitech-sdk",
         "githubRepoName": "CelitechSDKPython",
         "liblabVersion": "2",
-        "sdkVersion": "1.3.34"
+        "sdkVersion": "1.3.39"
       },
       "php": {
         "packageName": "celitech-sdk/sdk",
         "githubRepoName": "CelitechSDKPHP",
         "liblabVersion": "2",
-        "sdkVersion": "1.3.34"
+        "sdkVersion": "1.3.39"
       },
       "typescript": {
         "bundle": true,
@@ -138,7 +139,7 @@
         "npmName": "celitech-sdk",
         "githubRepoName": "CelitechSDKTypeScript",
         "liblabVersion": "2",
-        "sdkVersion": "1.3.34",
+        "sdkVersion": "1.3.39",
         "generateEnumAs": "enum"
       }
     },
@@ -193,9 +194,10 @@
       "httpMethodsToRetry": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
     },
     "multiTenant": true,
-    "includeWatermark": false,
+    "includeWatermark": true,
     "groupId": "io.github.celitech",
     "artifactId": "celitech-sdk",
+    "includeKotlinSnippets": true,
     "developers": [
       {
         "name": "CELITECH",
@@ -271,6 +273,7 @@
     "documentation/snippets/esim-{iccid}-device-get.md",
     "documentation/snippets/esim-{iccid}-history-get.md",
     "documentation/snippets/esim-{iccid}-mac-get.md",
+    "documentation/snippets/iframe-token-post.md",
     "documentation/models/GetAccessTokenRequest.md",
     "documentation/models/GetAccessTokenOkResponse.md",
     "documentation/models/ListDestinationsOkResponse.md",
@@ -287,6 +290,7 @@
     "documentation/models/GetEsimDeviceOkResponse.md",
     "documentation/models/GetEsimHistoryOkResponse.md",
     "documentation/models/GetEsimMacOkResponse.md",
+    "documentation/models/TokenOkResponse.md",
     "documentation/models/GrantType.md",
     "documentation/models/Destinations.md",
     "documentation/models/Packages.md",
@@ -311,6 +315,10 @@
     "example/run.sh",
     "example/src/main/java/com/example/Main.java",
     "example/.gitignore",
+    "kotlin-example/src/main/kotlin/Main.kt",
+    "kotlin-example/pom.xml",
+    "kotlin-example/run.sh",
+    "kotlin-example/.gitignore",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseOkResponseValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/TopUpEsimRequestValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/TopUpEsimOkResponseValidator.java",
@@ -341,14 +349,21 @@
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimDeviceOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimHistoryOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimMacOkResponse.java",
+    "src/main/java/io/github/celitech/celitechsdk/models/TokenOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/PurchasesEsim.java",
     "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponseProfile.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimParameters.java",
     "src/main/java/io/github/celitech/celitechsdk/services/OAuthService.java",
     "src/main/java/io/github/celitech/celitechsdk/services/DestinationsService.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/IFrameService.java",
     "documentation/services/OAuthService.md",
+    "documentation/services/OAuthService.kt.md",
     "documentation/services/DestinationsService.md",
+    "documentation/services/DestinationsService.kt.md",
     "documentation/services/PackagesService.md",
+    "documentation/services/PackagesService.kt.md",
+    "documentation/services/IFrameService.md",
+    "documentation/services/IFrameService.kt.md",
     "src/main/java/io/github/celitech/celitechsdk/models/ListPackagesOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/ListPurchasesOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponse.java",
@@ -365,10 +380,12 @@
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimOkResponseEsim.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Device.java",
     "documentation/services/ESimService.md",
+    "documentation/services/ESimService.kt.md",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Package_.java",
     "documentation/services/PurchasesService.md",
+    "documentation/services/PurchasesService.kt.md",
     "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponsePurchase.java",
     "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponsePurchase.java",
