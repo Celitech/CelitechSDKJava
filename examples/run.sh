@@ -1,5 +1,5 @@
 cd ../
 mvn clean install
-cd kotlin-example
+cd examples
 mvn clean install
 mvn exec:java
