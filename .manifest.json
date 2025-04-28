@@ -1,6 +1,6 @@
 {
   "liblabVersion": "2.25.10",
-  "date": "2025-04-25T16:42:35.695Z",
+  "date": "2025-04-28T13:57:52.296Z",
   "config": {
     "apiId": 1897,
     "sdkName": "Celitech",
@@ -390,8 +390,8 @@
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Package_.java",
-    "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "documentation/services/PurchasesService.md",
+    "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponsePurchase.java",
     "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponsePurchase.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2Request.java",
