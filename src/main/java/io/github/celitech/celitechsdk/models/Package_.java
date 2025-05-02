@@ -21,7 +21,8 @@ public class Package_ {
   private String id;
 
   /**
-   * Size of the package in Bytes
+   * Size of the package in bytes. For "limited" packages, this field will return the data limit in bytes. For "unlimited" packages, it will return **-1** as an identifier.
+   *
    */
   private Double dataLimitInBytes;
 
