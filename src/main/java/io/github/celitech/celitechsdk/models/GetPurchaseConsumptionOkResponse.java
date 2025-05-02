@@ -16,7 +16,10 @@ import lombok.extern.jackson.Jacksonized;
 public class GetPurchaseConsumptionOkResponse {
 
   /**
-   * Remaining balance of the package in bytes
+   * Remaining balance of the package in byte.
+   * For "limited" packages, this field indicates the remaining data in bytes.
+   * For "unlimited" packages, it will return **-1** as an identifier.
+   *
    */
   private Double dataUsageRemainingInBytes;
 
