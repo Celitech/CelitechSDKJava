@@ -24,23 +24,38 @@ public class TopUpEsimRequest {
   private String iccid;
 
   /**
-   * Size of the package in GB. The available options are 1, 2, 3, 5, 8, 20GB
+   * Size of the package in GB.
+   * - **Limited Packages (1, 2, 3, 5, 8, 20GB):** supports `duration` or `startDate` `endDate`.
+   * - **Unlimited Packages (Region-3 only)** support `duration` only. Use **-1** for unlimited.
+   *
    */
   @NonNull
   @JsonProperty("dataLimitInGB")
   private Double dataLimitInGb;
 
   /**
-   * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
+   * Start date of the package validity in the format `yyyy-MM-dd`. This date can be set to the current day or any day within the enxt 12 months.
+   * - **Required** if `duration` is **not** provided.
+   * - **Optional** must not passed if `duration` is provided.
+   *
    */
-  @NonNull
   private String startDate;
 
   /**
-   * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
+   * End date of the package validity in the format `yyyy-MM-dd`. End date can be maximum 90 days after Start date.
+   * - **Required** if `duration` is **not** provided.
+   * - **Optional** must not passed if `duration` is provided.
+   *
    */
-  @NonNull
   private String endDate;
+
+  /**
+   * Defines the number of days the eSIM package remains active. Available options: **1, 2, 7, 14, 30**
+   * - **Required** if `startDate` and `endDate` are **not** provided.
+   * - **Optional** must not passed if `startDate` and `endDate` are provided.
+   *
+   */
+  private Double duration;
 
   /**
    * Email address where the purchase confirmation email will be sent (excluding QR Code & activation steps)
