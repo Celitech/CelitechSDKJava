@@ -5,7 +5,7 @@
 | Name          | Type   | Required | Description                                                                                                                                                            |
 | :------------ | :----- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | destination   | String | ✅       | ISO representation of the package's destination                                                                                                                        |
-| dataLimitInGb | Double | ✅       | Size of the package in GB. The available options are 1, 2, 3, 5, 8, 20GB                                                                                               |
+| dataLimitInGb | Double | ✅       | Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20GB                                                                                          |
 | startDate     | String | ✅       | Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.                         |
 | endDate       | String | ✅       | End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.                                                       |
 | email         | String | ❌       | Email address where the purchase confirmation email will be sent (including QR Code & activation steps)                                                                |
