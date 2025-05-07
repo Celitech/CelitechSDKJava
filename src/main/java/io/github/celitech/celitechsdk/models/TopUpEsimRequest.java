@@ -53,6 +53,11 @@ public class TopUpEsimRequest {
   private String referenceId;
 
   /**
+   * Customize the email brand. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 25 characters.
+   */
+  private String emailBrand;
+
+  /**
    * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.
    */
   private Double startTime;

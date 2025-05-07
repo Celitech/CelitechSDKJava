@@ -62,4 +62,9 @@ public class CreatePurchaseV2Request {
    * Customize the network brand of the issued eSIM. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 15 characters.
    */
   private String networkBrand;
+
+  /**
+   * Customize the email brand. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 25 characters.
+   */
+  private String emailBrand;
 }
