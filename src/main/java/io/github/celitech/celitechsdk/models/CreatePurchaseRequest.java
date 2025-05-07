@@ -24,7 +24,7 @@ public class CreatePurchaseRequest {
   private String destination;
 
   /**
-   * Size of the package in GB. The available options are 1, 2, 3, 5, 8, 20GB
+   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20GB
    */
   @NonNull
   @JsonProperty("dataLimitInGB")
@@ -53,9 +53,14 @@ public class CreatePurchaseRequest {
   private String referenceId;
 
   /**
-   * Customize the network brand of the issued eSIM. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 15 characters
+   * Customize the network brand of the issued eSIM. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 15 characters.
    */
   private String networkBrand;
+
+  /**
+   * Customize the email brand. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 25 characters.
+   */
+  private String emailBrand;
 
   /**
    * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.
