@@ -1,6 +1,6 @@
 {
-  "liblabVersion": "2.25.10",
-  "date": "2025-04-25T16:42:35.695Z",
+  "liblabVersion": "2.25.14",
+  "date": "2025-05-07T11:32:18.358Z",
   "config": {
     "apiId": 1897,
     "sdkName": "Celitech",
@@ -90,7 +90,7 @@
           "provider": "redocly",
           "githubRepoName": "CelitechCoreAPIReference",
           "redocly": {
-            "openapiPath": "swagger.yaml"
+            "openapiPath": "public/swagger.yaml"
           }
         }
       },
@@ -143,6 +143,7 @@
         "generateEnumAs": "enum"
       }
     },
+    "generateMCP": false,
     "publishing": {
       "githubOrg": "Celitech"
     },
@@ -152,7 +153,7 @@
         "targetBranch": "main",
         "provider": "redocly",
         "redocly": {
-          "openapiPath": "swagger.yaml"
+          "openapiPath": "public/swagger.yaml"
         }
       }
     },
@@ -184,7 +185,6 @@
       "path": "MIT.ejs"
     },
     "responseHeaders": false,
-    "generateMCP": false,
     "retry": {
       "enabled": true,
       "maxAttempts": 3,
@@ -390,15 +390,15 @@
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Package_.java",
-    "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "documentation/services/PurchasesService.md",
+    "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponsePurchase.java",
     "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponsePurchase.java",
-    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2Request.java",
-    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/ListPackagesParameters.java",
     "src/main/java/io/github/celitech/celitechsdk/models/ListPurchasesParameters.java",
     "README.md",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2Request.java",
+    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/services/ESimService.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Purchases.java",
