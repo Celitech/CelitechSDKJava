@@ -1,5 +1,6 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,6 +30,20 @@ public class ListPackagesParameters {
    * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
    */
   private String endDate;
+
+  /**
+   * Size of the package in GB.
+   * - **Limited Packages (0.5, 1, 2, 3, 5, 8, 20GB)**
+   * - **Unlimited Packages (available for Region-3):** Use **-1** for unlimited.
+   *
+   */
+  @JsonProperty("dataLimitInGB")
+  private Double dataLimitInGb;
+
+  /**
+   * A boolean flag to include the unlimited packages in the response. The flag is false by default.
+   */
+  private Boolean includeUnlimited;
 
   /**
    * To get the next batch of results, use this parameter. It tells the API where to start fetching data after the last item you received. It helps you avoid repeats and efficiently browse through large sets of data.
