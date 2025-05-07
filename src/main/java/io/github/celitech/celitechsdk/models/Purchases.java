@@ -1,5 +1,6 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -24,12 +25,20 @@ public class Purchases {
   /**
    * Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String startDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String endDate;
+
+  /**
+   * It designates the number of days the eSIM is valid for within 90-day validity from issuance date.
+   */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  private Double duration;
 
   /**
    * Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'
@@ -39,11 +48,13 @@ public class Purchases {
   /**
    * Epoch value representing the start time of the package's validity
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private Double startTime;
 
   /**
    * Epoch value representing the end time of the package's validity
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private Double endTime;
 
   /**
@@ -57,12 +68,17 @@ public class Purchases {
   private PurchasesEsim esim;
 
   /**
-   * The source indicates where the eSIM was purchased, which can be from the API, dashboard, landing-page, promo-page or iframe. For purchases made before September 8, 2023, the value will be displayed as 'Not available'.
+   * The `source` indicates whether the purchase was made from the API, dashboard, landing-page, promo-page or iframe. For purchases made before September 8, 2023, the value will be displayed as 'Not available'.
    */
   private String source;
 
   /**
-   * The referenceId that was provided by the partner during the purchase or topup flow. This identifier can be used for analytics and debugging purposes.
+   * The `purchaseType` indicates whether this is the initial purchase that creates the eSIM (First Purchase) or a subsequent top-up on an existing eSIM (Top-up Purchase).
+   */
+  private String purchaseType;
+
+  /**
+   * The `referenceId` that was provided by the partner during the purchase or top-up flow. This identifier can be used for analytics and debugging purposes.
    */
   private String referenceId;
 }
