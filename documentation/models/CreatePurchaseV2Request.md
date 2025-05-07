@@ -12,3 +12,4 @@
 | email         | String | ❌       | Email address where the purchase confirmation email will be sent (including QR Code & activation steps)                                                                 |
 | referenceId   | String | ❌       | An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes.                                       |
 | networkBrand  | String | ❌       | Customize the network brand of the issued eSIM. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 15 characters. |
+| emailBrand    | String | ❌       | Customize the email brand. This parameter is accessible to platforms with Diamond tier and requires an alphanumeric string of up to 25 characters.                      |
