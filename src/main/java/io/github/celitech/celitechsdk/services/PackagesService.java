@@ -79,6 +79,8 @@ public class PackagesService extends BaseService {
       .setOptionalQueryParameter("destination", requestParameters.getDestination())
       .setOptionalQueryParameter("startDate", requestParameters.getStartDate())
       .setOptionalQueryParameter("endDate", requestParameters.getEndDate())
+      .setOptionalQueryParameter("dataLimitInGB", requestParameters.getDataLimitInGb())
+      .setOptionalQueryParameter("includeUnlimited", requestParameters.getIncludeUnlimited())
       .setOptionalQueryParameter("afterCursor", requestParameters.getAfterCursor())
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("startTime", requestParameters.getStartTime())
