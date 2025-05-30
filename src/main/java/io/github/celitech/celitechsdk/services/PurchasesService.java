@@ -2,20 +2,44 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.exceptions.ApiException;
+import io.github.celitech.celitechsdk.exceptions.ApiError;
+import io.github.celitech.celitechsdk.exceptions.CreatePurchase400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.CreatePurchase401ResponseException;
+import io.github.celitech.celitechsdk.exceptions.CreatePurchaseV2_400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.CreatePurchaseV2_401ResponseException;
+import io.github.celitech.celitechsdk.exceptions.EditPurchase400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.EditPurchase401ResponseException;
+import io.github.celitech.celitechsdk.exceptions.GetPurchaseConsumption400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.GetPurchaseConsumption401ResponseException;
+import io.github.celitech.celitechsdk.exceptions.ListPurchases400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.ListPurchases401ResponseException;
+import io.github.celitech.celitechsdk.exceptions.TopUpEsim400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.TopUpEsim401ResponseException;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
+import io.github.celitech.celitechsdk.models.CreatePurchase400Response;
+import io.github.celitech.celitechsdk.models.CreatePurchase401Response;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
 import io.github.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
 import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
+import io.github.celitech.celitechsdk.models.CreatePurchaseV2_400Response;
+import io.github.celitech.celitechsdk.models.CreatePurchaseV2_401Response;
+import io.github.celitech.celitechsdk.models.EditPurchase400Response;
+import io.github.celitech.celitechsdk.models.EditPurchase401Response;
 import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
+import io.github.celitech.celitechsdk.models.GetPurchaseConsumption400Response;
+import io.github.celitech.celitechsdk.models.GetPurchaseConsumption401Response;
 import io.github.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
+import io.github.celitech.celitechsdk.models.ListPurchases400Response;
+import io.github.celitech.celitechsdk.models.ListPurchases401Response;
 import io.github.celitech.celitechsdk.models.ListPurchasesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPurchasesParameters;
+import io.github.celitech.celitechsdk.models.TopUpEsim400Response;
+import io.github.celitech.celitechsdk.models.TopUpEsim401Response;
 import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
 import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
 import io.github.celitech.celitechsdk.validation.ViolationAggregator;
@@ -47,7 +71,9 @@ public class PurchasesService extends BaseService {
    * @return response of {@code List<CreatePurchaseV2OkResponse>}
    */
   public List<CreatePurchaseV2OkResponse> createPurchaseV2(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
-    throws ApiException, ValidationException {
+    throws ApiError, ValidationException {
+    this.addErrorMapping(400, CreatePurchaseV2_400Response.class, CreatePurchaseV2_400ResponseException.class);
+    this.addErrorMapping(401, CreatePurchaseV2_401Response.class, CreatePurchaseV2_401ResponseException.class);
     Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
@@ -61,7 +87,9 @@ public class PurchasesService extends BaseService {
    */
   public CompletableFuture<List<CreatePurchaseV2OkResponse>> createPurchaseV2Async(
     @NonNull CreatePurchaseV2Request createPurchaseV2Request
-  ) throws ApiException, ValidationException {
+  ) throws ApiError, ValidationException {
+    this.addErrorMapping(400, CreatePurchaseV2_400Response.class, CreatePurchaseV2_400ResponseException.class);
+    this.addErrorMapping(401, CreatePurchaseV2_401Response.class, CreatePurchaseV2_401ResponseException.class);
     Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -88,7 +116,7 @@ public class PurchasesService extends BaseService {
    *
    * @return response of {@code ListPurchasesOkResponse}
    */
-  public ListPurchasesOkResponse listPurchases() throws ApiException, ValidationException {
+  public ListPurchasesOkResponse listPurchases() throws ApiError, ValidationException {
     return this.listPurchases(ListPurchasesParameters.builder().build());
   }
 
@@ -99,7 +127,9 @@ public class PurchasesService extends BaseService {
    * @return response of {@code ListPurchasesOkResponse}
    */
   public ListPurchasesOkResponse listPurchases(@NonNull ListPurchasesParameters requestParameters)
-    throws ApiException, ValidationException {
+    throws ApiError, ValidationException {
+    this.addErrorMapping(400, ListPurchases400Response.class, ListPurchases400ResponseException.class);
+    this.addErrorMapping(401, ListPurchases401Response.class, ListPurchases401ResponseException.class);
     Request request = this.buildListPurchasesRequest(requestParameters);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<ListPurchasesOkResponse>() {});
@@ -110,7 +140,7 @@ public class PurchasesService extends BaseService {
    *
    * @return response of {@code CompletableFuture<ListPurchasesOkResponse>}
    */
-  public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync() throws ApiException, ValidationException {
+  public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync() throws ApiError, ValidationException {
     return this.listPurchasesAsync(ListPurchasesParameters.builder().build());
   }
 
@@ -122,7 +152,9 @@ public class PurchasesService extends BaseService {
    */
   public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync(
     @NonNull ListPurchasesParameters requestParameters
-  ) throws ApiException, ValidationException {
+  ) throws ApiError, ValidationException {
+    this.addErrorMapping(400, ListPurchases400Response.class, ListPurchases400ResponseException.class);
+    this.addErrorMapping(401, ListPurchases401Response.class, ListPurchases401ResponseException.class);
     Request request = this.buildListPurchasesRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -157,8 +189,9 @@ public class PurchasesService extends BaseService {
    * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
    * @return response of {@code CreatePurchaseOkResponse}
    */
-  public CreatePurchaseOkResponse createPurchase(@NonNull CreatePurchaseRequest createPurchaseRequest)
-    throws ApiException {
+  public CreatePurchaseOkResponse createPurchase(@NonNull CreatePurchaseRequest createPurchaseRequest) throws ApiError {
+    this.addErrorMapping(400, CreatePurchase400Response.class, CreatePurchase400ResponseException.class);
+    this.addErrorMapping(401, CreatePurchase401Response.class, CreatePurchase401ResponseException.class);
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<CreatePurchaseOkResponse>() {});
@@ -172,7 +205,9 @@ public class PurchasesService extends BaseService {
    */
   public CompletableFuture<CreatePurchaseOkResponse> createPurchaseAsync(
     @NonNull CreatePurchaseRequest createPurchaseRequest
-  ) throws ApiException {
+  ) throws ApiError {
+    this.addErrorMapping(400, CreatePurchase400Response.class, CreatePurchase400ResponseException.class);
+    this.addErrorMapping(401, CreatePurchase401Response.class, CreatePurchase401ResponseException.class);
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -197,7 +232,9 @@ public class PurchasesService extends BaseService {
    * @return response of {@code TopUpEsimOkResponse}
    */
   public TopUpEsimOkResponse topUpEsim(@NonNull TopUpEsimRequest topUpEsimRequest)
-    throws ApiException, ValidationException {
+    throws ApiError, ValidationException {
+    this.addErrorMapping(400, TopUpEsim400Response.class, TopUpEsim400ResponseException.class);
+    this.addErrorMapping(401, TopUpEsim401Response.class, TopUpEsim401ResponseException.class);
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<TopUpEsimOkResponse>() {});
@@ -210,7 +247,9 @@ public class PurchasesService extends BaseService {
    * @return response of {@code CompletableFuture<TopUpEsimOkResponse>}
    */
   public CompletableFuture<TopUpEsimOkResponse> topUpEsimAsync(@NonNull TopUpEsimRequest topUpEsimRequest)
-    throws ApiException, ValidationException {
+    throws ApiError, ValidationException {
+    this.addErrorMapping(400, TopUpEsim400Response.class, TopUpEsim400ResponseException.class);
+    this.addErrorMapping(401, TopUpEsim401Response.class, TopUpEsim401ResponseException.class);
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -237,7 +276,9 @@ public class PurchasesService extends BaseService {
    * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
    * @return response of {@code EditPurchaseOkResponse}
    */
-  public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseRequest editPurchaseRequest) throws ApiException {
+  public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseRequest editPurchaseRequest) throws ApiError {
+    this.addErrorMapping(400, EditPurchase400Response.class, EditPurchase400ResponseException.class);
+    this.addErrorMapping(401, EditPurchase401Response.class, EditPurchase401ResponseException.class);
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<EditPurchaseOkResponse>() {});
@@ -250,7 +291,9 @@ public class PurchasesService extends BaseService {
    * @return response of {@code CompletableFuture<EditPurchaseOkResponse>}
    */
   public CompletableFuture<EditPurchaseOkResponse> editPurchaseAsync(@NonNull EditPurchaseRequest editPurchaseRequest)
-    throws ApiException {
+    throws ApiError {
+    this.addErrorMapping(400, EditPurchase400Response.class, EditPurchase400ResponseException.class);
+    this.addErrorMapping(401, EditPurchase401Response.class, EditPurchase401ResponseException.class);
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -274,7 +317,17 @@ public class PurchasesService extends BaseService {
    * @param purchaseId String ID of the purchase
    * @return response of {@code GetPurchaseConsumptionOkResponse}
    */
-  public GetPurchaseConsumptionOkResponse getPurchaseConsumption(@NonNull String purchaseId) throws ApiException {
+  public GetPurchaseConsumptionOkResponse getPurchaseConsumption(@NonNull String purchaseId) throws ApiError {
+    this.addErrorMapping(
+        400,
+        GetPurchaseConsumption400Response.class,
+        GetPurchaseConsumption400ResponseException.class
+      );
+    this.addErrorMapping(
+        401,
+        GetPurchaseConsumption401Response.class,
+        GetPurchaseConsumption401ResponseException.class
+      );
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
@@ -287,7 +340,17 @@ public class PurchasesService extends BaseService {
    * @return response of {@code CompletableFuture<GetPurchaseConsumptionOkResponse>}
    */
   public CompletableFuture<GetPurchaseConsumptionOkResponse> getPurchaseConsumptionAsync(@NonNull String purchaseId)
-    throws ApiException {
+    throws ApiError {
+    this.addErrorMapping(
+        400,
+        GetPurchaseConsumption400Response.class,
+        GetPurchaseConsumption400ResponseException.class
+      );
+    this.addErrorMapping(
+        401,
+        GetPurchaseConsumption401Response.class,
+        GetPurchaseConsumption401ResponseException.class
+      );
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
