@@ -1,5 +1,6 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,11 +29,13 @@ public class CreatePurchaseOkResponsePurchase {
   /**
    * Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String startDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private String endDate;
 
   /**
@@ -43,10 +46,12 @@ public class CreatePurchaseOkResponsePurchase {
   /**
    * Epoch value representing the start time of the package's validity
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private Double startTime;
 
   /**
    * Epoch value representing the end time of the package's validity
    */
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private Double endTime;
 }

@@ -14,8 +14,6 @@ public class Main {
     TopUpEsimRequest topUpEsimRequest = TopUpEsimRequest.builder()
       .iccid("1111222233334444555000")
       .dataLimitInGb(1D)
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
       .build();
 
     TopUpEsimOkResponse response = celitech.purchases.topUpEsim(topUpEsimRequest);
