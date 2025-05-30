@@ -4,7 +4,6 @@ import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.interceptors.DefaultHeadersInterceptor;
 import io.github.celitech.celitechsdk.http.interceptors.OAuthInterceptor;
-import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import io.github.celitech.celitechsdk.http.oauth.TokenManager;
 import io.github.celitech.celitechsdk.services.DestinationsService;
 import io.github.celitech.celitechsdk.services.ESimService;
@@ -45,7 +44,6 @@ public class Celitech {
     final OkHttpClient httpClient = new OkHttpClient.Builder()
       .addInterceptor(new DefaultHeadersInterceptor(config))
       .addInterceptor(oauthInterceptor)
-      .addInterceptor(new RetryInterceptor(config.getRetryConfig()))
       .readTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
       .build();
 
