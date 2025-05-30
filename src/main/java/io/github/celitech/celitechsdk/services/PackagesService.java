@@ -2,11 +2,15 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.exceptions.ApiException;
+import io.github.celitech.celitechsdk.exceptions.ApiError;
+import io.github.celitech.celitechsdk.exceptions.ListPackages400ResponseException;
+import io.github.celitech.celitechsdk.exceptions.ListPackages401ResponseException;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
+import io.github.celitech.celitechsdk.models.ListPackages400Response;
+import io.github.celitech.celitechsdk.models.ListPackages401Response;
 import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPackagesParameters;
 import java.util.Optional;
@@ -30,7 +34,7 @@ public class PackagesService extends BaseService {
    *
    * @return response of {@code ListPackagesOkResponse}
    */
-  public ListPackagesOkResponse listPackages() throws ApiException {
+  public ListPackagesOkResponse listPackages() throws ApiError {
     return this.listPackages(ListPackagesParameters.builder().build());
   }
 
@@ -40,7 +44,9 @@ public class PackagesService extends BaseService {
    * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
    * @return response of {@code ListPackagesOkResponse}
    */
-  public ListPackagesOkResponse listPackages(@NonNull ListPackagesParameters requestParameters) throws ApiException {
+  public ListPackagesOkResponse listPackages(@NonNull ListPackagesParameters requestParameters) throws ApiError {
+    this.addErrorMapping(400, ListPackages400Response.class, ListPackages400ResponseException.class);
+    this.addErrorMapping(401, ListPackages401Response.class, ListPackages401ResponseException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     Response response = this.execute(request);
     return ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {});
@@ -51,7 +57,7 @@ public class PackagesService extends BaseService {
    *
    * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
    */
-  public CompletableFuture<ListPackagesOkResponse> listPackagesAsync() throws ApiException {
+  public CompletableFuture<ListPackagesOkResponse> listPackagesAsync() throws ApiError {
     return this.listPackagesAsync(ListPackagesParameters.builder().build());
   }
 
@@ -62,7 +68,9 @@ public class PackagesService extends BaseService {
    * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
    */
   public CompletableFuture<ListPackagesOkResponse> listPackagesAsync(@NonNull ListPackagesParameters requestParameters)
-    throws ApiException {
+    throws ApiError {
+    this.addErrorMapping(400, ListPackages400Response.class, ListPackages400ResponseException.class);
+    this.addErrorMapping(401, ListPackages401Response.class, ListPackages401ResponseException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
     return futureResponse.thenApplyAsync(response ->
@@ -79,6 +87,8 @@ public class PackagesService extends BaseService {
       .setOptionalQueryParameter("destination", requestParameters.getDestination())
       .setOptionalQueryParameter("startDate", requestParameters.getStartDate())
       .setOptionalQueryParameter("endDate", requestParameters.getEndDate())
+      .setOptionalQueryParameter("dataLimitInGB", requestParameters.getDataLimitInGb())
+      .setOptionalQueryParameter("includeUnlimited", requestParameters.getIncludeUnlimited())
       .setOptionalQueryParameter("afterCursor", requestParameters.getAfterCursor())
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("startTime", requestParameters.getStartTime())
