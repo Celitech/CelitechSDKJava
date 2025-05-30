@@ -19,10 +19,6 @@ public class CelitechConfig {
 
   @NonNull
   @Builder.Default
-  private RetryConfig retryConfig = RetryConfig.builder().build();
-
-  @NonNull
-  @Builder.Default
   private String baseOAuthUrl = Environment.DEFAULT_OAUTH.getUrl();
 
   private String clientId;
