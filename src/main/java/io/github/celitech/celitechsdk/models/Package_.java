@@ -31,10 +31,16 @@ public class Package_ {
   private JsonNullable<Double> dataLimitInBytes;
 
   /**
-   * ISO representation of the package's destination.
+   * ISO3 representation of the package's destination.
    */
   @JsonProperty("destination")
   private JsonNullable<String> destination;
+
+  /**
+   * ISO2 representation of the package's destination.
+   */
+  @JsonProperty("destinationISO2")
+  private JsonNullable<String> destinationIso2;
 
   /**
    * Name of the package's destination
@@ -61,6 +67,11 @@ public class Package_ {
   @JsonIgnore
   public String getDestination() {
     return destination.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getDestinationIso2() {
+    return destinationIso2.orElse(null);
   }
 
   @JsonIgnore
@@ -106,6 +117,17 @@ public class Package_ {
         throw new IllegalStateException("destination cannot be null");
       }
       this.destination = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> destinationIso2 = JsonNullable.undefined();
+
+    @JsonProperty("destinationISO2")
+    public Package_Builder destinationIso2(String value) {
+      if (value == null) {
+        throw new IllegalStateException("destinationIso2 cannot be null");
+      }
+      this.destinationIso2 = JsonNullable.of(value);
       return this;
     }
 
