@@ -20,7 +20,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 public class CreatePurchaseV2Request {
 
   /**
-   * ISO representation of the package's destination.
+   * ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.
    */
   @NonNull
   private String destination;
