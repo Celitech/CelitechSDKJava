@@ -26,10 +26,16 @@ public class Destinations {
   private JsonNullable<String> name;
 
   /**
-   * ISO representation of the destination
+   * ISO3 representation of the destination
    */
   @JsonProperty("destination")
   private JsonNullable<String> destination;
+
+  /**
+   * ISO2 representation of the destination
+   */
+  @JsonProperty("destinationISO2")
+  private JsonNullable<String> destinationIso2;
 
   /**
    * This array indicates the geographical area covered by a specific destination. If the destination represents a single country, the array will include that country. However, if the destination represents a broader regional scope, the array will be populated with the names of the countries belonging to that region.
@@ -45,6 +51,11 @@ public class Destinations {
   @JsonIgnore
   public String getDestination() {
     return destination.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getDestinationIso2() {
+    return destinationIso2.orElse(null);
   }
 
   @JsonIgnore
@@ -74,6 +85,17 @@ public class Destinations {
         throw new IllegalStateException("destination cannot be null");
       }
       this.destination = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> destinationIso2 = JsonNullable.undefined();
+
+    @JsonProperty("destinationISO2")
+    public DestinationsBuilder destinationIso2(String value) {
+      if (value == null) {
+        throw new IllegalStateException("destinationIso2 cannot be null");
+      }
+      this.destinationIso2 = JsonNullable.of(value);
       return this;
     }
 
