@@ -2,6 +2,7 @@ package io.github.celitech.celitechsdk.http.oauth;
 
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.http.Environment;
+import io.github.celitech.celitechsdk.models.GetAccessTokenOkResponse;
 import io.github.celitech.celitechsdk.models.GetAccessTokenRequest;
 import io.github.celitech.celitechsdk.models.GrantType;
 import io.github.celitech.celitechsdk.services.OAuthService;
@@ -31,22 +32,37 @@ public class TokenManager {
   @Setter
   private String clientSecret;
 
-  private String token;
+  private GetAccessTokenOkResponse token;
   private Set<String> scopes;
 
   public String getToken(Set<String> scopes) {
-    if (this.token != null && !this.token.isEmpty() && this.scopes.containsAll(scopes)) {
-      return this.token;
+    Boolean tokenHasValue = this.token != null && !this.token.getAccessToken().isEmpty();
+    Boolean tokenIsValid = false;
+    if (tokenHasValue) {
+      Long expiresIn = this.token.getExpiresIn();
+      if (expiresIn != null) {
+        long now = System.currentTimeMillis() / 1000L;
+        long buffer = 5000;
+        if ((expiresIn - now) > buffer) {
+          tokenIsValid = true;
+        }
+      } else {
+        tokenIsValid = true;
+      }
     }
 
-    return this.retrieveAccessToken(scopes);
+    if (tokenIsValid && this.scopes.containsAll(scopes)) {
+      return this.token.getAccessToken();
+    }
+
+    return this.retrieveAccessToken(scopes).getAccessToken();
   }
 
   public void clean() {
     this.token = null;
   }
 
-  private String retrieveAccessToken(Set<String> scopes) {
+  private GetAccessTokenOkResponse retrieveAccessToken(Set<String> scopes) {
     OAuthService oAuth = new OAuthService(this.httpClient, this.config);
 
     GetAccessTokenRequest requestBody = GetAccessTokenRequest.builder()
@@ -55,6 +71,7 @@ public class TokenManager {
       .clientSecret(this.clientSecret)
       .build();
 
-    return oAuth.getAccessToken(requestBody).getAccessToken();
+    this.token = oAuth.getAccessToken(requestBody);
+    return this.token;
   }
 }

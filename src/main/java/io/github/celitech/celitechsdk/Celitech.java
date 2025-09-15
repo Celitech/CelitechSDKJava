@@ -9,7 +9,6 @@ import io.github.celitech.celitechsdk.http.oauth.TokenManager;
 import io.github.celitech.celitechsdk.services.DestinationsService;
 import io.github.celitech.celitechsdk.services.ESimService;
 import io.github.celitech.celitechsdk.services.IFrameService;
-import io.github.celitech.celitechsdk.services.OAuthService;
 import io.github.celitech.celitechsdk.services.PackagesService;
 import io.github.celitech.celitechsdk.services.PurchasesService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +20,6 @@ Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:supp
  */
 public class Celitech {
 
-  public final OAuthService oAuth;
   public final DestinationsService destinations;
   public final PackagesService packages;
   public final PurchasesService purchases;
@@ -58,7 +56,6 @@ public class Celitech {
 
     oauthInterceptor.setTokenManager(tokenManager);
 
-    this.oAuth = new OAuthService(httpClient, config);
     this.destinations = new DestinationsService(httpClient, config);
     this.packages = new PackagesService(httpClient, config);
     this.purchases = new PurchasesService(httpClient, config);
