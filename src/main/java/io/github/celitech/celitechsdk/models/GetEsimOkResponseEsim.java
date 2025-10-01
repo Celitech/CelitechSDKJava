@@ -42,6 +42,12 @@ public class GetEsimOkResponseEsim {
   @JsonProperty("status")
   private JsonNullable<String> status;
 
+  /**
+   * Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request.
+   */
+  @JsonProperty("isTopUpAllowed")
+  private JsonNullable<Boolean> isTopUpAllowed;
+
   @JsonIgnore
   public String getIccid() {
     return iccid.orElse(null);
@@ -60,6 +66,11 @@ public class GetEsimOkResponseEsim {
   @JsonIgnore
   public String getStatus() {
     return status.orElse(null);
+  }
+
+  @JsonIgnore
+  public Boolean getIsTopUpAllowed() {
+    return isTopUpAllowed.orElse(null);
   }
 
   // Overwrite lombok builder methods
@@ -106,6 +117,17 @@ public class GetEsimOkResponseEsim {
         throw new IllegalStateException("status cannot be null");
       }
       this.status = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Boolean> isTopUpAllowed = JsonNullable.undefined();
+
+    @JsonProperty("isTopUpAllowed")
+    public GetEsimOkResponseEsimBuilder isTopUpAllowed(Boolean value) {
+      if (value == null) {
+        throw new IllegalStateException("isTopUpAllowed cannot be null");
+      }
+      this.isTopUpAllowed = JsonNullable.of(value);
       return this;
     }
   }
