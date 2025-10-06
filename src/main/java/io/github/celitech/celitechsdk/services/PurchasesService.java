@@ -175,6 +175,7 @@ public class PurchasesService extends BaseService {
       .setOptionalQueryParameter("iccid", requestParameters.getIccid())
       .setOptionalQueryParameter("afterDate", requestParameters.getAfterDate())
       .setOptionalQueryParameter("beforeDate", requestParameters.getBeforeDate())
+      .setOptionalQueryParameter("email", requestParameters.getEmail())
       .setOptionalQueryParameter("referenceId", requestParameters.getReferenceId())
       .setOptionalQueryParameter("afterCursor", requestParameters.getAfterCursor())
       .setOptionalQueryParameter("limit", requestParameters.getLimit())

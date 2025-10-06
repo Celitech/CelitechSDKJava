@@ -20,7 +20,7 @@ public class GetEsimMacOkResponseEsimValidator extends AbstractModelValidator<Ge
         new StringValidator("iccid")
           .minLength(18)
           .maxLength(22)
-          .optional()
+          .required()
           .validate(getEsimMacOkResponseEsim.getIccid())
       )
       .aggregate();

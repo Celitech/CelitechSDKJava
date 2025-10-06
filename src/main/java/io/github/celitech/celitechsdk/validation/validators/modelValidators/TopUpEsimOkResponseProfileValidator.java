@@ -20,7 +20,7 @@ public class TopUpEsimOkResponseProfileValidator extends AbstractModelValidator<
         new StringValidator("iccid")
           .minLength(18)
           .maxLength(22)
-          .optional()
+          .required()
           .validate(topUpEsimOkResponseProfile.getIccid())
       )
       .aggregate();

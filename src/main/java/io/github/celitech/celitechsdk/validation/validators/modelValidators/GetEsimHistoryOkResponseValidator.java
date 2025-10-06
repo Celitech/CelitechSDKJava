@@ -15,7 +15,7 @@ public class GetEsimHistoryOkResponseValidator extends AbstractModelValidator<Ge
   @Override
   protected Violation[] validateModel(GetEsimHistoryOkResponse getEsimHistoryOkResponse) {
     return new ViolationAggregator()
-      .add(new GetEsimHistoryOkResponseEsimValidator("esim").optional().validate(getEsimHistoryOkResponse.getEsim()))
+      .add(new GetEsimHistoryOkResponseEsimValidator("esim").required().validate(getEsimHistoryOkResponse.getEsim()))
       .aggregate();
   }
 }
