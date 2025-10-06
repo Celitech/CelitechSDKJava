@@ -37,6 +37,12 @@ public class ListPurchasesParameters {
   private JsonNullable<String> beforeDate;
 
   /**
+   * Email associated to the purchase.
+   */
+  @JsonProperty("email")
+  private JsonNullable<String> email;
+
+  /**
    * The referenceId that was provided by the partner during the purchase or topup flow.
    */
   @JsonProperty("referenceId")
@@ -79,6 +85,11 @@ public class ListPurchasesParameters {
   @JsonIgnore
   public String getBeforeDate() {
     return beforeDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getEmail() {
+    return email.orElse(null);
   }
 
   @JsonIgnore
@@ -139,6 +150,17 @@ public class ListPurchasesParameters {
         throw new IllegalStateException("beforeDate cannot be null");
       }
       this.beforeDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> email = JsonNullable.undefined();
+
+    @JsonProperty("email")
+    public ListPurchasesParametersBuilder email(String value) {
+      if (value == null) {
+        throw new IllegalStateException("email cannot be null");
+      }
+      this.email = JsonNullable.of(value);
       return this;
     }
 
