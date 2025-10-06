@@ -272,9 +272,6 @@ public class Purchases {
 
     @JsonProperty("referenceId")
     public PurchasesBuilder referenceId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("referenceId cannot be null");
-      }
       this.referenceId = JsonNullable.of(value);
       return this;
     }
