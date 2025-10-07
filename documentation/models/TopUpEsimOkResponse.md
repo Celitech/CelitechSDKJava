@@ -4,5 +4,5 @@
 
 | Name     | Type                        | Required | Description |
 | :------- | :-------------------------- | :------- | :---------- |
-| purchase | TopUpEsimOkResponsePurchase | ❌       |             |
-| profile  | TopUpEsimOkResponseProfile  | ❌       |             |
+| purchase | TopUpEsimOkResponsePurchase | ✅       |             |
+| profile  | TopUpEsimOkResponseProfile  | ✅       |             |
