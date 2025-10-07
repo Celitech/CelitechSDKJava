@@ -20,7 +20,7 @@ public class GetEsimHistoryOkResponseEsimValidator extends AbstractModelValidato
         new StringValidator("iccid")
           .minLength(18)
           .maxLength(22)
-          .optional()
+          .required()
           .validate(getEsimHistoryOkResponseEsim.getIccid())
       )
       .aggregate();

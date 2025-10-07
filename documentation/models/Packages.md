@@ -4,10 +4,10 @@
 
 | Name             | Type   | Required | Description                                       |
 | :--------------- | :----- | :------- | :------------------------------------------------ |
-| id               | String | ❌       | ID of the package                                 |
-| destination      | String | ❌       | ISO3 representation of the package's destination. |
-| destinationIso2  | String | ❌       | ISO2 representation of the package's destination. |
-| dataLimitInBytes | Double | ❌       | Size of the package in Bytes                      |
-| minDays          | Double | ❌       | Min number of days for the package                |
-| maxDays          | Double | ❌       | Max number of days for the package                |
-| priceInCents     | Double | ❌       | Price of the package in cents                     |
+| id               | String | ✅       | ID of the package                                 |
+| destination      | String | ✅       | ISO3 representation of the package's destination. |
+| destinationIso2  | String | ✅       | ISO2 representation of the package's destination. |
+| dataLimitInBytes | Double | ✅       | Size of the package in Bytes                      |
+| minDays          | Double | ✅       | Min number of days for the package                |
+| maxDays          | Double | ✅       | Max number of days for the package                |
+| priceInCents     | Double | ✅       | Price of the package in cents                     |
