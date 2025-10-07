@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
@@ -21,20 +22,20 @@ public class EditPurchaseOkResponse {
   /**
    * ID of the purchase
    */
-  @JsonProperty("purchaseId")
-  private JsonNullable<String> purchaseId;
+  @NonNull
+  private String purchaseId;
 
   /**
    * Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
-  @JsonProperty("newStartDate")
-  private JsonNullable<String> newStartDate;
+  @NonNull
+  private String newStartDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
-  @JsonProperty("newEndDate")
-  private JsonNullable<String> newEndDate;
+  @NonNull
+  private String newEndDate;
 
   /**
    * Epoch value representing the new start time of the package's validity
@@ -49,21 +50,6 @@ public class EditPurchaseOkResponse {
   private JsonNullable<Double> newEndTime;
 
   @JsonIgnore
-  public String getPurchaseId() {
-    return purchaseId.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getNewStartDate() {
-    return newStartDate.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getNewEndDate() {
-    return newEndDate.orElse(null);
-  }
-
-  @JsonIgnore
   public Double getNewStartTime() {
     return newStartTime.orElse(null);
   }
@@ -75,39 +61,6 @@ public class EditPurchaseOkResponse {
 
   // Overwrite lombok builder methods
   public static class EditPurchaseOkResponseBuilder {
-
-    private JsonNullable<String> purchaseId = JsonNullable.undefined();
-
-    @JsonProperty("purchaseId")
-    public EditPurchaseOkResponseBuilder purchaseId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("purchaseId cannot be null");
-      }
-      this.purchaseId = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> newStartDate = JsonNullable.undefined();
-
-    @JsonProperty("newStartDate")
-    public EditPurchaseOkResponseBuilder newStartDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("newStartDate cannot be null");
-      }
-      this.newStartDate = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> newEndDate = JsonNullable.undefined();
-
-    @JsonProperty("newEndDate")
-    public EditPurchaseOkResponseBuilder newEndDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("newEndDate cannot be null");
-      }
-      this.newEndDate = JsonNullable.of(value);
-      return this;
-    }
 
     private JsonNullable<Double> newStartTime = JsonNullable.undefined();
 

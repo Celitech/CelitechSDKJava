@@ -17,7 +17,7 @@ public class CreatePurchaseV2OkResponseValidator extends AbstractModelValidator<
     return new ViolationAggregator()
       .add(
         new CreatePurchaseV2OkResponseProfileValidator("profile")
-          .optional()
+          .required()
           .validate(createPurchaseV2OkResponse.getProfile())
       )
       .aggregate();

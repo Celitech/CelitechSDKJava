@@ -4,4 +4,4 @@
 
 | Name | Type                         | Required | Description |
 | :--- | :--------------------------- | :------- | :---------- |
-| esim | GetEsimHistoryOkResponseEsim | ❌       |             |
+| esim | GetEsimHistoryOkResponseEsim | ✅       |             |
