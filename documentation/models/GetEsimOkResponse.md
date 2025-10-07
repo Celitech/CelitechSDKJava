@@ -4,4 +4,4 @@
 
 | Name | Type                  | Required | Description |
 | :--- | :-------------------- | :------- | :---------- |
-| esim | GetEsimOkResponseEsim | ❌       |             |
+| esim | GetEsimOkResponseEsim | ✅       |             |

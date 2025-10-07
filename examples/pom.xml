@@ -22,7 +22,7 @@
         <dependency>
             <groupId>io.github.celitech</groupId>
             <artifactId>celitech-sdk</artifactId>
-            <version>1.3.55</version>
+            <version>1.3.58</version>
         </dependency>
     </dependencies>
 

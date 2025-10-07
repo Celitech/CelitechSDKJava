@@ -4,5 +4,5 @@
 
 | Name     | Type                             | Required | Description |
 | :------- | :------------------------------- | :------- | :---------- |
-| purchase | CreatePurchaseOkResponsePurchase | ❌       |             |
-| profile  | CreatePurchaseOkResponseProfile  | ❌       |             |
+| purchase | CreatePurchaseOkResponsePurchase | ✅       |             |
+| profile  | CreatePurchaseOkResponseProfile  | ✅       |             |
