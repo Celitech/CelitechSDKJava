@@ -1,4 +1,4 @@
-# GetEsimHistory400Response
+# Unauthorized
 
 **Properties**
 

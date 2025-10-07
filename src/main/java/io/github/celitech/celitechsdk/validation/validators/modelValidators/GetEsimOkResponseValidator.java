@@ -15,7 +15,7 @@ public class GetEsimOkResponseValidator extends AbstractModelValidator<GetEsimOk
   @Override
   protected Violation[] validateModel(GetEsimOkResponse getEsimOkResponse) {
     return new ViolationAggregator()
-      .add(new GetEsimOkResponseEsimValidator("esim").optional().validate(getEsimOkResponse.getEsim()))
+      .add(new GetEsimOkResponseEsimValidator("esim").required().validate(getEsimOkResponse.getEsim()))
       .aggregate();
   }
 }
