@@ -4,14 +4,13 @@ A list of all methods in the `ESimService` service. Click on the method name to 
 
 | Methods                           | Description      |
 | :-------------------------------- | :--------------- |
-| [getEsim](#getesim)               | Get eSIM Status  |
+| [getEsim](#getesim)               | Get eSIM         |
 | [getEsimDevice](#getesimdevice)   | Get eSIM Device  |
 | [getEsimHistory](#getesimhistory) | Get eSIM History |
-| [getEsimMac](#getesimmac)         | Get eSIM MAC     |
 
 ## getEsim
 
-Get eSIM Status
+Get eSIM
 
 - HTTP Method: `GET`
 - Endpoint: `/esim`
@@ -122,45 +121,6 @@ public class Main {
     Celitech celitech = new Celitech(config);
 
     GetEsimHistoryOkResponse response = celitech.eSim.getEsimHistory("1111222233334444555000");
-
-    System.out.println(response);
-  }
-}
-
-```
-
-## getEsimMac
-
-Get eSIM MAC
-
-- HTTP Method: `GET`
-- Endpoint: `/esim/{iccid}/mac`
-
-**Parameters**
-
-| Name  | Type   | Required | Description    |
-| :---- | :----- | :------- | :------------- |
-| iccid | String | ✅       | ID of the eSIM |
-
-**Return Type**
-
-`GetEsimMacOkResponse`
-
-**Example Usage Code Snippet**
-
-```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.GetEsimMacOkResponse;
-
-public class Main {
-
-  public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
-
-    Celitech celitech = new Celitech(config);
-
-    GetEsimMacOkResponse response = celitech.eSim.getEsimMac("1111222233334444555000");
 
     System.out.println(response);
   }

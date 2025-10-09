@@ -20,7 +20,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @Jacksonized
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetEsimMac400Response {
+public class BadRequest {
 
   /**
    * Message of the error
@@ -34,12 +34,12 @@ public class GetEsimMac400Response {
   }
 
   // Overwrite lombok builder methods
-  public static class GetEsimMac400ResponseBuilder {
+  public static class BadRequestBuilder {
 
     private JsonNullable<String> message = JsonNullable.undefined();
 
     @JsonProperty("message")
-    public GetEsimMac400ResponseBuilder message(String value) {
+    public BadRequestBuilder message(String value) {
       if (value == null) {
         throw new IllegalStateException("message cannot be null");
       }

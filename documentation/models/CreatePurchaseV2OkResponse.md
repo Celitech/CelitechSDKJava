@@ -4,5 +4,5 @@
 
 | Name     | Type                               | Required | Description |
 | :------- | :--------------------------------- | :------- | :---------- |
-| purchase | CreatePurchaseV2OkResponsePurchase | ❌       |             |
-| profile  | CreatePurchaseV2OkResponseProfile  | ❌       |             |
+| purchase | CreatePurchaseV2OkResponsePurchase | ✅       |             |
+| profile  | CreatePurchaseV2OkResponseProfile  | ✅       |             |
