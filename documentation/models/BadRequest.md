@@ -1,4 +1,4 @@
-# ListDestinations400Response
+# BadRequest
 
 **Properties**
 
