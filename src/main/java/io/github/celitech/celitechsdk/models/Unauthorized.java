@@ -20,7 +20,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @Jacksonized
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetEsimHistory400Response {
+public class Unauthorized {
 
   /**
    * Message of the error
@@ -34,12 +34,12 @@ public class GetEsimHistory400Response {
   }
 
   // Overwrite lombok builder methods
-  public static class GetEsimHistory400ResponseBuilder {
+  public static class UnauthorizedBuilder {
 
     private JsonNullable<String> message = JsonNullable.undefined();
 
     @JsonProperty("message")
-    public GetEsimHistory400ResponseBuilder message(String value) {
+    public UnauthorizedBuilder message(String value) {
       if (value == null) {
         throw new IllegalStateException("message cannot be null");
       }
