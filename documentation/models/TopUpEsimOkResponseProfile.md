@@ -4,4 +4,4 @@
 
 | Name  | Type   | Required | Description    |
 | :---- | :----- | :------- | :------------- |
-| iccid | String | ❌       | ID of the eSIM |
+| iccid | String | ✅       | ID of the eSIM |
