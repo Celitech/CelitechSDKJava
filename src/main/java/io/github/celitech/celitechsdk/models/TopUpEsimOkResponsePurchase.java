@@ -1,10 +1,12 @@
 package io.github.celitech.celitechsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
@@ -21,32 +23,32 @@ public class TopUpEsimOkResponsePurchase {
   /**
    * ID of the purchase
    */
-  @JsonProperty("id")
-  private JsonNullable<String> id;
+  @NonNull
+  private String id;
 
   /**
    * ID of the package
    */
-  @JsonProperty("packageId")
-  private JsonNullable<String> packageId;
+  @NonNull
+  private String packageId;
 
   /**
    * Start date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
-  @JsonProperty("startDate")
-  private JsonNullable<String> startDate;
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  private String startDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
-  @JsonProperty("endDate")
-  private JsonNullable<String> endDate;
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  private String endDate;
 
   /**
    * Creation date of the purchase in the format 'yyyy-MM-ddThh:mm:ssZZ'
    */
-  @JsonProperty("createdDate")
-  private JsonNullable<String> createdDate;
+  @NonNull
+  private String createdDate;
 
   /**
    * Epoch value representing the start time of the package's validity
@@ -61,31 +63,6 @@ public class TopUpEsimOkResponsePurchase {
   private JsonNullable<Double> endTime;
 
   @JsonIgnore
-  public String getId() {
-    return id.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getPackageId() {
-    return packageId.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getStartDate() {
-    return startDate.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getEndDate() {
-    return endDate.orElse(null);
-  }
-
-  @JsonIgnore
-  public String getCreatedDate() {
-    return createdDate.orElse(null);
-  }
-
-  @JsonIgnore
   public Double getStartTime() {
     return startTime.orElse(null);
   }
@@ -98,58 +75,25 @@ public class TopUpEsimOkResponsePurchase {
   // Overwrite lombok builder methods
   public static class TopUpEsimOkResponsePurchaseBuilder {
 
-    private JsonNullable<String> id = JsonNullable.undefined();
+    /**
+     * Flag to track if the startDate property has been set.
+     */
+    private boolean startDate$set = false;
 
-    @JsonProperty("id")
-    public TopUpEsimOkResponsePurchaseBuilder id(String value) {
-      if (value == null) {
-        throw new IllegalStateException("id cannot be null");
-      }
-      this.id = JsonNullable.of(value);
+    /**
+     * Flag to track if the endDate property has been set.
+     */
+    private boolean endDate$set = false;
+
+    public TopUpEsimOkResponsePurchaseBuilder startDate(String startDate) {
+      this.startDate$set = true;
+      this.startDate = startDate;
       return this;
     }
 
-    private JsonNullable<String> packageId = JsonNullable.undefined();
-
-    @JsonProperty("packageId")
-    public TopUpEsimOkResponsePurchaseBuilder packageId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("packageId cannot be null");
-      }
-      this.packageId = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> startDate = JsonNullable.undefined();
-
-    @JsonProperty("startDate")
-    public TopUpEsimOkResponsePurchaseBuilder startDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("startDate cannot be null");
-      }
-      this.startDate = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> endDate = JsonNullable.undefined();
-
-    @JsonProperty("endDate")
-    public TopUpEsimOkResponsePurchaseBuilder endDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("endDate cannot be null");
-      }
-      this.endDate = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> createdDate = JsonNullable.undefined();
-
-    @JsonProperty("createdDate")
-    public TopUpEsimOkResponsePurchaseBuilder createdDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("createdDate cannot be null");
-      }
-      this.createdDate = JsonNullable.of(value);
+    public TopUpEsimOkResponsePurchaseBuilder endDate(String endDate) {
+      this.endDate$set = true;
+      this.endDate = endDate;
       return this;
     }
 
@@ -157,9 +101,6 @@ public class TopUpEsimOkResponsePurchase {
 
     @JsonProperty("startTime")
     public TopUpEsimOkResponsePurchaseBuilder startTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("startTime cannot be null");
-      }
       this.startTime = JsonNullable.of(value);
       return this;
     }
@@ -168,11 +109,18 @@ public class TopUpEsimOkResponsePurchase {
 
     @JsonProperty("endTime")
     public TopUpEsimOkResponsePurchaseBuilder endTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("endTime cannot be null");
-      }
       this.endTime = JsonNullable.of(value);
       return this;
+    }
+
+    public TopUpEsimOkResponsePurchase build() {
+      if (!startDate$set) {
+        throw new IllegalStateException("startDate is required");
+      }
+      if (!endDate$set) {
+        throw new IllegalStateException("endDate is required");
+      }
+      return new TopUpEsimOkResponsePurchase(id, packageId, startDate, endDate, createdDate, startTime, endTime);
     }
   }
 }

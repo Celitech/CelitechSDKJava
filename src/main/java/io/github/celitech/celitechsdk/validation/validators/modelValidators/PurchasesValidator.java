@@ -15,7 +15,7 @@ public class PurchasesValidator extends AbstractModelValidator<Purchases> {
   @Override
   protected Violation[] validateModel(Purchases purchases) {
     return new ViolationAggregator()
-      .add(new PurchasesEsimValidator("esim").optional().validate(purchases.getEsim()))
+      .add(new PurchasesEsimValidator("esim").required().validate(purchases.getEsim()))
       .aggregate();
   }
 }

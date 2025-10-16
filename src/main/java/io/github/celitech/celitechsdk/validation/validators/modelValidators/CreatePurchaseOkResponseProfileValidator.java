@@ -20,14 +20,14 @@ public class CreatePurchaseOkResponseProfileValidator extends AbstractModelValid
         new StringValidator("iccid")
           .minLength(18)
           .maxLength(22)
-          .optional()
+          .required()
           .validate(createPurchaseOkResponseProfile.getIccid())
       )
       .add(
         new StringValidator("activationCode")
           .minLength(1000)
           .maxLength(8000)
-          .optional()
+          .required()
           .validate(createPurchaseOkResponseProfile.getActivationCode())
       )
       .aggregate();

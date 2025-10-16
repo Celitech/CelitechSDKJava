@@ -4,4 +4,4 @@
 
 | Name   | Type   | Required | Description |
 | :----- | :----- | :------- | :---------- |
-| device | Device | ❌       |             |
+| device | Device | ✅       |             |
