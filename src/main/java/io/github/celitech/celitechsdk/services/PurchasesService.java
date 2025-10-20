@@ -152,6 +152,7 @@ public class PurchasesService extends BaseService {
       Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
       "purchases"
     )
+      .setOptionalQueryParameter("purchaseId", requestParameters.getPurchaseId())
       .setOptionalQueryParameter("iccid", requestParameters.getIccid())
       .setOptionalQueryParameter("afterDate", requestParameters.getAfterDate())
       .setOptionalQueryParameter("beforeDate", requestParameters.getBeforeDate())
@@ -161,7 +162,6 @@ public class PurchasesService extends BaseService {
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("after", requestParameters.getAfter())
       .setOptionalQueryParameter("before", requestParameters.getBefore())
-      .setOptionalQueryParameter("purchaseId", requestParameters.getPurchaseId())
       .build();
   }
 
