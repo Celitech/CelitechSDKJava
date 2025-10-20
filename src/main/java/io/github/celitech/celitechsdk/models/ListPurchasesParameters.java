@@ -19,6 +19,12 @@ import org.openapitools.jackson.nullable.JsonNullable;
 public class ListPurchasesParameters {
 
   /**
+   * ID of the purchase
+   */
+  @JsonProperty("purchaseId")
+  private JsonNullable<String> purchaseId;
+
+  /**
    * ID of the eSIM
    */
   @JsonProperty("iccid")
@@ -72,11 +78,10 @@ public class ListPurchasesParameters {
   @JsonProperty("before")
   private JsonNullable<Double> before;
 
-  /**
-   * The id of a specific purchase.
-   */
-  @JsonProperty("purchaseId")
-  private JsonNullable<String> purchaseId;
+  @JsonIgnore
+  public String getPurchaseId() {
+    return purchaseId.orElse(null);
+  }
 
   @JsonIgnore
   public String getIccid() {
@@ -123,13 +128,19 @@ public class ListPurchasesParameters {
     return before.orElse(null);
   }
 
-  @JsonIgnore
-  public String getPurchaseId() {
-    return purchaseId.orElse(null);
-  }
-
   // Overwrite lombok builder methods
   public static class ListPurchasesParametersBuilder {
+
+    private JsonNullable<String> purchaseId = JsonNullable.undefined();
+
+    @JsonProperty("purchaseId")
+    public ListPurchasesParametersBuilder purchaseId(String value) {
+      if (value == null) {
+        throw new IllegalStateException("purchaseId cannot be null");
+      }
+      this.purchaseId = JsonNullable.of(value);
+      return this;
+    }
 
     private JsonNullable<String> iccid = JsonNullable.undefined();
 
@@ -227,17 +238,6 @@ public class ListPurchasesParameters {
         throw new IllegalStateException("before cannot be null");
       }
       this.before = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<String> purchaseId = JsonNullable.undefined();
-
-    @JsonProperty("purchaseId")
-    public ListPurchasesParametersBuilder purchaseId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("purchaseId cannot be null");
-      }
-      this.purchaseId = JsonNullable.of(value);
       return this;
     }
   }
