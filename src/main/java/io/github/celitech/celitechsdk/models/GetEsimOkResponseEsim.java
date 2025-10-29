@@ -1,5 +1,7 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +9,7 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 @Data
 @Builder
@@ -51,4 +54,30 @@ public class GetEsimOkResponseEsim {
    */
   @NonNull
   private Boolean isTopUpAllowed;
+
+  /**
+   * Status of the eSIM connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'
+   */
+  @JsonProperty("connectivityStatus")
+  private JsonNullable<String> connectivityStatus;
+
+  @JsonIgnore
+  public String getConnectivityStatus() {
+    return connectivityStatus.orElse(null);
+  }
+
+  // Overwrite lombok builder methods
+  public static class GetEsimOkResponseEsimBuilder {
+
+    private JsonNullable<String> connectivityStatus = JsonNullable.undefined();
+
+    @JsonProperty("connectivityStatus")
+    public GetEsimOkResponseEsimBuilder connectivityStatus(String value) {
+      if (value == null) {
+        throw new IllegalStateException("connectivityStatus cannot be null");
+      }
+      this.connectivityStatus = JsonNullable.of(value);
+      return this;
+    }
+  }
 }

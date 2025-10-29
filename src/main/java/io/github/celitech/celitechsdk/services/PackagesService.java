@@ -49,7 +49,8 @@ public class PackagesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
   }
 
   /**
@@ -73,9 +74,10 @@ public class PackagesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
+    });
   }
 
   private Request buildListPackagesRequest(@NonNull ListPackagesParameters requestParameters) {
