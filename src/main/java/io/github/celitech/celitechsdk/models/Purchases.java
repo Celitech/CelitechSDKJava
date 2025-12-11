@@ -64,6 +64,12 @@ public class Purchases {
   private String purchaseType;
 
   /**
+   * Duration of the package in days. Possible values are 1, 2, 7, 14, 30, or 90.
+   */
+  @JsonProperty("duration")
+  private JsonNullable<Double> duration;
+
+  /**
    * Epoch value representing the start time of the package's validity
    */
   @JsonProperty("startTime")
@@ -86,6 +92,11 @@ public class Purchases {
    */
   @JsonProperty("referenceId")
   private JsonNullable<String> referenceId;
+
+  @JsonIgnore
+  public Double getDuration() {
+    return duration.orElse(null);
+  }
 
   @JsonIgnore
   public Double getStartTime() {
@@ -129,6 +140,14 @@ public class Purchases {
     public PurchasesBuilder endDate(String endDate) {
       this.endDate$set = true;
       this.endDate = endDate;
+      return this;
+    }
+
+    private JsonNullable<Double> duration = JsonNullable.undefined();
+
+    @JsonProperty("duration")
+    public PurchasesBuilder duration(Double value) {
+      this.duration = JsonNullable.of(value);
       return this;
     }
 
@@ -183,6 +202,7 @@ public class Purchases {
         esim,
         source,
         purchaseType,
+        duration,
         startTime,
         endTime,
         createdAt,

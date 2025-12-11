@@ -15,8 +15,6 @@ public class Main {
     CreatePurchaseV2Request createPurchaseV2Request = CreatePurchaseV2Request.builder()
       .destination("FRA")
       .dataLimitInGb(1D)
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
       .quantity(1D)
       .build();
 
