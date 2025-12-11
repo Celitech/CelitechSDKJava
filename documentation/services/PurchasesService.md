@@ -7,7 +7,7 @@ A list of all methods in the `PurchasesService` service. Click on the method nam
 | [createPurchaseV2](#createpurchasev2)             | This endpoint is used to purchase a new eSIM by providing the package details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | [listPurchases](#listpurchases)                   | This endpoint can be used to list all the successful purchases made between a given interval.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | [createPurchase](#createpurchase)                 | This endpoint is used to purchase a new eSIM by providing the package details.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| [topUpEsim](#topupesim)                           | This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM Status endpoint, which returns the `isTopUpAllowed` flag.                                                                                                                                                                                                                                                                                                                                                                                             |
+| [topUpEsim](#topupesim)                           | This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM endpoint, which returns the `isTopUpAllowed` flag.                                                                                                                                                                                                                                                                                                                                                                                                    |
 | [editPurchase](#editpurchase)                     | This endpoint allows you to modify the validity dates of an existing purchase. **Behavior:** - If the purchase has **not yet been activated**, both the start and end dates can be updated. - If the purchase is **already active**, only the **end date** can be updated, while the **start date must remain unchanged** (and should be passed as originally set). - Updates must comply with the same pricing structure; the modification cannot alter the package size or change its duration category. The end date can be extended or shortened as long as it adheres to the same pricing category and does not exceed the allowed duration limits. |
 | [getPurchaseConsumption](#getpurchaseconsumption) | This endpoint can be called for consumption notifications (e.g. every 1 hour or when the user clicks a button). It returns the data balance (consumption) of purchased packages.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
@@ -47,8 +47,6 @@ public class Main {
     CreatePurchaseV2Request createPurchaseV2Request = CreatePurchaseV2Request.builder()
       .destination("FRA")
       .dataLimitInGb(1D)
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
       .quantity(1D)
       .build();
 
@@ -149,7 +147,7 @@ public class Main {
 
 ## topUpEsim
 
-This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM Status endpoint, which returns the `isTopUpAllowed` flag.
+This endpoint is used to top-up an existing eSIM with the previously associated destination by providing its ICCID and package details. To determine if an eSIM can be topped up, use the Get eSIM endpoint, which returns the `isTopUpAllowed` flag.
 
 - HTTP Method: `POST`
 - Endpoint: `/purchases/topup`
@@ -182,8 +180,6 @@ public class Main {
     TopUpEsimRequest topUpEsimRequest = TopUpEsimRequest.builder()
       .iccid("1111222233334444555000")
       .dataLimitInGb(1D)
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
       .build();
 
     TopUpEsimOkResponse response = celitech.purchases.topUpEsim(topUpEsimRequest);

@@ -9,4 +9,5 @@
 | activationCode       | String  | ✅       | QR Code of the eSIM as base64                                                                                                  |
 | manualActivationCode | String  | ✅       | The manual activation code                                                                                                     |
 | status               | String  | ✅       | Status of the eSIM, possible values are 'RELEASED', 'DOWNLOADED', 'INSTALLED', 'ENABLED', 'DELETED', or 'ERROR'                |
+| connectivityStatus   | String  | ✅       | Status of the eSIM connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'                                                  |
 | isTopUpAllowed       | Boolean | ✅       | Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request. |
