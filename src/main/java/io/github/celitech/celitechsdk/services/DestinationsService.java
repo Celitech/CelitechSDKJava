@@ -38,7 +38,8 @@ public class DestinationsService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListDestinationsRequest();
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
   }
 
   /**
@@ -51,9 +52,10 @@ public class DestinationsService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListDestinationsRequest();
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
+    });
   }
 
   private Request buildListDestinationsRequest() {
