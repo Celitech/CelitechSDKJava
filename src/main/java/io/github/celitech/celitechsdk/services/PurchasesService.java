@@ -56,7 +56,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
   }
 
   /**
@@ -72,9 +73,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<List<CreatePurchaseV2OkResponse>>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
+    });
   }
 
   private Request buildCreatePurchaseV2Request(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
@@ -112,7 +114,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPurchasesRequest(requestParameters);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<ListPurchasesOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
   }
 
   /**
@@ -137,9 +140,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPurchasesRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<ListPurchasesOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
+    });
   }
 
   private Request buildListPurchasesRequest(@NonNull ListPurchasesParameters requestParameters)
@@ -152,6 +156,7 @@ public class PurchasesService extends BaseService {
       Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
       "purchases"
     )
+      .setOptionalQueryParameter("purchaseId", requestParameters.getPurchaseId())
       .setOptionalQueryParameter("iccid", requestParameters.getIccid())
       .setOptionalQueryParameter("afterDate", requestParameters.getAfterDate())
       .setOptionalQueryParameter("beforeDate", requestParameters.getBeforeDate())
@@ -161,7 +166,6 @@ public class PurchasesService extends BaseService {
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("after", requestParameters.getAfter())
       .setOptionalQueryParameter("before", requestParameters.getBefore())
-      .setOptionalQueryParameter("purchaseId", requestParameters.getPurchaseId())
       .build();
   }
 
@@ -176,7 +180,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<CreatePurchaseOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
   }
 
   /**
@@ -192,9 +197,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<CreatePurchaseOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
+    });
   }
 
   private Request buildCreatePurchaseRequest(@NonNull CreatePurchaseRequest createPurchaseRequest) {
@@ -219,7 +225,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<TopUpEsimOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
   }
 
   /**
@@ -234,9 +241,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<TopUpEsimOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
+    });
   }
 
   private Request buildTopUpEsimRequest(@NonNull TopUpEsimRequest topUpEsimRequest) throws ValidationException {
@@ -263,7 +271,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<EditPurchaseOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
   }
 
   /**
@@ -278,9 +287,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<EditPurchaseOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
+    });
   }
 
   private Request buildEditPurchaseRequest(@NonNull EditPurchaseRequest editPurchaseRequest) {
@@ -304,7 +314,8 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
   }
 
   /**
@@ -319,9 +330,10 @@ public class PurchasesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<GetPurchaseConsumptionOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
+    });
   }
 
   private Request buildGetPurchaseConsumptionRequest(@NonNull String purchaseId) {

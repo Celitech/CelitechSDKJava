@@ -35,14 +35,20 @@ public class TopUpEsimRequest {
   /**
    * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
    */
-  @NonNull
-  private String startDate;
+  @JsonProperty("startDate")
+  private JsonNullable<String> startDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
    */
-  @NonNull
-  private String endDate;
+  @JsonProperty("endDate")
+  private JsonNullable<String> endDate;
+
+  /**
+   * Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.
+   */
+  @JsonProperty("duration")
+  private JsonNullable<Double> duration;
 
   /**
    * Email address where the purchase confirmation email will be sent (excluding QR Code & activation steps).
@@ -75,6 +81,21 @@ public class TopUpEsimRequest {
   private JsonNullable<Double> endTime;
 
   @JsonIgnore
+  public String getStartDate() {
+    return startDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getEndDate() {
+    return endDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public Double getDuration() {
+    return duration.orElse(null);
+  }
+
+  @JsonIgnore
   public String getEmail() {
     return email.orElse(null);
   }
@@ -101,6 +122,39 @@ public class TopUpEsimRequest {
 
   // Overwrite lombok builder methods
   public static class TopUpEsimRequestBuilder {
+
+    private JsonNullable<String> startDate = JsonNullable.undefined();
+
+    @JsonProperty("startDate")
+    public TopUpEsimRequestBuilder startDate(String value) {
+      if (value == null) {
+        throw new IllegalStateException("startDate cannot be null");
+      }
+      this.startDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> endDate = JsonNullable.undefined();
+
+    @JsonProperty("endDate")
+    public TopUpEsimRequestBuilder endDate(String value) {
+      if (value == null) {
+        throw new IllegalStateException("endDate cannot be null");
+      }
+      this.endDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Double> duration = JsonNullable.undefined();
+
+    @JsonProperty("duration")
+    public TopUpEsimRequestBuilder duration(Double value) {
+      if (value == null) {
+        throw new IllegalStateException("duration cannot be null");
+      }
+      this.duration = JsonNullable.of(value);
+      return this;
+    }
 
     private JsonNullable<String> email = JsonNullable.undefined();
 
