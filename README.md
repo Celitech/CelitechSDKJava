@@ -1,4 +1,4 @@
-# Celitech Java SDK 1.3.60
+# Celitech Java SDK 1.3.61
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
@@ -6,8 +6,8 @@ Welcome to the Celitech SDK documentation. This guide will help you get started 
 
 ## Versions
 
-- API version: `1.3.60`
-- SDK version: `1.3.60`
+- API version: `1.3.61`
+- SDK version: `1.3.61`
 
 ## About the API
 
@@ -43,14 +43,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>1.3.60</version>
+    <version>1.3.61</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.60
+implementation group: io.github.celitech, name: celitech-sdk, version: 1.3.61
 ```
 
 If you use JAR files, package the SDK by running the following command:
@@ -181,23 +181,23 @@ The SDK includes several models that represent the data structures used in API r
 | :------------------------------------------------------------------------------------------- | :---------- |
 | [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)             |             |
 | [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                     |             |
-| [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                   |             |
+| [ListPackagesParameters](documentation/models/ListPackagesParameters.md)                     |             |
 | [CreatePurchaseV2OkResponse](documentation/models/CreatePurchaseV2OkResponse.md)             |             |
+| [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                   |             |
 | [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                   |             |
-| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                       |             |
+| [ListPurchasesParameters](documentation/models/ListPurchasesParameters.md)                   |             |
 | [CreatePurchaseOkResponse](documentation/models/CreatePurchaseOkResponse.md)                 |             |
-| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                 |             |
+| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                       |             |
 | [TopUpEsimOkResponse](documentation/models/TopUpEsimOkResponse.md)                           |             |
-| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                           |             |
+| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                 |             |
 | [EditPurchaseOkResponse](documentation/models/EditPurchaseOkResponse.md)                     |             |
+| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                           |             |
 | [GetPurchaseConsumptionOkResponse](documentation/models/GetPurchaseConsumptionOkResponse.md) |             |
 | [GetEsimOkResponse](documentation/models/GetEsimOkResponse.md)                               |             |
+| [GetEsimParameters](documentation/models/GetEsimParameters.md)                               |             |
 | [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                   |             |
 | [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                 |             |
 | [TokenOkResponse](documentation/models/TokenOkResponse.md)                                   |             |
-| [ListPackagesParameters](documentation/models/ListPackagesParameters.md)                     |             |
-| [ListPurchasesParameters](documentation/models/ListPurchasesParameters.md)                   |             |
-| [GetEsimParameters](documentation/models/GetEsimParameters.md)                               |             |
 | [BadRequest](documentation/models/BadRequest.md)                                             |             |
 | [Unauthorized](documentation/models/Unauthorized.md)                                         |             |
 

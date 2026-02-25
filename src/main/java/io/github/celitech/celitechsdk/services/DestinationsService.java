@@ -24,6 +24,12 @@ import okhttp3.Response;
  */
 public class DestinationsService extends BaseService {
 
+  /**
+   * Constructs a new instance of DestinationsService.
+   *
+   * @param httpClient The HTTP client to use for requests
+   * @param config The SDK configuration
+   */
   public DestinationsService(@NonNull OkHttpClient httpClient, CelitechConfig config) {
     super(httpClient, config);
   }
@@ -38,7 +44,8 @@ public class DestinationsService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListDestinationsRequest();
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
   }
 
   /**
@@ -51,9 +58,10 @@ public class DestinationsService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListDestinationsRequest();
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<ListDestinationsOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
+    });
   }
 
   private Request buildListDestinationsRequest() {

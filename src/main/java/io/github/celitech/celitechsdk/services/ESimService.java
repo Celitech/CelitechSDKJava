@@ -31,6 +31,12 @@ import okhttp3.Response;
  */
 public class ESimService extends BaseService {
 
+  /**
+   * Constructs a new instance of ESimService.
+   *
+   * @param httpClient The HTTP client to use for requests
+   * @param config The SDK configuration
+   */
   public ESimService(@NonNull OkHttpClient httpClient, CelitechConfig config) {
     super(httpClient, config);
   }
@@ -46,7 +52,8 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimRequest(requestParameters);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<GetEsimOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimOkResponse>() {});
   }
 
   /**
@@ -61,9 +68,10 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<GetEsimOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimOkResponse>() {});
+    });
   }
 
   private Request buildGetEsimRequest(@NonNull GetEsimParameters requestParameters) throws ValidationException {
@@ -90,7 +98,8 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimDeviceRequest(iccid);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<GetEsimDeviceOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimDeviceOkResponse>() {});
   }
 
   /**
@@ -105,9 +114,10 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimDeviceRequest(iccid);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<GetEsimDeviceOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimDeviceOkResponse>() {});
+    });
   }
 
   private Request buildGetEsimDeviceRequest(@NonNull String iccid) throws ValidationException {
@@ -134,7 +144,8 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimHistoryRequest(iccid);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<GetEsimHistoryOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimHistoryOkResponse>() {});
   }
 
   /**
@@ -149,9 +160,10 @@ public class ESimService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildGetEsimHistoryRequest(iccid);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<GetEsimHistoryOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimHistoryOkResponse>() {});
+    });
   }
 
   private Request buildGetEsimHistoryRequest(@NonNull String iccid) throws ValidationException {

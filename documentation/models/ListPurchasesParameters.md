@@ -4,6 +4,7 @@
 
 | Name        | Type   | Required | Description                                                                                                                                                                                                         |
 | :---------- | :----- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| purchaseId  | String | ❌       | ID of the purchase                                                                                                                                                                                                  |
 | iccid       | String | ❌       | ID of the eSIM                                                                                                                                                                                                      |
 | afterDate   | String | ❌       | Start date of the interval for filtering purchases in the format 'yyyy-MM-dd'                                                                                                                                       |
 | beforeDate  | String | ❌       | End date of the interval for filtering purchases in the format 'yyyy-MM-dd'                                                                                                                                         |
@@ -13,4 +14,3 @@
 | limit       | Double | ❌       | Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20                                                |
 | after       | Double | ❌       | Epoch value representing the start of the time interval for filtering purchases                                                                                                                                     |
 | before      | Double | ❌       | Epoch value representing the end of the time interval for filtering purchases                                                                                                                                       |
-| purchaseId  | String | ❌       | The id of a specific purchase.                                                                                                                                                                                      |
