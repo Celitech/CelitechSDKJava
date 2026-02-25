@@ -33,22 +33,28 @@ public class CreatePurchaseV2Request {
   private Double dataLimitInGb;
 
   /**
-   * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
-   */
-  @NonNull
-  private String startDate;
-
-  /**
-   * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
-   */
-  @NonNull
-  private String endDate;
-
-  /**
    * Number of eSIMs to purchase.
    */
   @NonNull
   private Double quantity;
+
+  /**
+   * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
+   */
+  @JsonProperty("startDate")
+  private JsonNullable<String> startDate;
+
+  /**
+   * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
+   */
+  @JsonProperty("endDate")
+  private JsonNullable<String> endDate;
+
+  /**
+   * Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.
+   */
+  @JsonProperty("duration")
+  private JsonNullable<Double> duration;
 
   /**
    * Email address where the purchase confirmation email will be sent (including QR Code & activation steps)
@@ -63,7 +69,7 @@ public class CreatePurchaseV2Request {
   private JsonNullable<String> referenceId;
 
   /**
-   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters and numbers. This feature is available to platforms with Diamond tier only.
+   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.
    */
   @JsonProperty("networkBrand")
   private JsonNullable<String> networkBrand;
@@ -73,6 +79,21 @@ public class CreatePurchaseV2Request {
    */
   @JsonProperty("emailBrand")
   private JsonNullable<String> emailBrand;
+
+  @JsonIgnore
+  public String getStartDate() {
+    return startDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getEndDate() {
+    return endDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public Double getDuration() {
+    return duration.orElse(null);
+  }
 
   @JsonIgnore
   public String getEmail() {
@@ -96,6 +117,39 @@ public class CreatePurchaseV2Request {
 
   // Overwrite lombok builder methods
   public static class CreatePurchaseV2RequestBuilder {
+
+    private JsonNullable<String> startDate = JsonNullable.undefined();
+
+    @JsonProperty("startDate")
+    public CreatePurchaseV2RequestBuilder startDate(String value) {
+      if (value == null) {
+        throw new IllegalStateException("startDate cannot be null");
+      }
+      this.startDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> endDate = JsonNullable.undefined();
+
+    @JsonProperty("endDate")
+    public CreatePurchaseV2RequestBuilder endDate(String value) {
+      if (value == null) {
+        throw new IllegalStateException("endDate cannot be null");
+      }
+      this.endDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Double> duration = JsonNullable.undefined();
+
+    @JsonProperty("duration")
+    public CreatePurchaseV2RequestBuilder duration(Double value) {
+      if (value == null) {
+        throw new IllegalStateException("duration cannot be null");
+      }
+      this.duration = JsonNullable.of(value);
+      return this;
+    }
 
     private JsonNullable<String> email = JsonNullable.undefined();
 

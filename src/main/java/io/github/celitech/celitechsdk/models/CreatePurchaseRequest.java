@@ -57,7 +57,7 @@ public class CreatePurchaseRequest {
   private JsonNullable<String> referenceId;
 
   /**
-   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters and numbers. This feature is available to platforms with Diamond tier only.
+   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.
    */
   @JsonProperty("networkBrand")
   private JsonNullable<String> networkBrand;
