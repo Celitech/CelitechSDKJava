@@ -1,5 +1,6 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,13 @@ public class GetPurchaseConsumptionOkResponse {
    */
   @NonNull
   private Double dataUsageRemainingInBytes;
+
+  /**
+   * Remaining balance of the package in GB
+   */
+  @NonNull
+  @JsonProperty("dataUsageRemainingInGB")
+  private Double dataUsageRemainingInGb;
 
   /**
    * Status of the connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'

@@ -33,4 +33,16 @@ public class CreatePurchaseV2OkResponseProfile {
    */
   @NonNull
   private String manualActivationCode;
+
+  /**
+   * iOS Activation Link of the eSIM
+   */
+  @NonNull
+  private String iosActivationLink;
+
+  /**
+   * Android Activation Link of the eSIM
+   */
+  @NonNull
+  private String androidActivationLink;
 }

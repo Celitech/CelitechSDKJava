@@ -22,6 +22,12 @@ import okhttp3.Response;
  */
 public class OAuthService extends BaseService {
 
+  /**
+   * Constructs a new instance of OAuthService.
+   *
+   * @param httpClient The HTTP client to use for requests
+   * @param config The SDK configuration
+   */
   public OAuthService(@NonNull OkHttpClient httpClient, CelitechConfig config) {
     super(httpClient, config);
   }
@@ -35,7 +41,8 @@ public class OAuthService extends BaseService {
   public GetAccessTokenOkResponse getAccessToken(@NonNull GetAccessTokenRequest getAccessTokenRequest) throws ApiError {
     Request request = this.buildGetAccessTokenRequest(getAccessTokenRequest);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<GetAccessTokenOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<GetAccessTokenOkResponse>() {});
   }
 
   /**
@@ -49,9 +56,10 @@ public class OAuthService extends BaseService {
   ) throws ApiError {
     Request request = this.buildGetAccessTokenRequest(getAccessTokenRequest);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<GetAccessTokenOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<GetAccessTokenOkResponse>() {});
+    });
   }
 
   private Request buildGetAccessTokenRequest(@NonNull GetAccessTokenRequest getAccessTokenRequest) {
