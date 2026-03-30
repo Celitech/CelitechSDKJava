@@ -43,6 +43,13 @@ public class Packages {
   private Double dataLimitInBytes;
 
   /**
+   * Size of the package in GB
+   */
+  @NonNull
+  @JsonProperty("dataLimitInGB")
+  private Double dataLimitInGb;
+
+  /**
    * Min number of days for the package
    */
   @NonNull
