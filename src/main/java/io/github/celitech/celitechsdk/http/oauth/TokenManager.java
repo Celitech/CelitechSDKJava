@@ -13,6 +13,10 @@ import lombok.NonNull;
 import lombok.Setter;
 import okhttp3.OkHttpClient;
 
+/**
+ * Manages OAuth token lifecycle including acquisition, caching, validation, and refresh.
+ * Handles token scoping and automatically refreshes expired tokens.
+ */
 @Builder
 public class TokenManager {
 
@@ -35,6 +39,14 @@ public class TokenManager {
   private GetAccessTokenOkResponse token;
   private Set<String> scopes;
 
+  /**
+   * Gets a valid access token for the specified scopes.
+   * Returns the cached token if it's still valid and has the required scopes,
+   * otherwise retrieves a new token from the OAuth endpoint.
+   *
+   * @param scopes The OAuth scopes required for the token
+   * @return The access token string
+   */
   public String getToken(Set<String> scopes) {
     Boolean tokenHasValue = this.token != null && !this.token.getAccessToken().isEmpty();
     Boolean tokenIsValid = false;
@@ -58,10 +70,19 @@ public class TokenManager {
     return this.retrieveAccessToken(scopes).getAccessToken();
   }
 
+  /**
+   * Clears the cached token, forcing the next getToken call to retrieve a fresh token.
+   */
   public void clean() {
     this.token = null;
   }
 
+  /**
+   * Retrieves a new access token from the OAuth endpoint.
+   *
+   * @param scopes The OAuth scopes to request
+   * @return The retrieved token model containing access token and metadata
+   */
   private GetAccessTokenOkResponse retrieveAccessToken(Set<String> scopes) {
     OAuthService oAuth = new OAuthService(this.httpClient, this.config);
 

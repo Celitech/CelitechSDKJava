@@ -24,6 +24,12 @@ import okhttp3.Response;
  */
 public class IFrameService extends BaseService {
 
+  /**
+   * Constructs a new instance of IFrameService.
+   *
+   * @param httpClient The HTTP client to use for requests
+   * @param config The SDK configuration
+   */
   public IFrameService(@NonNull OkHttpClient httpClient, CelitechConfig config) {
     super(httpClient, config);
   }
@@ -38,7 +44,8 @@ public class IFrameService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildTokenRequest();
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<TokenOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
   }
 
   /**
@@ -51,9 +58,10 @@ public class IFrameService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildTokenRequest();
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<TokenOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
+    });
   }
 
   private Request buildTokenRequest() {
