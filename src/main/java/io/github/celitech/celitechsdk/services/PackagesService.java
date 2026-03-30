@@ -25,6 +25,12 @@ import okhttp3.Response;
  */
 public class PackagesService extends BaseService {
 
+  /**
+   * Constructs a new instance of PackagesService.
+   *
+   * @param httpClient The HTTP client to use for requests
+   * @param config The SDK configuration
+   */
   public PackagesService(@NonNull OkHttpClient httpClient, CelitechConfig config) {
     super(httpClient, config);
   }
@@ -49,7 +55,8 @@ public class PackagesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     Response response = this.execute(request);
-    return ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {});
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
   }
 
   /**
@@ -73,9 +80,10 @@ public class PackagesService extends BaseService {
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
     Request request = this.buildListPackagesRequest(requestParameters);
     CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response ->
-      ModelConverter.convert(response, new TypeReference<ListPackagesOkResponse>() {})
-    );
+    return futureResponse.thenApplyAsync(response -> {
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
+    });
   }
 
   private Request buildListPackagesRequest(@NonNull ListPackagesParameters requestParameters) {
@@ -91,7 +99,6 @@ public class PackagesService extends BaseService {
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("startTime", requestParameters.getStartTime())
       .setOptionalQueryParameter("endTime", requestParameters.getEndTime())
-      .setOptionalQueryParameter("duration", requestParameters.getDuration())
       .build();
   }
 }

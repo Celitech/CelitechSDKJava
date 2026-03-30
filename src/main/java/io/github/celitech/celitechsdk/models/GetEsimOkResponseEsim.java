@@ -47,6 +47,12 @@ public class GetEsimOkResponseEsim {
   private String status;
 
   /**
+   * Status of the eSIM connectivity, possible values are 'ACTIVE' or 'NOT_ACTIVE'
+   */
+  @NonNull
+  private String connectivityStatus;
+
+  /**
    * Indicates whether the eSIM is currently eligible for a top-up. This flag should be checked before attempting a top-up request.
    */
   @NonNull
