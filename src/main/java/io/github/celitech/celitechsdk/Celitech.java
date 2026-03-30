@@ -30,11 +30,20 @@ public class Celitech {
 
   private final TokenManager tokenManager;
 
+  /**
+   * Constructs a new instance of Celitech with default configuration.
+   */
   public Celitech() {
     // Default configs
     this(CelitechConfig.builder().build());
   }
 
+  /**
+   * Constructs a new instance of Celitech with custom configuration.
+   * Initializes all services, HTTP client, and optional OAuth token manager.
+   *
+   * @param config The SDK configuration including base URL, authentication, timeout, and retry settings
+   */
   public Celitech(CelitechConfig config) {
     this.config = config;
 
@@ -63,18 +72,38 @@ public class Celitech {
     this.iFrame = new IFrameService(httpClient, config);
   }
 
+  /**
+   * Sets the environment for all API requests.
+   *
+   * @param environment The environment to use (e.g., DEFAULT, PRODUCTION, STAGING)
+   */
   public void setEnvironment(Environment environment) {
     setBaseUrl(environment.getUrl());
   }
 
+  /**
+   * Sets the base URL for all API requests.
+   *
+   * @param baseUrl The base URL to use for API requests
+   */
   public void setBaseUrl(String baseUrl) {
     this.config.setBaseUrl(baseUrl);
   }
 
+  /**
+   * Sets the OAuth environment for token requests.
+   *
+   * @param environment The OAuth environment to use
+   */
   public void setBaseOAuthEnvironment(Environment environment) {
     setBaseOAuthUrl(environment.getUrl());
   }
 
+  /**
+   * Sets the base URL for OAuth token requests.
+   *
+   * @param baseOAuthUrl The base URL for OAuth endpoints
+   */
   public void setBaseOAuthUrl(String baseOAuthUrl) {
     this.config.setBaseOAuthUrl(baseOAuthUrl);
   }

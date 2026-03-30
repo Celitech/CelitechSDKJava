@@ -30,6 +30,13 @@ public class Package_ {
   private Double dataLimitInBytes;
 
   /**
+   * Size of the package in GB
+   */
+  @NonNull
+  @JsonProperty("dataLimitInGB")
+  private Double dataLimitInGb;
+
+  /**
    * ISO3 representation of the package's destination.
    */
   @NonNull

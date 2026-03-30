@@ -60,12 +60,6 @@ public class ListPackagesParameters {
   @JsonProperty("endTime")
   private JsonNullable<Long> endTime;
 
-  /**
-   * Duration in seconds for the package's validity. If this parameter is present, it will override the startTime and endTime parameters. The maximum duration for a package's validity period is 90 days
-   */
-  @JsonProperty("duration")
-  private JsonNullable<Double> duration;
-
   @JsonIgnore
   public String getDestination() {
     return destination.orElse(null);
@@ -99,11 +93,6 @@ public class ListPackagesParameters {
   @JsonIgnore
   public Long getEndTime() {
     return endTime.orElse(null);
-  }
-
-  @JsonIgnore
-  public Double getDuration() {
-    return duration.orElse(null);
   }
 
   // Overwrite lombok builder methods
@@ -183,17 +172,6 @@ public class ListPackagesParameters {
         throw new IllegalStateException("endTime cannot be null");
       }
       this.endTime = JsonNullable.of(value);
-      return this;
-    }
-
-    private JsonNullable<Double> duration = JsonNullable.undefined();
-
-    @JsonProperty("duration")
-    public ListPackagesParametersBuilder duration(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("duration cannot be null");
-      }
-      this.duration = JsonNullable.of(value);
       return this;
     }
   }
