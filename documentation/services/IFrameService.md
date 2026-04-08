@@ -20,14 +20,17 @@ Generate a new token to be used in the iFrame
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.TokenOkResponse;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.TokenOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 

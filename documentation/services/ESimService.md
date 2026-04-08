@@ -28,19 +28,24 @@ Get eSIM
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.GetEsimOkResponse;
-import io.github.celitech.celitechsdk.models.GetEsimParameters;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.GetEsimOkResponse;
+import net.celitech.celitechsdk.models.GetEsimParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
-    GetEsimParameters requestParameters = GetEsimParameters.builder().iccid("1111222233334444555000").build();
+    GetEsimParameters requestParameters = GetEsimParameters.builder()
+      .iccid("1111222233334444555000")
+      .build();
 
     GetEsimOkResponse response = celitech.eSim.getEsim(requestParameters);
 
@@ -70,14 +75,17 @@ Get eSIM Device
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.GetEsimDeviceOkResponse;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.GetEsimDeviceOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
@@ -109,14 +117,17 @@ Get eSIM History
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
