@@ -1,0 +1,119 @@
+package net.celitech.celitechsdk;
+
+import java.util.concurrent.TimeUnit;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.http.Environment;
+import net.celitech.celitechsdk.http.interceptors.DefaultHeadersInterceptor;
+import net.celitech.celitechsdk.http.interceptors.OAuthInterceptor;
+import net.celitech.celitechsdk.http.interceptors.RetryInterceptor;
+import net.celitech.celitechsdk.http.oauth.TokenManager;
+import net.celitech.celitechsdk.services.DestinationsService;
+import net.celitech.celitechsdk.services.ESimService;
+import net.celitech.celitechsdk.services.IFrameService;
+import net.celitech.celitechsdk.services.PackagesService;
+import net.celitech.celitechsdk.services.PurchasesService;
+import okhttp3.OkHttpClient;
+
+/** Welcome to the CELITECH API documentation!
+
+Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)
+ */
+public class Celitech {
+
+  public final DestinationsService destinations;
+  public final PackagesService packages;
+  public final PurchasesService purchases;
+  public final ESimService eSim;
+  public final IFrameService iFrame;
+
+  private final CelitechConfig config;
+
+  private final TokenManager tokenManager;
+
+  /**
+   * Constructs a new instance of Celitech with default configuration.
+   */
+  public Celitech() {
+    // Default configs
+    this(CelitechConfig.builder().build());
+  }
+
+  /**
+   * Constructs a new instance of Celitech with custom configuration.
+   * Initializes all services, HTTP client, and optional OAuth token manager.
+   *
+   * @param config The SDK configuration including base URL, authentication, timeout, and retry settings
+   */
+  public Celitech(CelitechConfig config) {
+    this.config = config;
+
+    OAuthInterceptor oauthInterceptor = new OAuthInterceptor();
+
+    final OkHttpClient httpClient = new OkHttpClient.Builder()
+      .addInterceptor(new DefaultHeadersInterceptor(config))
+      .addInterceptor(oauthInterceptor)
+      .addInterceptor(new RetryInterceptor(config.getRetryConfig()))
+      .readTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
+      .build();
+
+    this.tokenManager = TokenManager.builder()
+      .httpClient(httpClient)
+      .config(config)
+      .clientId(config.getClientId())
+      .clientSecret(config.getClientSecret())
+      .build();
+
+    oauthInterceptor.setTokenManager(tokenManager);
+
+    this.destinations = new DestinationsService(httpClient, config);
+    this.packages = new PackagesService(httpClient, config);
+    this.purchases = new PurchasesService(httpClient, config);
+    this.eSim = new ESimService(httpClient, config);
+    this.iFrame = new IFrameService(httpClient, config);
+  }
+
+  /**
+   * Sets the environment for all API requests.
+   *
+   * @param environment The environment to use (e.g., DEFAULT, PRODUCTION, STAGING)
+   */
+  public void setEnvironment(Environment environment) {
+    setBaseUrl(environment.getUrl());
+  }
+
+  /**
+   * Sets the base URL for all API requests.
+   *
+   * @param baseUrl The base URL to use for API requests
+   */
+  public void setBaseUrl(String baseUrl) {
+    this.config.setBaseUrl(baseUrl);
+  }
+
+  /**
+   * Sets the OAuth environment for token requests.
+   *
+   * @param environment The OAuth environment to use
+   */
+  public void setBaseOAuthEnvironment(Environment environment) {
+    setBaseOAuthUrl(environment.getUrl());
+  }
+
+  /**
+   * Sets the base URL for OAuth token requests.
+   *
+   * @param baseOAuthUrl The base URL for OAuth endpoints
+   */
+  public void setBaseOAuthUrl(String baseOAuthUrl) {
+    this.config.setBaseOAuthUrl(baseOAuthUrl);
+  }
+
+  public void setClientId(String clientId) {
+    this.tokenManager.setClientId(clientId);
+  }
+
+  public void setClientSecret(String clientSecret) {
+    this.tokenManager.setClientSecret(clientSecret);
+  }
+}
+// c029837e0e474b76bc487506e8799df5e3335891efe4fb02bda7a1441840310c

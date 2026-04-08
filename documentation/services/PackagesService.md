@@ -26,19 +26,32 @@ List Packages
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
-import io.github.celitech.celitechsdk.models.ListPackagesParameters;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.ListPackagesOkResponse;
+import net.celitech.celitechsdk.models.ListPackagesParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
-    ListPackagesOkResponse response = celitech.packages.listPackages();
+    ListPackagesParameters requestParameters = ListPackagesParameters.builder()
+      .destination("FRA")
+      .startDate("2023-11-01")
+      .endDate("2023-11-20")
+      .afterCursor(
+        "Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA"
+      )
+      .limit(20D)
+      .build();
+
+    ListPackagesOkResponse response = celitech.packages.listPackages(requestParameters);
 
     System.out.println(response);
   }

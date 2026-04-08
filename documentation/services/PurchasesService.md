@@ -31,26 +31,38 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
 import java.util.List;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
+import net.celitech.celitechsdk.models.CreatePurchaseV2Request;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
     CreatePurchaseV2Request createPurchaseV2Request = CreatePurchaseV2Request.builder()
       .destination("FRA")
       .dataLimitInGb(1D)
+      .startDate("2023-11-01")
+      .endDate("2023-11-20")
+      .duration(30D)
       .quantity(1D)
+      .email("example@domain.com")
+      .referenceId("abc111222333444")
+      .networkBrand("CELITECH")
+      .emailBrand("CELITECH")
       .build();
 
-    List<CreatePurchaseV2OkResponse> response = celitech.purchases.createPurchaseV2(createPurchaseV2Request);
+    List<CreatePurchaseV2OkResponse> response = celitech.purchases.createPurchaseV2(
+      createPurchaseV2Request
+    );
 
     System.out.println(response);
   }
@@ -78,19 +90,35 @@ This endpoint can be used to list all the successful purchases made between a gi
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.ListPurchasesOkResponse;
-import io.github.celitech.celitechsdk.models.ListPurchasesParameters;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.ListPurchasesOkResponse;
+import net.celitech.celitechsdk.models.ListPurchasesParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
-    ListPurchasesOkResponse response = celitech.purchases.listPurchases();
+    ListPurchasesParameters requestParameters = ListPurchasesParameters.builder()
+      .purchaseId("4973fa15-6979-4daa-9cf3-672620df819c")
+      .iccid("1111222233334444555000")
+      .afterDate("2023-11-01")
+      .beforeDate("2023-11-20")
+      .email("example@gmail.com")
+      .referenceId("abc111222333444")
+      .afterCursor(
+        "Y3JlYXRlZEF0OjE1OTk0OTMwOTgsZGVzdGluYXRpb246QVVTLG1pbkRheXM6MCxkYXRhTGltaXRJbkJ5dGVzOjUzNjg3MDkxMjA"
+      )
+      .limit(20D)
+      .build();
+
+    ListPurchasesOkResponse response = celitech.purchases.listPurchases(requestParameters);
 
     System.out.println(response);
   }
@@ -118,15 +146,18 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.CreatePurchaseOkResponse;
+import net.celitech.celitechsdk.models.CreatePurchaseRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
@@ -135,6 +166,10 @@ public class Main {
       .dataLimitInGb(1D)
       .startDate("2023-11-01")
       .endDate("2023-11-20")
+      .email("example@domain.com")
+      .referenceId("abc111222333444")
+      .networkBrand("CELITECH")
+      .emailBrand("CELITECH")
       .build();
 
     CreatePurchaseOkResponse response = celitech.purchases.createPurchase(createPurchaseRequest);
@@ -165,21 +200,30 @@ This endpoint is used to top-up an existing eSIM with the previously associated 
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
-import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.TopUpEsimOkResponse;
+import net.celitech.celitechsdk.models.TopUpEsimRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
     TopUpEsimRequest topUpEsimRequest = TopUpEsimRequest.builder()
       .iccid("1111222233334444555000")
       .dataLimitInGb(1D)
+      .startDate("2023-11-01")
+      .endDate("2023-11-20")
+      .duration(30D)
+      .email("example@domain.com")
+      .referenceId("abc111222333444")
+      .emailBrand("CELITECH")
       .build();
 
     TopUpEsimOkResponse response = celitech.purchases.topUpEsim(topUpEsimRequest);
@@ -210,15 +254,18 @@ This endpoint allows you to modify the validity dates of an existing purchase. *
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.EditPurchaseOkResponse;
+import net.celitech.celitechsdk.models.EditPurchaseRequest;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
@@ -256,14 +303,17 @@ This endpoint can be called for consumption notifications (e.g. every 1 hour or 
 **Example Usage Code Snippet**
 
 ```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
+import net.celitech.celitechsdk.Celitech;
+import net.celitech.celitechsdk.config.CelitechConfig;
+import net.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
