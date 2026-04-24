@@ -45,7 +45,7 @@ public class CreatePurchaseRequest {
   private String endDate;
 
   /**
-   * Email address where the purchase confirmation email will be sent (including QR Code & activation steps)
+   * Email address where the purchase confirmation email will be sent (including QR Code &amp; activation steps)
    */
   @JsonProperty("email")
   private JsonNullable<String> email;
@@ -57,7 +57,7 @@ public class CreatePurchaseRequest {
   private JsonNullable<String> referenceId;
 
   /**
-   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.
+   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&amp;), and spaces. This feature is available to platforms with Diamond tier only.
    */
   @JsonProperty("networkBrand")
   private JsonNullable<String> networkBrand;

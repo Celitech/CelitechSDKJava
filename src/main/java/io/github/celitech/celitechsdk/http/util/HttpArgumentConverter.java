@@ -21,12 +21,20 @@ public class HttpArgumentConverter {
     if (value == null) {
       return "";
     }
-    if (value instanceof String || value instanceof Number || value instanceof Boolean || value instanceof Enum<?>) {
+    if (
+      value instanceof String ||
+      value instanceof Number ||
+      value instanceof Boolean ||
+      value instanceof Enum<?>
+    ) {
       return String.valueOf(value);
     }
     if (value instanceof List<?>) {
       List<?> list = (List<?>) value;
-      return list.stream().map(HttpArgumentConverter::toStringArgument).collect(Collectors.joining(","));
+      return list
+        .stream()
+        .map(HttpArgumentConverter::toStringArgument)
+        .collect(Collectors.joining(","));
     }
 
     return modelToJson(value);

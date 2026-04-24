@@ -9,7 +9,8 @@ import io.github.celitech.celitechsdk.validation.validators.StringValidator;
  * Validator implementation for ListPurchasesParameters model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class ListPurchasesParametersValidator extends AbstractModelValidator<ListPurchasesParameters> {
+public class ListPurchasesParametersValidator
+  extends AbstractModelValidator<ListPurchasesParameters> {
 
   /**
    * Creates a validator with a field name for nested validation paths.
@@ -34,7 +35,13 @@ public class ListPurchasesParametersValidator extends AbstractModelValidator<Lis
   @Override
   protected Violation[] validateModel(ListPurchasesParameters requestParameters) {
     return new ViolationAggregator()
-      .add(new StringValidator("iccid").minLength(18).maxLength(22).optional().validate(requestParameters.getIccid()))
+      .add(
+        new StringValidator("iccid")
+          .minLength(18)
+          .maxLength(22)
+          .optional()
+          .validate(requestParameters.getIccid())
+      )
       .aggregate();
   }
 }
