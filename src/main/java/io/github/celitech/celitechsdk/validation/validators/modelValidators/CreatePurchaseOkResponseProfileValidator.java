@@ -9,7 +9,8 @@ import io.github.celitech.celitechsdk.validation.validators.StringValidator;
  * Validator implementation for CreatePurchaseOkResponseProfile model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class CreatePurchaseOkResponseProfileValidator extends AbstractModelValidator<CreatePurchaseOkResponseProfile> {
+public class CreatePurchaseOkResponseProfileValidator
+  extends AbstractModelValidator<CreatePurchaseOkResponseProfile> {
 
   /**
    * Creates a validator with a field name for nested validation paths.
@@ -32,7 +33,9 @@ public class CreatePurchaseOkResponseProfileValidator extends AbstractModelValid
    * @return Array of violations found during validation
    */
   @Override
-  protected Violation[] validateModel(CreatePurchaseOkResponseProfile createPurchaseOkResponseProfile) {
+  protected Violation[] validateModel(
+    CreatePurchaseOkResponseProfile createPurchaseOkResponseProfile
+  ) {
     return new ViolationAggregator()
       .add(
         new StringValidator("iccid")

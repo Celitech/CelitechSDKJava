@@ -33,7 +33,11 @@ public class TopUpEsimOkResponseValidator extends AbstractModelValidator<TopUpEs
   @Override
   protected Violation[] validateModel(TopUpEsimOkResponse topUpEsimOkResponse) {
     return new ViolationAggregator()
-      .add(new TopUpEsimOkResponseProfileValidator("profile").required().validate(topUpEsimOkResponse.getProfile()))
+      .add(
+        new TopUpEsimOkResponseProfileValidator("profile")
+          .required()
+          .validate(topUpEsimOkResponse.getProfile())
+      )
       .aggregate();
   }
 }

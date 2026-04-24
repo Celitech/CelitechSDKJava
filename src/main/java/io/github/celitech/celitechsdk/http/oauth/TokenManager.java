@@ -38,6 +38,7 @@ public class TokenManager {
 
   private GetAccessTokenOkResponse token;
   private Set<String> scopes;
+  private Long expiresAt;
 
   /**
    * Gets a valid access token for the specified scopes.
@@ -51,11 +52,10 @@ public class TokenManager {
     Boolean tokenHasValue = this.token != null && !this.token.getAccessToken().isEmpty();
     Boolean tokenIsValid = false;
     if (tokenHasValue) {
-      Long expiresIn = this.token.getExpiresIn();
-      if (expiresIn != null) {
+      if (this.expiresAt != null) {
         long now = System.currentTimeMillis() / 1000L;
         long buffer = 5000;
-        if ((expiresIn - now) > buffer) {
+        if ((this.expiresAt - now) > buffer) {
           tokenIsValid = true;
         }
       } else {
@@ -63,7 +63,7 @@ public class TokenManager {
       }
     }
 
-    if (tokenIsValid && this.scopes.containsAll(scopes)) {
+    if (tokenIsValid && this.scopes != null && this.scopes.containsAll(scopes)) {
       return this.token.getAccessToken();
     }
 
@@ -93,6 +93,15 @@ public class TokenManager {
       .build();
 
     this.token = oAuth.getAccessToken(requestBody);
+    this.scopes = scopes;
+
+    Long expiresIn = this.token.getExpiresIn();
+    if (expiresIn != null) {
+      this.expiresAt = (System.currentTimeMillis() / 1000L) + expiresIn;
+    } else {
+      this.expiresAt = null;
+    }
+
     return this.token;
   }
 }
