@@ -80,6 +80,12 @@ public class CreatePurchaseV2Request {
   @JsonProperty("emailBrand")
   private JsonNullable<String> emailBrand;
 
+  /**
+   * Language of the confirmation email sent to the customer.
+   */
+  @JsonProperty("language")
+  private JsonNullable<CreatePurchaseV2RequestLanguage> language;
+
   @JsonIgnore
   public String getStartDate() {
     return startDate.orElse(null);
@@ -113,6 +119,11 @@ public class CreatePurchaseV2Request {
   @JsonIgnore
   public String getEmailBrand() {
     return emailBrand.orElse(null);
+  }
+
+  @JsonIgnore
+  public CreatePurchaseV2RequestLanguage getLanguage() {
+    return language.orElse(null);
   }
 
   // Overwrite lombok builder methods
@@ -192,6 +203,17 @@ public class CreatePurchaseV2Request {
         throw new IllegalStateException("emailBrand cannot be null");
       }
       this.emailBrand = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<CreatePurchaseV2RequestLanguage> language = JsonNullable.undefined();
+
+    @JsonProperty("language")
+    public CreatePurchaseV2RequestBuilder language(CreatePurchaseV2RequestLanguage value) {
+      if (value == null) {
+        throw new IllegalStateException("language cannot be null");
+      }
+      this.language = JsonNullable.of(value);
       return this;
     }
   }
