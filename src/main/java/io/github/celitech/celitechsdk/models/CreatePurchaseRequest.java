@@ -69,6 +69,12 @@ public class CreatePurchaseRequest {
   private JsonNullable<String> emailBrand;
 
   /**
+   * Language of the confirmation email sent to the customer.
+   */
+  @JsonProperty("language")
+  private JsonNullable<CreatePurchaseRequestLanguage> language;
+
+  /**
    * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.
    */
   @JsonProperty("startTime")
@@ -98,6 +104,11 @@ public class CreatePurchaseRequest {
   @JsonIgnore
   public String getEmailBrand() {
     return emailBrand.orElse(null);
+  }
+
+  @JsonIgnore
+  public CreatePurchaseRequestLanguage getLanguage() {
+    return language.orElse(null);
   }
 
   @JsonIgnore
@@ -154,6 +165,17 @@ public class CreatePurchaseRequest {
         throw new IllegalStateException("emailBrand cannot be null");
       }
       this.emailBrand = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<CreatePurchaseRequestLanguage> language = JsonNullable.undefined();
+
+    @JsonProperty("language")
+    public CreatePurchaseRequestBuilder language(CreatePurchaseRequestLanguage value) {
+      if (value == null) {
+        throw new IllegalStateException("language cannot be null");
+      }
+      this.language = JsonNullable.of(value);
       return this;
     }
 
