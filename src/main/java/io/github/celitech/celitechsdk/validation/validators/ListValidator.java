@@ -86,11 +86,15 @@ public class ListValidator<T> extends AbstractValidator<List<T>> {
     List<Violation> violations = new ArrayList<>();
 
     if (minLength != null && list.size() < minLength) {
-      violations.add(new Violation(getFieldName(), String.format("must have at least %d items", minLength)));
+      violations.add(
+        new Violation(getFieldName(), String.format("must have at least %d items", minLength))
+      );
     }
 
     if (maxLength != null && list.size() > maxLength) {
-      violations.add(new Violation(getFieldName(), String.format("must have at most %d items", maxLength)));
+      violations.add(
+        new Violation(getFieldName(), String.format("must have at most %d items", maxLength))
+      );
     }
 
     if (uniqueItems != null && list.stream().distinct().count() != list.size()) {

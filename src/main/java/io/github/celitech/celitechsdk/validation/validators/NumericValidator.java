@@ -1,11 +1,12 @@
 package io.github.celitech.celitechsdk.validation.validators;
 
 import io.github.celitech.celitechsdk.validation.Violation;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Validator for numeric values with minimum and maximum constraints.
+ * Validator for numeric values with minimum, maximum, and multipleOf constraints.
  * Supports inclusive and exclusive bounds for range validation.
  *
  * @param <T> The numeric type to validate (Integer, Long, Double, etc.)
@@ -16,6 +17,7 @@ public class NumericValidator<T extends Number> extends AbstractValidator<T> {
   private boolean minInclusive;
   private T maxValue;
   private boolean maxInclusive;
+  private T multipleOfValue;
 
   public NumericValidator(String fieldName) {
     super(fieldName);
@@ -70,6 +72,17 @@ public class NumericValidator<T extends Number> extends AbstractValidator<T> {
   }
 
   /**
+   * Sets the multipleOf constraint. The value must be an exact multiple of the given divisor.
+   *
+   * @param multipleOf The divisor that the value must be a multiple of
+   * @return This validator for method chaining
+   */
+  public NumericValidator<T> multipleOf(T multipleOf) {
+    this.multipleOfValue = multipleOf;
+    return this;
+  }
+
+  /**
    * Validates a numeric value against configured constraints.
    *
    * @param value The number to validate
@@ -91,12 +104,17 @@ public class NumericValidator<T extends Number> extends AbstractValidator<T> {
       if (this.minInclusive) {
         if (value.doubleValue() < this.minValue.doubleValue()) {
           violations.add(
-            new Violation(getFieldName(), String.format("must be greater than or equal to %s", this.minValue))
+            new Violation(
+              getFieldName(),
+              String.format("must be greater than or equal to %s", this.minValue)
+            )
           );
         }
       } else {
         if (value.doubleValue() <= this.minValue.doubleValue()) {
-          violations.add(new Violation(getFieldName(), String.format("must be greater than %s", this.minValue)));
+          violations.add(
+            new Violation(getFieldName(), String.format("must be greater than %s", this.minValue))
+          );
         }
       }
     }
@@ -105,13 +123,31 @@ public class NumericValidator<T extends Number> extends AbstractValidator<T> {
       if (this.maxInclusive) {
         if (value.doubleValue() > this.maxValue.doubleValue()) {
           violations.add(
-            new Violation(getFieldName(), String.format("must be less than or equal to %s", this.maxValue))
+            new Violation(
+              getFieldName(),
+              String.format("must be less than or equal to %s", this.maxValue)
+            )
           );
         }
       } else {
         if (value.doubleValue() >= this.maxValue.doubleValue()) {
-          violations.add(new Violation(getFieldName(), String.format("must be less than %s", this.maxValue)));
+          violations.add(
+            new Violation(getFieldName(), String.format("must be less than %s", this.maxValue))
+          );
         }
+      }
+    }
+
+    if (this.multipleOfValue != null) {
+      BigDecimal bdValue = new BigDecimal(value.toString());
+      BigDecimal bdMultipleOf = new BigDecimal(this.multipleOfValue.toString());
+      if (bdValue.remainder(bdMultipleOf).compareTo(BigDecimal.ZERO) != 0) {
+        violations.add(
+          new Violation(
+            getFieldName(),
+            String.format("must be a multiple of %s", this.multipleOfValue)
+          )
+        );
       }
     }
 

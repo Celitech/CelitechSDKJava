@@ -24,15 +24,30 @@ public class Serializer {
     return serialize(key, String.valueOf(value), style, encode);
   }
 
-  public static String serialize(String key, double value, SerializationStyle style, boolean encode) {
+  public static String serialize(
+    String key,
+    double value,
+    SerializationStyle style,
+    boolean encode
+  ) {
     return serialize(key, String.valueOf(value), style, encode);
   }
 
-  public static String serialize(String key, boolean value, SerializationStyle style, boolean encode) {
+  public static String serialize(
+    String key,
+    boolean value,
+    SerializationStyle style,
+    boolean encode
+  ) {
     return serialize(key, String.valueOf(value), style, encode);
   }
 
-  public static String serialize(String key, String value, SerializationStyle style, boolean encode) {
+  public static String serialize(
+    String key,
+    String value,
+    SerializationStyle style,
+    boolean encode
+  ) {
     if (value == null) {
       value = "null";
     }
@@ -60,7 +75,13 @@ public class Serializer {
    * @param encode Whether to URL-encode values
    * @return The serialized parameter string
    */
-  public static String serialize(String key, Object value, SerializationStyle style, boolean explode, boolean encode) {
+  public static String serialize(
+    String key,
+    Object value,
+    SerializationStyle style,
+    boolean explode,
+    boolean encode
+  ) {
     if (value == null) {
       return serialize(key, "null", style, encode);
     }
@@ -102,7 +123,10 @@ public class Serializer {
       return "";
     }
 
-    List<String> serializedValues = value.stream().map(v -> serializeValue(v, encode)).collect(Collectors.toList());
+    List<String> serializedValues = value
+      .stream()
+      .map(v -> serializeValue(v, encode))
+      .collect(Collectors.toList());
     switch (style) {
       case SIMPLE:
         return String.join(",", serializedValues);
@@ -112,7 +136,10 @@ public class Serializer {
         return String.format(".%s", String.join(separator, serializedValues));
       case MATRIX:
         return explode
-          ? serializedValues.stream().map(v -> String.format(";%s=%s", key, v)).collect(Collectors.joining(""))
+          ? serializedValues
+            .stream()
+            .map(v -> String.format(";%s=%s", key, v))
+            .collect(Collectors.joining(""))
           : String.format(";%s=", key) + String.join(",", serializedValues);
     }
 
@@ -220,7 +247,12 @@ public class Serializer {
    * @param encode Whether to URL-encode values
    * @return The serialized deep object string
    */
-  public static String serializeDeepObject(String key, Object value, boolean topLevel, boolean encode) {
+  public static String serializeDeepObject(
+    String key,
+    Object value,
+    boolean topLevel,
+    boolean encode
+  ) {
     if (!Util.isObject(value)) {
       return String.format("[%s]=%s", key, serializeValue(value, encode));
     }

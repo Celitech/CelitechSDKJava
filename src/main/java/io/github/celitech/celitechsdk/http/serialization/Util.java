@@ -33,7 +33,10 @@ public class Util {
    * @return A map of JSON property names to their values
    */
   public static Map<String, Object> getPropertiesWithJsonPropertyNames(Object value) {
-    Map<String, Object> properties = OBJECT_MAPPER.convertValue(value, new TypeReference<Map<String, Object>>() {});
+    Map<String, Object> properties = OBJECT_MAPPER.convertValue(
+      value,
+      new TypeReference<Map<String, Object>>() {}
+    );
 
     // Use the json property name if it exists, otherwise use the regular property name
     return properties

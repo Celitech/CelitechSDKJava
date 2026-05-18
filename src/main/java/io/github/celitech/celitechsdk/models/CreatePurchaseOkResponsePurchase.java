@@ -120,7 +120,15 @@ public class CreatePurchaseOkResponsePurchase {
       if (!endDate$set) {
         throw new IllegalStateException("endDate is required");
       }
-      return new CreatePurchaseOkResponsePurchase(id, packageId, startDate, endDate, createdDate, startTime, endTime);
+      return new CreatePurchaseOkResponsePurchase(
+        id,
+        packageId,
+        startDate,
+        endDate,
+        createdDate,
+        startTime,
+        endTime
+      );
     }
   }
 }

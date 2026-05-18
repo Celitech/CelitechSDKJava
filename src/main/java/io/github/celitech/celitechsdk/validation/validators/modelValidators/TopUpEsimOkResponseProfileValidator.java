@@ -9,7 +9,8 @@ import io.github.celitech.celitechsdk.validation.validators.StringValidator;
  * Validator implementation for TopUpEsimOkResponseProfile model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class TopUpEsimOkResponseProfileValidator extends AbstractModelValidator<TopUpEsimOkResponseProfile> {
+public class TopUpEsimOkResponseProfileValidator
+  extends AbstractModelValidator<TopUpEsimOkResponseProfile> {
 
   /**
    * Creates a validator with a field name for nested validation paths.

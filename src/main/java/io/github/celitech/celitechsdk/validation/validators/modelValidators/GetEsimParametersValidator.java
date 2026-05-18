@@ -34,7 +34,13 @@ public class GetEsimParametersValidator extends AbstractModelValidator<GetEsimPa
   @Override
   protected Violation[] validateModel(GetEsimParameters requestParameters) {
     return new ViolationAggregator()
-      .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(requestParameters.getIccid()))
+      .add(
+        new StringValidator("iccid")
+          .minLength(18)
+          .maxLength(22)
+          .required()
+          .validate(requestParameters.getIccid())
+      )
       .aggregate();
   }
 }
