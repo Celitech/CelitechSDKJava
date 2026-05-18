@@ -72,13 +72,25 @@ public class StringValidator extends AbstractValidator<String> {
     List<Violation> violations = new ArrayList<>();
 
     if (minLength != null && value.length() < minLength) {
-      violations.add(new Violation(getFieldName(), String.format("must be at least %d characters long", minLength)));
+      violations.add(
+        new Violation(
+          getFieldName(),
+          String.format("must be at least %d characters long", minLength)
+        )
+      );
     }
     if (maxLength != null && value.length() > maxLength) {
-      violations.add(new Violation(getFieldName(), String.format("must be at most %d characters long", maxLength)));
+      violations.add(
+        new Violation(
+          getFieldName(),
+          String.format("must be at most %d characters long", maxLength)
+        )
+      );
     }
     if (pattern != null && !value.matches(pattern)) {
-      violations.add(new Violation(getFieldName(), String.format("must match pattern %s", pattern)));
+      violations.add(
+        new Violation(getFieldName(), String.format("must match pattern %s", pattern))
+      );
     }
 
     return violations.toArray(new Violation[0]);

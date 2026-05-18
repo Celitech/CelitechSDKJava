@@ -108,7 +108,13 @@ public class EditPurchaseOkResponse {
       if (!newEndDate$set) {
         throw new IllegalStateException("newEndDate is required");
       }
-      return new EditPurchaseOkResponse(purchaseId, newStartDate, newEndDate, newStartTime, newEndTime);
+      return new EditPurchaseOkResponse(
+        purchaseId,
+        newStartDate,
+        newEndDate,
+        newStartTime,
+        newEndTime
+      );
     }
   }
 }
