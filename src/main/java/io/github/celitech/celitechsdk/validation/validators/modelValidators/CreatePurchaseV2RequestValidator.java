@@ -9,7 +9,8 @@ import io.github.celitech.celitechsdk.validation.validators.NumericValidator;
  * Validator implementation for CreatePurchaseV2Request model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class CreatePurchaseV2RequestValidator extends AbstractModelValidator<CreatePurchaseV2Request> {
+public class CreatePurchaseV2RequestValidator
+  extends AbstractModelValidator<CreatePurchaseV2Request> {
 
   /**
    * Creates a validator with a field name for nested validation paths.
