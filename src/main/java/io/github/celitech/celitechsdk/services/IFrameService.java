@@ -2,6 +2,7 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestException;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
@@ -24,6 +25,8 @@ import okhttp3.Response;
  */
 public class IFrameService extends BaseService {
 
+  private RequestConfig tokenConfig;
+
   /**
    * Constructs a new instance of IFrameService.
    *
@@ -35,15 +38,38 @@ public class IFrameService extends BaseService {
   }
 
   /**
+   * Sets method-level configuration for {@code token}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public IFrameService setTokenConfig(RequestConfig config) {
+    this.tokenConfig = config;
+    return this;
+  }
+
+  /**
    * Generate Token
    *
    * @return response of {@code TokenOkResponse}
    */
   public TokenOkResponse token() throws ApiError {
+    return this.token(null);
+  }
+
+  /**
+   * Generate Token
+   *
+   * @return response of {@code TokenOkResponse}
+   */
+  public TokenOkResponse token(RequestConfig requestConfig) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.tokenConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTokenRequest();
-    Response response = this.execute(request);
+    Request request = this.buildTokenRequest(resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
     return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
   }
@@ -54,20 +80,31 @@ public class IFrameService extends BaseService {
    * @return response of {@code CompletableFuture<TokenOkResponse>}
    */
   public CompletableFuture<TokenOkResponse> tokenAsync() throws ApiError {
+    return this.tokenAsync(null);
+  }
+
+  /**
+   * Generate Token
+   *
+   * @return response of {@code CompletableFuture<TokenOkResponse>}
+   */
+  public CompletableFuture<TokenOkResponse> tokenAsync(RequestConfig requestConfig)
+    throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.tokenConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTokenRequest();
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    Request request = this.buildTokenRequest(resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
     });
   }
 
-  private Request buildTokenRequest() {
+  private Request buildTokenRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.POST,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "iframe/token"
     ).build();
   }

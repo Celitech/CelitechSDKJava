@@ -2,6 +2,7 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestException;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
@@ -24,6 +25,8 @@ import okhttp3.Response;
  */
 public class DestinationsService extends BaseService {
 
+  private RequestConfig listDestinationsConfig;
+
   /**
    * Constructs a new instance of DestinationsService.
    *
@@ -35,15 +38,39 @@ public class DestinationsService extends BaseService {
   }
 
   /**
+   * Sets method-level configuration for {@code listDestinations}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public DestinationsService setListDestinationsConfig(RequestConfig config) {
+    this.listDestinationsConfig = config;
+    return this;
+  }
+
+  /**
    * List Destinations
    *
    * @return response of {@code ListDestinationsOkResponse}
    */
   public ListDestinationsOkResponse listDestinations() throws ApiError {
+    return this.listDestinations(null);
+  }
+
+  /**
+   * List Destinations
+   *
+   * @return response of {@code ListDestinationsOkResponse}
+   */
+  public ListDestinationsOkResponse listDestinations(RequestConfig requestConfig) throws ApiError {
+    RequestConfig resolvedConfig =
+      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest();
-    Response response = this.execute(request);
+    Request request = this.buildListDestinationsRequest(resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
     return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
   }
@@ -54,20 +81,33 @@ public class DestinationsService extends BaseService {
    * @return response of {@code CompletableFuture<ListDestinationsOkResponse>}
    */
   public CompletableFuture<ListDestinationsOkResponse> listDestinationsAsync() throws ApiError {
+    return this.listDestinationsAsync(null);
+  }
+
+  /**
+   * List Destinations
+   *
+   * @return response of {@code CompletableFuture<ListDestinationsOkResponse>}
+   */
+  public CompletableFuture<ListDestinationsOkResponse> listDestinationsAsync(
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig =
+      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest();
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    Request request = this.buildListDestinationsRequest(resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
     });
   }
 
-  private Request buildListDestinationsRequest() {
+  private Request buildListDestinationsRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "destinations"
     ).build();
   }

@@ -35,7 +35,11 @@ public class GetEsimOkResponseEsimValidator extends AbstractModelValidator<GetEs
   protected Violation[] validateModel(GetEsimOkResponseEsim getEsimOkResponseEsim) {
     return new ViolationAggregator()
       .add(
-        new StringValidator("iccid").minLength(18).maxLength(22).required().validate(getEsimOkResponseEsim.getIccid())
+        new StringValidator("iccid")
+          .minLength(18)
+          .maxLength(22)
+          .required()
+          .validate(getEsimOkResponseEsim.getIccid())
       )
       .add(
         new StringValidator("activationCode")

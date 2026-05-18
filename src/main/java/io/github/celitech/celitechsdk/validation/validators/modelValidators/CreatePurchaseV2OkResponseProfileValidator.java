@@ -33,7 +33,9 @@ public class CreatePurchaseV2OkResponseProfileValidator
    * @return Array of violations found during validation
    */
   @Override
-  protected Violation[] validateModel(CreatePurchaseV2OkResponseProfile createPurchaseV2OkResponseProfile) {
+  protected Violation[] validateModel(
+    CreatePurchaseV2OkResponseProfile createPurchaseV2OkResponseProfile
+  ) {
     return new ViolationAggregator()
       .add(
         new StringValidator("iccid")
