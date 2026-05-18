@@ -51,7 +51,7 @@ public class TopUpEsimRequest {
   private JsonNullable<Double> duration;
 
   /**
-   * Email address where the purchase confirmation email will be sent (excluding QR Code & activation steps).
+   * Email address where the purchase confirmation email will be sent (excluding QR Code &amp; activation steps).
    */
   @JsonProperty("email")
   private JsonNullable<String> email;

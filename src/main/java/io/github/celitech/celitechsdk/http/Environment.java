@@ -25,7 +25,10 @@ public enum Environment {
   Environment(String url) {
     if (HttpUrl.parse(url) == null) {
       throw new IllegalArgumentException(
-        String.format("Environment url [%s] is not valid. Please use the following format https://api.example.com", url)
+        String.format(
+          "Environment url [%s] is not valid. Please use the following format https://api.example.com",
+          url
+        )
       );
     }
     this.url = url;
