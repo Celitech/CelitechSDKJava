@@ -1,32 +1,22 @@
 {
-  "liblabVersion": "2.25.53",
-  "date": "2026-05-12T12:42:42.933Z",
+  "sdkGenVersion": "1.1.2",
+  "date": "2026-05-18T10:09:01.753Z",
   "config": {
-    "apiId": 3121,
-    "sdkName": "Celitech",
-    "sdkVersion": "1.3.64",
-    "languages": ["java"],
-    "auth": ["oauth"],
-    "docs": ["snippets", "enhancedApiSpec"],
-    "liblabVersion": "2",
-    "deliveryMethods": ["zip"],
-    "rawConfig": {
-      "sdkName": "Celitech",
-      "apiName": "Celitech",
-      "apiVersion": "1.3.64",
-      "specFilePath": "swagger.yaml",
-      "languages": ["typescript", "python", "php", "java", "go", "csharp"],
-      "docs": ["snippets", "enhancedApiSpec"],
-      "auth": ["oauth"],
-      "customizations": {
-        "devContainer": true,
-        "generateEnv": true,
-        "inferServiceNames": false,
-        "includeOptionalSnippetParameters": false,
-        "deprecatedOperations": {
-          "include": true
+    "languages": [
+      "java"
+    ],
+    "deliveryMethods": [
+      "zip"
+    ],
+    "languageOptions": {
+      "java": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKJava",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
         },
-        "injectedModels": [],
         "license": {
           "type": "MIT"
         },
@@ -35,12 +25,6 @@
             "enabled": true,
             "refreshBuffer": 5000
           }
-        },
-        "responseHeaders": false,
-        "retry": {
-          "enabled": true,
-          "maxAttempts": 3,
-          "retryDelay": 150
         },
         "environmentVariables": [
           {
@@ -51,103 +35,19 @@
             "name": "CLIENT_SECRET",
             "description": "Client Secret parameter"
           }
-        ]
-      },
-      "languageOptions": {
-        "typescript": {
-          "githubRepoName": "CelitechSDKTypeScript",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "npmName": "celitech-sdk"
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
         },
-        "python": {
-          "githubRepoName": "CelitechSDKPython",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "pypiPackageName": "celitech-sdk"
-        },
-        "php": {
-          "githubRepoName": "CelitechSDKPHP",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "packageName": "celitech-sdk/sdk"
-        },
-        "java": {
-          "githubRepoName": "CelitechSDKJava",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "groupId": "io.github.celitech",
-          "artifactId": "celitech-sdk",
-          "developers": [
-            {
-              "name": "CELITECH",
-              "email": "info@celitech.com",
-              "organization": "Celitech",
-              "organizationUrl": "https://www.celitech.com"
-            }
-          ],
-          "homepage": "https://docs.celitech.com/"
-        },
-        "go": {
-          "githubRepoName": "CelitechSDKGo",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "goModuleName": "github.com/Celitech/CelitechSDKGo"
-        },
-        "csharp": {
-          "githubRepoName": "CelitechSDKCSharp",
-          "sdkVersion": "1.3.64",
-          "liblabVersion": "2",
-          "packageId": "Celitech.SDK"
-        }
-      },
-      "integrations": {
-        "enhancedApiSpec": {
-          "provider": "redocly",
-          "githubRepoName": "CelitechAPIReference",
-          "redocly": {
-            "openapiPath": "swagger.yaml"
-          }
-        }
-      },
-      "publishing": {
-        "githubOrg": "Celitech"
-      }
-    },
-    "liblabConfigVersion": "1.0.0",
-    "apiVersion": "1.3.64",
-    "apiName": "Celitech",
-    "specFilePath": "swagger.yaml",
-    "createDocs": false,
-    "languageOptions": {
-      "csharp": {
-        "githubRepoName": "CelitechSDKCSharp",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "packageId": "Celitech.SDK",
-        "useOptionalWrapper": false,
-        "validateResponses": false
-      },
-      "go": {
-        "githubRepoName": "CelitechSDKGo",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "goModuleName": "github.com/Celitech/CelitechSDKGo"
-      },
-      "java": {
-        "githubRepoName": "CelitechSDKJava",
-        "homepage": "https://docs.celitech.com/",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
         "groupId": "io.github.celitech",
         "artifactId": "celitech-sdk",
-        "includeKotlinSnippets": false,
+        "homepage": "https://docs.celitech.com/",
         "developers": [
           {
             "name": "CELITECH",
@@ -157,84 +57,212 @@
           }
         ]
       },
+      "typescript": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKTypeScript",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "npmName": "celitech-sdk"
+      },
       "python": {
+        "sdkVersion": "1.3.63",
         "githubRepoName": "CelitechSDKPython",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "alwaysInitializeOptionals": true,
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
         "pypiPackageName": "celitech-sdk"
       },
+      "go": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKGo",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "goModuleName": "github.com/Celitech/CelitechSDKGo"
+      },
+      "csharp": {
+        "sdkVersion": "1.3.63",
+        "githubRepoName": "CelitechSDKCSharp",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
+        "packageId": "Celitech.SDK",
+        "useOptionalWrapper": false
+      },
       "php": {
+        "sdkVersion": "1.3.63",
         "githubRepoName": "CelitechSDKPHP",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
+        "retry": {
+          "enabled": true,
+          "maxAttempts": 3,
+          "retryDelay": 150
+        },
+        "license": {
+          "type": "MIT"
+        },
+        "authentication": {
+          "oauth": {
+            "enabled": true,
+            "refreshBuffer": 5000
+          }
+        },
+        "environmentVariables": [
+          {
+            "name": "CLIENT_ID",
+            "description": "Client ID parameter"
+          },
+          {
+            "name": "CLIENT_SECRET",
+            "description": "Client Secret parameter"
+          }
+        ],
+        "devContainer": true,
+        "generateEnv": true,
+        "responseHeaders": false,
+        "includeOptionalSnippetParameters": false,
+        "injectedModels": [],
+        "inferServiceNames": false,
+        "deprecatedOperations": {
+          "include": true
+        },
         "packageName": "celitech-sdk/sdk"
-      },
-      "typescript": {
-        "githubRepoName": "CelitechSDKTypeScript",
-        "ignoreFiles": [],
-        "liblabVersion": "2",
-        "renameIllegalModelProperties": true,
-        "sdkVersion": "1.3.64",
-        "bundle": true,
-        "denoteCommon": false,
-        "exportClassDefault": false,
-        "generateEnumAs": "enum",
-        "httpClient": "fetch",
-        "npmName": "celitech-sdk"
       }
     },
-    "validationsToIgnore": [],
-    "publishing": {
-      "githubOrg": "Celitech",
-      "platform": "github"
-    },
-    "integrations": {
-      "enhancedApiSpec": {
-        "githubRepoName": "CelitechAPIReference",
-        "targetBranch": "main",
-        "provider": "redocly",
-        "redocly": {
-          "openapiPath": "swagger.yaml"
-        }
-      }
-    },
-    "analytics": {
-      "streaming": false,
-      "pagination": false
-    },
-    "authentication": {
-      "oauth": {
-        "enabled": true,
-        "basic": false,
-        "refreshBuffer": 5000
-      }
-    },
-    "devContainer": true,
-    "environmentVariables": [
-      {
-        "description": "Client ID parameter",
-        "name": "CLIENT_ID"
-      },
-      {
-        "description": "Client Secret parameter",
-        "name": "CLIENT_SECRET"
-      }
-    ],
-    "generateEnv": true,
-    "includeOptionalSnippetParameters": false,
-    "license": {
-      "type": "MIT",
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT",
-      "path": "MIT.ejs"
-    },
+    "includeWatermark": false,
     "responseHeaders": false,
-    "buildAllModels": false,
+    "sdkName": "Celitech",
+    "sdkVersion": "1.3.63",
+    "auth": [
+      "oauth"
+    ],
+    "apiVersion": "1.3.63",
+    "publishing": {
+      "githubOrg": "Celitech"
+    },
+    "customCode": {
+      "trackChanges": true
+    },
     "retry": {
       "enabled": true,
       "maxAttempts": 3,
@@ -242,21 +270,50 @@
       "maxDelay": 5000,
       "retryDelayJitter": 50,
       "backOffFactor": 2,
-      "httpCodesToRetry": [408, 429, 500, 502, 503, 504],
-      "httpMethodsToRetry": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
+      "httpMethodsToRetry": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "HEAD",
+        "OPTIONS"
+      ]
     },
+    "license": {
+      "type": "MIT",
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT",
+      "path": "MIT.ejs"
+    },
+    "authentication": {
+      "oauth": {
+        "enabled": true,
+        "refreshBuffer": 5000
+      }
+    },
+    "environmentVariables": [
+      {
+        "name": "CLIENT_ID",
+        "description": "Client ID parameter"
+      },
+      {
+        "name": "CLIENT_SECRET",
+        "description": "Client Secret parameter"
+      }
+    ],
+    "devContainer": true,
+    "generateEnv": true,
+    "includeOptionalSnippetParameters": false,
+    "injectedModels": [],
+    "inferServiceNames": false,
     "deprecatedOperations": {
       "include": true
     },
-    "multiTenant": true,
-    "includeWatermark": false,
     "githubRepoName": "CelitechSDKJava",
-    "homepage": "https://docs.celitech.com/",
-    "ignoreFiles": [],
-    "renameIllegalModelProperties": true,
     "groupId": "io.github.celitech",
     "artifactId": "celitech-sdk",
-    "includeKotlinSnippets": false,
+    "homepage": "https://docs.celitech.com/",
     "developers": [
       {
         "name": "CELITECH",
@@ -271,16 +328,17 @@
       "enabled": false,
       "sourceDir": ""
     },
+    "validateResponses": false,
     "usesFormData": false,
     "fileOutput": "/tmp",
-    "inferServiceNames": false,
     "httpLibrary": {
       "name": "axios",
-      "packages": {
-        "axios": "^1.13.2"
-      },
-      "languages": ["typescript"]
+      "packages": {},
+      "languages": [
+        "typescript"
+      ]
     },
+    "multiTenant": false,
     "customQueries": {
       "paths": [],
       "rawQueries": [],
@@ -315,7 +373,6 @@
     "src/main/java/io/github/celitech/celitechsdk/http/serialization/Serializer.java",
     "src/main/java/io/github/celitech/celitechsdk/http/serialization/Util.java",
     "src/main/java/io/github/celitech/celitechsdk/http/interceptors/DefaultHeadersInterceptor.java",
-    "src/main/java/io/github/celitech/celitechsdk/hook/Hook.java",
     "src/main/java/io/github/celitech/celitechsdk/exceptions/ApiError.java",
     "src/main/java/io/github/celitech/celitechsdk/exceptions/BadRequestException.java",
     "src/main/java/io/github/celitech/celitechsdk/exceptions/UnauthorizedException.java",
@@ -325,18 +382,8 @@
     "src/main/java/io/github/celitech/celitechsdk/http/interceptors/RetryInterceptor.java",
     "src/main/java/io/github/celitech/celitechsdk/config/RetryConfig.java",
     "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java",
-    "documentation/snippets/destinations-get.md",
-    "documentation/snippets/packages-get.md",
-    "documentation/snippets/purchases-v2-post.md",
-    "documentation/snippets/purchases-get.md",
-    "documentation/snippets/purchases-post.md",
-    "documentation/snippets/purchases-topup-post.md",
-    "documentation/snippets/purchases-edit-post.md",
-    "documentation/snippets/purchases-{purchaseId}-consumption-get.md",
-    "documentation/snippets/esim-get.md",
-    "documentation/snippets/esim-{iccid}-device-get.md",
-    "documentation/snippets/esim-{iccid}-history-get.md",
-    "documentation/snippets/iframe-token-post.md",
+    "src/main/java/io/github/celitech/celitechsdk/config/RequestConfig.java",
+    "documentation/snippets/snippets.json",
     "documentation/models/GrantType.md",
     "documentation/models/ListDestinationsOkResponse.md",
     "documentation/models/Destinations.md",
@@ -385,6 +432,7 @@
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2OkResponseValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2OkResponseProfileValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2RequestValidator.java",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/ListPurchasesOkResponseValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/PurchasesValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/PurchasesEsimValidator.java",
     "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/ListPurchasesParametersValidator.java",
@@ -421,9 +469,6 @@
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimDeviceOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimHistoryOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/TokenOkResponse.java",
-    "src/main/java/io/github/celitech/celitechsdk/services/OAuthService.java",
-    "src/main/java/io/github/celitech/celitechsdk/services/DestinationsService.java",
-    "src/main/java/io/github/celitech/celitechsdk/services/IFrameService.java",
     "documentation/services/DestinationsService.md",
     "documentation/services/PackagesService.md",
     "documentation/services/IFrameService.md",
@@ -436,7 +481,9 @@
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2OkResponsePurchase.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponseProfile.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetPurchaseConsumptionOkResponse.java",
-    "src/main/java/io/github/celitech/celitechsdk/services/PackagesService.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/OAuthService.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/DestinationsService.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/IFrameService.java",
     "documentation/services/ESimService.md",
     "src/main/java/io/github/celitech/celitechsdk/models/GetAccessTokenOkResponse.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetAccessTokenRequest.java",
@@ -446,11 +493,11 @@
     "src/main/java/io/github/celitech/celitechsdk/models/Device.java",
     "src/main/java/io/github/celitech/celitechsdk/models/History.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2OkResponseProfile.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/PackagesService.java",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseRequest.java",
     "documentation/services/PurchasesService.md",
     "src/main/java/io/github/celitech/celitechsdk/models/Package_.java",
     "src/main/java/io/github/celitech/celitechsdk/models/GetEsimOkResponseEsim.java",
-    "src/main/java/io/github/celitech/celitechsdk/services/ESimService.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Packages.java",
     "src/main/java/io/github/celitech/celitechsdk/models/ListPackagesParameters.java",
     "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseOkResponse.java",
@@ -461,7 +508,171 @@
     "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimRequest.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2Request.java",
     "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseRequest.java",
+    "src/main/java/io/github/celitech/celitechsdk/services/ESimService.java",
     "src/main/java/io/github/celitech/celitechsdk/models/Purchases.java",
     "src/main/java/io/github/celitech/celitechsdk/services/PurchasesService.java"
-  ]
+  ],
+  "fileHashes": {
+    ".devcontainer/devcontainer.json": "96075f977511b529b545cd4be0d03ebdec1806c1fcfcb985eadfc7c2e94daa2d",
+    ".env.example": "69a3ee82f15d8bcc221e9c34c99e5a851d8b318ac2ac7e78f97ef32b743b303e",
+    ".gitignore": "16c2381047d584e96eb9c89da75b41f24abb5df5e1b9b770321ef9bf9f46b7b4",
+    ".idea/compiler.xml": "d4b3c50d88d994f6b45771590618d6bb974dd4686aee2207f98e4f2d6425f438",
+    ".idea/encoding.xml": "c08731aff01601ae1dce0f19fe8f058b750a167cdef4fb92b8ba104eeb7ec038",
+    ".idea/jarRepositories.xml": "9c794caa37d870d809db42aa629d5232e5f1a9a76593a28a55898244ecbc75a2",
+    ".idea/misc.xml": "042abf22dfaa2dc7e5f3d7956f778c18bdfb7404f4a9bddd388d49e48e00f90e",
+    ".idea/workspace.xml": "4d10ccfa6c224926ec01c2f28beada28a066755d258532b63687c141c1ec956d",
+    "LICENSE": "3ec558dc6e9c9355ab4b28c942caa92bf90b0b82c12d7838d2ef92467ad135c1",
+    "README.md": "1475a9d179d939207f8a353b1ce8ae1a32c5219e338ec274cfdd3d5eec7f2d6d",
+    "documentation/models/BadRequest.md": "5d003c913257eecfdd9ed8691307b566530ce6c81ccfb2b1c438faddaa748632",
+    "documentation/models/CreatePurchaseOkResponse.md": "c476c3fe6f7a93f6e946858f834e11a7899bd1deb610e0de30ab5d86de643cc4",
+    "documentation/models/CreatePurchaseOkResponseProfile.md": "82a9e9f2abb9c86c97678aef3a0ec0c63290a11f133b06480ae183e49f65b49b",
+    "documentation/models/CreatePurchaseOkResponsePurchase.md": "50449c6e0a0932980a1bc50d3a622581c97ef17e87c1f39db3ab6613d7f3dcb5",
+    "documentation/models/CreatePurchaseRequest.md": "c8746b779dc2f05df477ab0c66879f3bf0b8ee188f9fa099eb50f3fb0dcd7332",
+    "documentation/models/CreatePurchaseRequestLanguage.md": "f06f56c25fd0102f2e5fbdcd5da19ddbdb521e4bec008c8abb8fd189a77ee2de",
+    "documentation/models/CreatePurchaseV2OkResponse.md": "58eee311187e0475ee7fb872bd6dfb405c8f90edb5a7b1ac6b48ec6180d599f9",
+    "documentation/models/CreatePurchaseV2OkResponseProfile.md": "99111006aebf5e045884349815f78d9dd6be1bf0b3469a2561773b9f12072f75",
+    "documentation/models/CreatePurchaseV2OkResponsePurchase.md": "c5ab597b301a696199f44bd3b1c004e43777ce7b8b0ffb2dc5eb9de8bc733e2b",
+    "documentation/models/CreatePurchaseV2Request.md": "1daf7f93f1d49e725e406583911811ac7bf4e1ec17efa4143fe55ee9c972f620",
+    "documentation/models/CreatePurchaseV2RequestLanguage.md": "0b54d907e3b3e3a80d8bc44d2910c61eb359c1fab3ddf6410af42a426f4d05ef",
+    "documentation/models/Destinations.md": "2f3ab7a172393a5ef1bca18ff7a9a444a1e74bd2fdd73e962f0e95f0f3646f57",
+    "documentation/models/Device.md": "8e36e7d98a0bf9dd7e605daf163f27bfe65f70a8a743ce7152288419e01f5600",
+    "documentation/models/EditPurchaseOkResponse.md": "e9647b4129cd793fa2a324f9649c260090c3c0269ad3208e8fc057cfbed654cb",
+    "documentation/models/EditPurchaseRequest.md": "34c1d7e4430e71e20736fdf2078db9585202616d3715d598b65d2cde1dcb09f1",
+    "documentation/models/GetEsimDeviceOkResponse.md": "13f05bde916a4ead9e05ee39c737b99ba8ebcb28967a5ddd7348b6a48ab24b97",
+    "documentation/models/GetEsimHistoryOkResponse.md": "6c8592f49a1ce2ba17e80aa905aa61be2f065888f6ffe4a27a2e47552210e30f",
+    "documentation/models/GetEsimHistoryOkResponseEsim.md": "7aad8593a0f66375f338a99c7ea652ca995c94490f4e3645bfe60e471bdc3a8a",
+    "documentation/models/GetEsimOkResponse.md": "8661a78c8f5d12288fafdd2cfc64d3934f40f97b26afb676ec717ba0e49fc014",
+    "documentation/models/GetEsimOkResponseEsim.md": "60b0216392048014c77c804b305322cfaddf983a533a462b574beb0c48bd31a0",
+    "documentation/models/GetEsimParameters.md": "52dc349e2d97d1257e3ed70fc1fdf31579c47c724f10c6363bc2243de9bdad7f",
+    "documentation/models/GetPurchaseConsumptionOkResponse.md": "d4658ec2dc054d2b7f453a44d8b679089c271256bce4a94c48e4730b2acf042f",
+    "documentation/models/GrantType.md": "12c1f894970333edb1011eba1c5e229c8ee10491a76f70bcec73e458f9e0ffd2",
+    "documentation/models/History.md": "9b1446c2332d31c5181b99e0332e294d0fb300f0a6658c6b56926bfeb81acf82",
+    "documentation/models/ListDestinationsOkResponse.md": "150b4ed21ad37f1839d16eb4419b82c6881fd716d0e97d35d665502557406ff5",
+    "documentation/models/ListPackagesOkResponse.md": "3468469677c83a46e14e7609843c2f64a497bc8f9b75d90f73cac97eb701d34e",
+    "documentation/models/ListPackagesParameters.md": "33c9370b3c78edb20ba2b069d88bc560811971c56589084b6bc9fa9001eca34f",
+    "documentation/models/ListPurchasesOkResponse.md": "9397266a582ac846f723c19280f44155f889296218e18695bd6859191a4802ad",
+    "documentation/models/ListPurchasesParameters.md": "6de8cee995f704fc4ab8776e6f6b188fbc59611087ed3d318b1b8e135efbb626",
+    "documentation/models/Package_.md": "e2d41f64b4cd306bf481e3fb2188bf88937db1b9fe7f1b4677dd004df17fec90",
+    "documentation/models/Packages.md": "9ff41bee17a31a1abe94c70c76992c682ed75db9b3c7be241beb8fa960a97261",
+    "documentation/models/Purchases.md": "3684170187b2e8d8bd22659201be89dae228946528cc68115d6690fc133a38ef",
+    "documentation/models/PurchasesEsim.md": "59900868b9e6713be0db21a0fa27e0e6933bf420c075c1255342d0cc4421da6c",
+    "documentation/models/TokenOkResponse.md": "f9024a85ccfbb2793902b895c3a3e4e562909e8014cf91c38aa9e8f4e82c7f6f",
+    "documentation/models/TopUpEsimOkResponse.md": "c8d2dfd6c948801dbd2878555f3988bc5fd255e8c69d32481a25e8a00fe5a2ef",
+    "documentation/models/TopUpEsimOkResponseProfile.md": "2886cf0e5b1e7afb5a22b5d9460867fbdcc3b48d85acffeffcc1e24ccd2c85c2",
+    "documentation/models/TopUpEsimOkResponsePurchase.md": "a4c3c9c85abb24e64dd861056dbbe96f2f7d1fe45dcef4c986f548206e0a8c13",
+    "documentation/models/TopUpEsimRequest.md": "816f71b96e2dfcb3ab22293df21cb373aa90b66460903fc42c020d27cb70a970",
+    "documentation/models/Unauthorized.md": "7869ea166931284ef0eefe54e65f31819e74f0a4954a8d2f8fcbd06c938b3efa",
+    "documentation/services/DestinationsService.md": "7ef48749b8733a8f5d1e8e50358f90b58f683e84fcf8d35805c539731b406fbf",
+    "documentation/services/ESimService.md": "9696532a13709fd01b720672f4df4efe858c9f970d40be55155737edea097066",
+    "documentation/services/IFrameService.md": "0248368cd69604361ed7a9d037198efaeada03791859de5347d7a40c7fd11c5c",
+    "documentation/services/PackagesService.md": "a6ac39890717b6830a4fb866d6743ffb815d6931ff4a67c1f320a1d496513c7d",
+    "documentation/services/PurchasesService.md": "7bef56a8fdd3cb2a8614bbb03b5c5b3540bde1e48c28f56a16c9d3df29600b06",
+    "documentation/snippets/snippets.json": "42a7cf77596a54610441a296006b14e046b86eaf5bb0e23197700f7411d0a7e4",
+    "examples/.gitignore": "16c2381047d584e96eb9c89da75b41f24abb5df5e1b9b770321ef9bf9f46b7b4",
+    "examples/README.md": "3956036b4ea353b3ce6b194c949eca4d7ca2c1ee82ccde7e7ab059a79d400952",
+    "examples/pom.xml": "34dd60d1ccf65fd464d16f5c323a67b9d4501713c272b253d81060e0ea8b229d",
+    "examples/run.sh": "b421122e2d707b60e35b125a39a47dd9b1bec16d241aec1ba5a7357816e4757b",
+    "examples/src/main/java/com/example/Main.java": "2791dfa847f5185a3a60d84cb520e962677bf77574200ef6fa5ac2a3bc26ab2f",
+    "pom.xml": "48ded4bb2d06b24eaff295f792605274ca7b7b49627c1b5690baa8b3fc2cb2d2",
+    "prettier.config.js": "2fe33fda52344779fcf235afa8152cfd356880dc3161da09403dc26231bc72d9",
+    "src/main/java/io/github/celitech/celitechsdk/Celitech.java": "4fad329e0040393e185ba71259d01ec6a88903cd05b6a604c4360899c11de820",
+    "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java": "5068bb286cb062be5a0009c69d9d1c1e59fc502693aec3e24e3b2a6153d2f1e4",
+    "src/main/java/io/github/celitech/celitechsdk/config/RequestConfig.java": "2402cef75f9cf062e5e6c798c5574318f9cabc8b020c30244b989a430f443d5c",
+    "src/main/java/io/github/celitech/celitechsdk/config/RetryConfig.java": "82bfe54a2f5a76edb6905503d8b5bb89ca4c4a0f9b2df423324947948df072dc",
+    "src/main/java/io/github/celitech/celitechsdk/exceptions/ApiError.java": "3defe5ad279826418718d394f99a73080bfc192446a257367ba9200a785259e3",
+    "src/main/java/io/github/celitech/celitechsdk/exceptions/BadRequestException.java": "fbb5b6ea19aecf7b876d5e23d29fcdb8cda7f312c560c3d4ad653cfbe598a753",
+    "src/main/java/io/github/celitech/celitechsdk/exceptions/UnauthorizedException.java": "0dac45506b744dca09244788911c81c160c8fce43204d35b1de5289358f3c809",
+    "src/main/java/io/github/celitech/celitechsdk/http/Environment.java": "5d613c994125f0a71a49c8a3424000636c9fc69194b7066d6ff6562398143784",
+    "src/main/java/io/github/celitech/celitechsdk/http/HttpMethod.java": "4e218d94088653955567930e42cfedfeadd6b3ba99eb36b592af726f8c3f0e19",
+    "src/main/java/io/github/celitech/celitechsdk/http/ModelConverter.java": "d42ac06dbbf2246d1d542358c239eec3a8ad8077e7042b98ff5c669c89fab7cd",
+    "src/main/java/io/github/celitech/celitechsdk/http/interceptors/DefaultHeadersInterceptor.java": "6825fc9a6b537ea05e8c1477cf1c5234b7fbf0734f8e6bd45d629d64b2352b5b",
+    "src/main/java/io/github/celitech/celitechsdk/http/interceptors/OAuthInterceptor.java": "0e8a4bd2c6cf3feaaa563bd9bf80164e3a68f719dc377f2b9886dc148ea50f19",
+    "src/main/java/io/github/celitech/celitechsdk/http/interceptors/RetryInterceptor.java": "645b5639e421fd7dff541493094a3cb3a007b6146b306b0038c60c5f93538553",
+    "src/main/java/io/github/celitech/celitechsdk/http/oauth/Scope.java": "d9b4bccfcd3bdd48647452658f8539c6f0364a6f00c93c89b4423d9bbbc34444",
+    "src/main/java/io/github/celitech/celitechsdk/http/oauth/ScopeManager.java": "876bda19d854c4ec3d3a3b2dbbc2a0324cd0e867a3ad2f9054e1e2638a7c010c",
+    "src/main/java/io/github/celitech/celitechsdk/http/oauth/TokenManager.java": "3f7c34b0cd5f0bf263d29981cf4a951fe2f05ceee044dbff05b89cd05c75cff0",
+    "src/main/java/io/github/celitech/celitechsdk/http/serialization/PathSerializationStyle.java": "ff491182aaca2d11fa9a89ed56ff2d7e2997f768e0eb5fc3d99dfa165afdb973",
+    "src/main/java/io/github/celitech/celitechsdk/http/serialization/QuerySerializationStyle.java": "15ff23e075647b3c63c25f6b929e0f525f73c02a8ab5eae6011a0848d4ab5da2",
+    "src/main/java/io/github/celitech/celitechsdk/http/serialization/SerializationStyle.java": "827fd72c707772042ea4e5e14fae6e8648be0257d5951a2935adb93ff62955e4",
+    "src/main/java/io/github/celitech/celitechsdk/http/serialization/Serializer.java": "50b9ec199571b2da3b07985d00aca15b8544c21aa45e0372f153e7c9d23dbafb",
+    "src/main/java/io/github/celitech/celitechsdk/http/serialization/Util.java": "a81bd8a034ce625b3803f348971cf03f1927573d5d73f0fa0ae926715f3d104c",
+    "src/main/java/io/github/celitech/celitechsdk/http/util/ContentTypes.java": "f68688f879d69f44b1632b3f9da156a79405f4496fcd373275cec4ce7222d2f3",
+    "src/main/java/io/github/celitech/celitechsdk/http/util/HttpArgumentConverter.java": "4d7252c40672004418cb547a6a5672302882a7419fe59211cd6f0fbe15d1bbc9",
+    "src/main/java/io/github/celitech/celitechsdk/http/util/RequestBuilder.java": "6d3267f1ed4ba43ffc93b04976f232cbfa78b3f59d2d1b4da81aadaa3332db28",
+    "src/main/java/io/github/celitech/celitechsdk/json/TypeUtils.java": "edb84df4486520a6b553eafc6512c7603e5020304c6c5ab4f978d962757aa26b",
+    "src/main/java/io/github/celitech/celitechsdk/models/BadRequest.java": "61a663f7291ad1ebdc52906374d16626c388b2b5971cbcfcb63a65e8d56bddb4",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponse.java": "c0ea6ef2baa1be0bd63a09876e82ffef439fb404327fdb8acb2638eaa8749b98",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponseProfile.java": "6076bab162f77a69f5ecb39d941ca81e21b1f878a9adc756663f3872631ef8db",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseOkResponsePurchase.java": "af718f47c19228d5dce5cf0bff2d260f88c7b81b1ba176b4749f06af26d0564c",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseRequest.java": "585d4476b105120e8a55b7802161a2a691dc5ba2bbecf59f734910d7e2cb0201",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseRequestLanguage.java": "8c233a4baaa5a0cf38dcc58908c65abfee1418c6a466e8c1082508400dfc9fba",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2OkResponse.java": "4eb889a9435cb05f3a3be5a816f021831379c5499b9fe0da89ef12abc05ea9d8",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2OkResponseProfile.java": "0c3f0bfb10e91d91fe2290887863d2036c8b2dcdb93885ee098701140a8114af",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2OkResponsePurchase.java": "d8ed39c129189e20c6fa7c2958a474d7eb035bd10275474bc9a4b1932283b1ff",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2Request.java": "4681ce5527506662864f198f119b32ea9bdef2163b0bfe3c1a651ad1f8c31d08",
+    "src/main/java/io/github/celitech/celitechsdk/models/CreatePurchaseV2RequestLanguage.java": "94865db483b31337fb95edf78c597a47b7666b15de351af83598bc6b8e6113f4",
+    "src/main/java/io/github/celitech/celitechsdk/models/Destinations.java": "73ee13b2cb083f3cf271bb81bcb5d398acc7ec14f31bd2df986a753042185e49",
+    "src/main/java/io/github/celitech/celitechsdk/models/Device.java": "52353f59e61008c9314983bd617dd16e6b9896840e1bf7e4bfde530b9a5c5126",
+    "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseOkResponse.java": "7642bd48d0cb276ea636a4833379c5c0787ea8831109cc442b2b28712f657eaf",
+    "src/main/java/io/github/celitech/celitechsdk/models/EditPurchaseRequest.java": "e07ae69a3dface797f04e9a807c819451ddc1230c48d6f27897b1d7f1127d7aa",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetAccessTokenOkResponse.java": "f009696e99e620fabc2880d62ae7fe3f03f8aaff15a59227c6750f2edfea639f",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetAccessTokenRequest.java": "ea7903cc6bb54e976dacb5bde56964082006efd09e6474a0a08f0e1a2f11b3af",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimDeviceOkResponse.java": "50f16f2904ea611da66bdf904ac6b229cfc58b52a91d03f773bbbddfde3676ef",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimHistoryOkResponse.java": "5e2bda647b9d15f6d1562bf7eec7d06bf0f8b78e55570bcfc47f20cfc4a50019",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimHistoryOkResponseEsim.java": "0b11b0ac30ddd09f0f8a145e26ae59e4053df88dc8e9c31195d86b1856f5fec0",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimOkResponse.java": "04d4cd2209f879f6bee33acfa4db035350ad105bedc5523bb9dd71284f2b0f29",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimOkResponseEsim.java": "09f81c2cbcee8d59a0bb7585b26011ed36985027eebe7e4293ff8387b821f779",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetEsimParameters.java": "41f7028747faa466de9fbdea633c89bad48c8a574e3d24b07f21469e14e88e10",
+    "src/main/java/io/github/celitech/celitechsdk/models/GetPurchaseConsumptionOkResponse.java": "42ac4a97d62fe845d2b6d45f1dcd9e0d427e070e40e0b5331d9b8d10a885987e",
+    "src/main/java/io/github/celitech/celitechsdk/models/GrantType.java": "e2f2ef1f26a4feb8fddb6d7c3463594826e3ae1851ea26df7833c526ec98646f",
+    "src/main/java/io/github/celitech/celitechsdk/models/History.java": "bc2f1b75a258d64193f75df1533996f2edd7921c1e197d0fb7019ab01410b96b",
+    "src/main/java/io/github/celitech/celitechsdk/models/ListDestinationsOkResponse.java": "6bc6c1bd9a426b0c23edcb8f5bbb0e321e6360381590bed02371f59252c17896",
+    "src/main/java/io/github/celitech/celitechsdk/models/ListPackagesOkResponse.java": "521998eef6a66e35a5208877e2b05574e7b58489b2ba934ac7bb29d607f9db79",
+    "src/main/java/io/github/celitech/celitechsdk/models/ListPackagesParameters.java": "8c6ea0987895aca53c24287194ec14479419449c7d81612b61e8ddea57eebca0",
+    "src/main/java/io/github/celitech/celitechsdk/models/ListPurchasesOkResponse.java": "848c61a9cba118ed9bdd051c080b6b888a79ef5cdfc374515ab99dcc8ebccbe7",
+    "src/main/java/io/github/celitech/celitechsdk/models/ListPurchasesParameters.java": "935a4ae07e90b4605bd89782fdab4529d06a86096b4cf6648625fc69aed251c3",
+    "src/main/java/io/github/celitech/celitechsdk/models/Package_.java": "84109028372f7a51b66d82c043561a6ba087615a4db493431c72d60553d0c0c2",
+    "src/main/java/io/github/celitech/celitechsdk/models/Packages.java": "b46a42667b890e9b60ef635f8954cdbf7dc83964c5a0daf3ab4c75a8f5a63f26",
+    "src/main/java/io/github/celitech/celitechsdk/models/Purchases.java": "f1025373945cb1c718ba1284599c1633b35f2c4f19aef4659a87a9e61e556a76",
+    "src/main/java/io/github/celitech/celitechsdk/models/PurchasesEsim.java": "1ad0d8b412b06b0bd6710b9e9b0ce0c48393499d7621aa48da31777acebe3bac",
+    "src/main/java/io/github/celitech/celitechsdk/models/TokenOkResponse.java": "edade61aa616c42e9a72534e0f0a7ca33d05f37922508341dfccd977bfea1a83",
+    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponse.java": "af5cb0df0cb3029177dff5da78ff00717db88dd673c0c735fec2eb846496f0ea",
+    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponseProfile.java": "34e0426013e0f49188d0d2b00bef91c98e6ad280a0e128103438a9c3e3ddf6aa",
+    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimOkResponsePurchase.java": "6f4fe681f04319be7031df779bd3a0db03f334d10cf2ffca824118ae43013373",
+    "src/main/java/io/github/celitech/celitechsdk/models/TopUpEsimRequest.java": "408f8d8f07a222b9a4a4c7c581ee4fa29dc87b69a33db11dcfb3a475f395494e",
+    "src/main/java/io/github/celitech/celitechsdk/models/Unauthorized.java": "b238f098058527e767a56c600c2ee510bed863ecbd1c607ae41557baddd40131",
+    "src/main/java/io/github/celitech/celitechsdk/services/BaseService.java": "e008cf8943772b4e703c7846d486e64e96126d2220c780de836367dc3f4f2b30",
+    "src/main/java/io/github/celitech/celitechsdk/services/DestinationsService.java": "11873e7b84746613232d7d26541a79d3816ae06df053bde0b556e6339932f455",
+    "src/main/java/io/github/celitech/celitechsdk/services/ESimService.java": "ab5da25278a51905ed9a00e59a68df7e6e2b9a0311bc941fc309b9cb79e12bc1",
+    "src/main/java/io/github/celitech/celitechsdk/services/IFrameService.java": "3e1fe9ad9000420fc7d418f454273e56ee6ca17db151b0d9b5f2b68e4ad94341",
+    "src/main/java/io/github/celitech/celitechsdk/services/OAuthService.java": "c2f60674b5311b8829945db48633fd86261d1d48a9785e36bbff1dd77ca72b67",
+    "src/main/java/io/github/celitech/celitechsdk/services/PackagesService.java": "aa4529eb3eb7262779f15328af35e576e31ccf140d4c4130e054012e753fbfe2",
+    "src/main/java/io/github/celitech/celitechsdk/services/PurchasesService.java": "63de856e0c44abb3d884dcfd08e957de5db7796e7e619a395ac7177fc387bc22",
+    "src/main/java/io/github/celitech/celitechsdk/validation/Violation.java": "3f93cd5a7e70682181eb5395e46ba29592c2b14b2914ac7309cef37688567491",
+    "src/main/java/io/github/celitech/celitechsdk/validation/ViolationAggregator.java": "20e3f965b550b13fbba179460e5d5e0eb18fd355942fc7c2495e7cbcb8e157d9",
+    "src/main/java/io/github/celitech/celitechsdk/validation/exceptions/ValidationException.java": "d6596efb13691cb168195d9e903b7abaa2ac0ef31ea0067f8ffa9bf422e5bd0c",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/AbstractValidator.java": "092cddb7c2a3c20591062a08fc12949ff815ca792b7a48c02ae8dcd910ea6252",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/ListValidator.java": "de3ed9c892d882fe42a62153c134b6319ce4afb9bd30ca2e5266d77f23f65bf8",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/NumericValidator.java": "ce728c5ac4f426c2ccca16c25b8c0cb833a8992eef5748776494618d8e340326",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/StringValidator.java": "90f5b87e81bd95d0a171aa844723db3513ebfe23cb1a254cb335ae62279a1a1b",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/Validator.java": "108bf06d5c90df4e61e7606f82c24ca5b14d2661ab2c2be1dde2fdca731c5aa0",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/AbstractModelValidator.java": "921577e704d3a7b74c040b127e5b910cffd96aeb56a959e80d60c80ebd64a612",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseOkResponseProfileValidator.java": "7bee09ca3d203fe8f5103d134a3029d367edf95c8981468b5289bbefb96687c9",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseOkResponseValidator.java": "e896a58040afcb866a2b82a2f857a212dfe6bcd3024adb88f72248406506763e",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2OkResponseProfileValidator.java": "5971af915e26a071f91f77e53c2ff05c573f6b749c338ccc1519b042914d189b",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2OkResponseValidator.java": "180003897602bff2ac97d5227e41d6dec70e03c61e62fd887e3a45f003a562a3",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/CreatePurchaseV2RequestValidator.java": "df601dfa8f6b3d494f2b817bb48f6d3fc50fda87c1afcf91af988d43e34508f1",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/GetEsimHistoryOkResponseEsimValidator.java": "db5325d12ee8c50ed14467a5e79ff24e4625bb1dd02472ca05a900f6a9d69f24",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/GetEsimHistoryOkResponseValidator.java": "e7d0611761d698b0b7fa9db89ccea14e6af28c3e61b5a2cab199e160f33ce0c6",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/GetEsimOkResponseEsimValidator.java": "61f12cb798f668a87eb66381b99344b2e7529d4775adcc9a3d2f865bccfee794",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/GetEsimOkResponseValidator.java": "f1198d3f31570503b8b371bd6b706631b8ba1fec4846e188df28d4a0ad78fa12",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/GetEsimParametersValidator.java": "023f307532ce7d351db23a22794e113bb992959b9a7ae5fc1b612ae33e2bd9fb",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/ListPurchasesOkResponseValidator.java": "ba956aae5d2d4886d756c9d1d10b32c4347d3e77e45fec9ed9b14905d06d8cc0",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/ListPurchasesParametersValidator.java": "047b003133338a632521d28f12781195c932d2f89be8701abcd5c5ab1952e06d",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/PurchasesEsimValidator.java": "05a450c9ed70ff2c98f50f478fdd96b769e1d70adcb54c1d73483600aa21ebe8",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/PurchasesValidator.java": "949adb9c7148f27ae8200b1d35bd817b76e26fda1008f27480b602c978a54fb3",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/TopUpEsimOkResponseProfileValidator.java": "af1dc1af36c548815b4ebb421332fe467d643b0747267799c93de2f6e6c0dc04",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/TopUpEsimOkResponseValidator.java": "8938a49d16a6ab5498d65465e21abcea724bdb3df07106bc86de1e428d11c73c",
+    "src/main/java/io/github/celitech/celitechsdk/validation/validators/modelValidators/TopUpEsimRequestValidator.java": "9e5af67e3bca2775f43282d93dcaa0ed3a1a6081c185d0c79f35782bd6f449b2"
+  }
 }
