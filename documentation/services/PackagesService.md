@@ -17,28 +17,34 @@ List Packages
 
 | Name              | Type                                                          | Required | Description               |
 | :---------------- | :------------------------------------------------------------ | :------- | :------------------------ |
-| requestParameters | [ListPackagesParameters](../models/ListPackagesParameters.md) | ❌       | Request Parameters Object |
+| requestParameters | [ListPackagesParameters](../models/ListPackagesParameters.md) | ✅       | Request Parameters Object |
 
 **Return Type**
 
-`ListPackagesOkResponse`
+`Object`
 
 **Example Usage Code Snippet**
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPackagesParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
-    ListPackagesOkResponse response = celitech.packages.listPackages();
+    ListPackagesParameters requestParameters = ListPackagesParameters.builder()
+      .accept("application/json")
+      .build();
+
+    Object response = celitech.packages.listPackages(requestParameters);
 
     System.out.println(response);
   }
