@@ -43,7 +43,10 @@ public class RetryInterceptor implements Interceptor {
         }
         tryCount++;
       } catch (IOException e) {
-        if (!config.getExceptionsToRetry().contains(e.getClass()) || tryCount == config.getMaxRetries()) {
+        if (
+          !config.getExceptionsToRetry().contains(e.getClass()) ||
+          tryCount == config.getMaxRetries()
+        ) {
           throw e;
         }
       }
@@ -67,18 +70,24 @@ public class RetryInterceptor implements Interceptor {
    * @return The delay in milliseconds, capped at the configured maximum delay
    */
   private int calculateDelay(int tryCount) {
-    final int delay = (int) (config.getInitialDelay() * Math.pow(config.getBackoffFactor(), tryCount - 1));
+    final int delay = (int) (config.getInitialDelay() *
+      Math.pow(config.getBackoffFactor(), tryCount - 1));
     return Math.min(delay, config.getMaxDelay());
   }
 
   /**
    * Determines if a response should be retried based on status code and HTTP method.
+   * By default, retries all 5xx server errors and specific 4xx client errors (408 Timeout, 429 Rate Limit).
    *
    * @param response The HTTP response to check
    * @return true if the response should be retried, false otherwise
    */
   private boolean isRetryable(Response response) {
-    final boolean isRetryableStatusCode = config.getStatusCodesToRetry().contains(response.code());
+    final int statusCode = response.code();
+    final boolean isRetryableStatusCode = !config.getStatusCodesToRetry().isEmpty()
+      ? config.getStatusCodesToRetry().contains(statusCode)
+      : statusCode >= 500 || statusCode == 408 || statusCode == 429;
+
     final boolean isRetryableMethod = config
       .getHttpMethodsToRetry()
       .stream()

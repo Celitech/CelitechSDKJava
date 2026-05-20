@@ -88,7 +88,11 @@ public final class ModelConverter {
       }
       return mapper.readValue(response, clazz);
     } catch (MismatchedInputException e) {
-      logger.log(Level.SEVERE, "Failed to parse response - invalid or malformed JSON: " + e.getMessage(), e);
+      logger.log(
+        Level.SEVERE,
+        "Failed to parse response - invalid or malformed JSON: " + e.getMessage(),
+        e
+      );
       return null;
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unexpected error parsing response: " + e.getMessage(), e);
@@ -128,7 +132,11 @@ public final class ModelConverter {
       }
       return mapper.readValue(response, typeReference);
     } catch (MismatchedInputException e) {
-      logger.log(Level.SEVERE, "Failed to parse response - invalid or malformed JSON: " + e.getMessage(), e);
+      logger.log(
+        Level.SEVERE,
+        "Failed to parse response - invalid or malformed JSON: " + e.getMessage(),
+        e
+      );
       return null;
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Unexpected error parsing response: " + e.getMessage(), e);

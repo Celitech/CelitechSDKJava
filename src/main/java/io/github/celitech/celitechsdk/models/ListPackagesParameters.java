@@ -1,6 +1,7 @@
 package io.github.celitech.celitechsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,10 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @EqualsAndHashCode
 @Jacksonized
 public class ListPackagesParameters {
+
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonProperty("Accept")
+  private String accept;
 
   /**
    * ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.
@@ -46,19 +51,19 @@ public class ListPackagesParameters {
    * Maximum number of packages to be returned in the response. The value must be greater than 0 and less than or equal to 160. If not provided, the default value is 20
    */
   @JsonProperty("limit")
-  private JsonNullable<Double> limit;
+  private JsonNullable<String> limit;
 
   /**
    * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months
    */
   @JsonProperty("startTime")
-  private JsonNullable<Long> startTime;
+  private JsonNullable<String> startTime;
 
   /**
    * Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time
    */
   @JsonProperty("endTime")
-  private JsonNullable<Long> endTime;
+  private JsonNullable<String> endTime;
 
   @JsonIgnore
   public String getDestination() {
@@ -81,30 +86,38 @@ public class ListPackagesParameters {
   }
 
   @JsonIgnore
-  public Double getLimit() {
+  public String getLimit() {
     return limit.orElse(null);
   }
 
   @JsonIgnore
-  public Long getStartTime() {
+  public String getStartTime() {
     return startTime.orElse(null);
   }
 
   @JsonIgnore
-  public Long getEndTime() {
+  public String getEndTime() {
     return endTime.orElse(null);
   }
 
   // Overwrite lombok builder methods
   public static class ListPackagesParametersBuilder {
 
+    /**
+     * Flag to track if the accept property has been set.
+     */
+    private boolean accept$set = false;
+
+    public ListPackagesParametersBuilder accept(String accept) {
+      this.accept$set = true;
+      this.accept = accept;
+      return this;
+    }
+
     private JsonNullable<String> destination = JsonNullable.undefined();
 
     @JsonProperty("destination")
     public ListPackagesParametersBuilder destination(String value) {
-      if (value == null) {
-        throw new IllegalStateException("destination cannot be null");
-      }
       this.destination = JsonNullable.of(value);
       return this;
     }
@@ -113,9 +126,6 @@ public class ListPackagesParameters {
 
     @JsonProperty("startDate")
     public ListPackagesParametersBuilder startDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("startDate cannot be null");
-      }
       this.startDate = JsonNullable.of(value);
       return this;
     }
@@ -124,9 +134,6 @@ public class ListPackagesParameters {
 
     @JsonProperty("endDate")
     public ListPackagesParametersBuilder endDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("endDate cannot be null");
-      }
       this.endDate = JsonNullable.of(value);
       return this;
     }
@@ -135,44 +142,48 @@ public class ListPackagesParameters {
 
     @JsonProperty("afterCursor")
     public ListPackagesParametersBuilder afterCursor(String value) {
-      if (value == null) {
-        throw new IllegalStateException("afterCursor cannot be null");
-      }
       this.afterCursor = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Double> limit = JsonNullable.undefined();
+    private JsonNullable<String> limit = JsonNullable.undefined();
 
     @JsonProperty("limit")
-    public ListPackagesParametersBuilder limit(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("limit cannot be null");
-      }
+    public ListPackagesParametersBuilder limit(String value) {
       this.limit = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Long> startTime = JsonNullable.undefined();
+    private JsonNullable<String> startTime = JsonNullable.undefined();
 
     @JsonProperty("startTime")
-    public ListPackagesParametersBuilder startTime(Long value) {
-      if (value == null) {
-        throw new IllegalStateException("startTime cannot be null");
-      }
+    public ListPackagesParametersBuilder startTime(String value) {
       this.startTime = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Long> endTime = JsonNullable.undefined();
+    private JsonNullable<String> endTime = JsonNullable.undefined();
 
     @JsonProperty("endTime")
-    public ListPackagesParametersBuilder endTime(Long value) {
-      if (value == null) {
-        throw new IllegalStateException("endTime cannot be null");
-      }
+    public ListPackagesParametersBuilder endTime(String value) {
       this.endTime = JsonNullable.of(value);
       return this;
+    }
+
+    public ListPackagesParameters build() {
+      if (!accept$set) {
+        throw new IllegalStateException("accept is required");
+      }
+      return new ListPackagesParameters(
+        accept,
+        destination,
+        startDate,
+        endDate,
+        afterCursor,
+        limit,
+        startTime,
+        endTime
+      );
     }
   }
 }
