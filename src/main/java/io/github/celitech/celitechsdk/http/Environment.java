@@ -11,6 +11,7 @@ import okhttp3.HttpUrl;
 @Getter
 public enum Environment {
   DEFAULT("https://api.celitech.net/v1"),
+  API("https://api.celitech.net/v1"),
   DEFAULT_OAUTH("https://auth.celitech.net");
 
   private final String url;
@@ -25,7 +26,10 @@ public enum Environment {
   Environment(String url) {
     if (HttpUrl.parse(url) == null) {
       throw new IllegalArgumentException(
-        String.format("Environment url [%s] is not valid. Please use the following format https://api.example.com", url)
+        String.format(
+          "Environment url [%s] is not valid. Please use the following format https://api.example.com",
+          url
+        )
       );
     }
     this.url = url;

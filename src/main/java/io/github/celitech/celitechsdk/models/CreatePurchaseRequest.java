@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
@@ -19,72 +18,58 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @Jacksonized
 public class CreatePurchaseRequest {
 
-  /**
-   * ISO representation of the package's destination. Supports both ISO2 (e.g., 'FR') and ISO3 (e.g., 'FRA') country codes.
-   */
-  @NonNull
-  private String destination;
+  @JsonProperty("destination")
+  private JsonNullable<String> destination;
 
-  /**
-   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB
-   */
-  @NonNull
   @JsonProperty("dataLimitInGB")
-  private Double dataLimitInGb;
+  private JsonNullable<Double> dataLimitInGb;
 
-  /**
-   * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
-   */
-  @NonNull
-  private String startDate;
+  @JsonProperty("startDate")
+  private JsonNullable<String> startDate;
 
-  /**
-   * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
-   */
-  @NonNull
-  private String endDate;
+  @JsonProperty("endDate")
+  private JsonNullable<String> endDate;
 
-  /**
-   * Email address where the purchase confirmation email will be sent (including QR Code & activation steps)
-   */
   @JsonProperty("email")
   private JsonNullable<String> email;
 
-  /**
-   * An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes.
-   */
   @JsonProperty("referenceId")
   private JsonNullable<String> referenceId;
 
-  /**
-   * Customize the network brand of the issued eSIM. The `networkBrand` parameter cannot exceed 15 characters in length and must contain only letters, numbers, dots (.), ampersands (&), and spaces. This feature is available to platforms with Diamond tier only.
-   */
   @JsonProperty("networkBrand")
   private JsonNullable<String> networkBrand;
 
-  /**
-   * Customize the email subject brand. The `emailBrand` parameter cannot exceed 25 characters in length and must contain only letters, numbers, and spaces. This feature is available to platforms with Diamond tier only.
-   */
   @JsonProperty("emailBrand")
   private JsonNullable<String> emailBrand;
 
-  /**
-   * Language of the confirmation email sent to the customer.
-   */
   @JsonProperty("language")
-  private JsonNullable<CreatePurchaseRequestLanguage> language;
+  private JsonNullable<String> language;
 
-  /**
-   * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.
-   */
   @JsonProperty("startTime")
   private JsonNullable<Double> startTime;
 
-  /**
-   * Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time.
-   */
   @JsonProperty("endTime")
   private JsonNullable<Double> endTime;
+
+  @JsonIgnore
+  public String getDestination() {
+    return destination.orElse(null);
+  }
+
+  @JsonIgnore
+  public Double getDataLimitInGb() {
+    return dataLimitInGb.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getStartDate() {
+    return startDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getEndDate() {
+    return endDate.orElse(null);
+  }
 
   @JsonIgnore
   public String getEmail() {
@@ -107,7 +92,7 @@ public class CreatePurchaseRequest {
   }
 
   @JsonIgnore
-  public CreatePurchaseRequestLanguage getLanguage() {
+  public String getLanguage() {
     return language.orElse(null);
   }
 
@@ -124,13 +109,42 @@ public class CreatePurchaseRequest {
   // Overwrite lombok builder methods
   public static class CreatePurchaseRequestBuilder {
 
+    private JsonNullable<String> destination = JsonNullable.undefined();
+
+    @JsonProperty("destination")
+    public CreatePurchaseRequestBuilder destination(String value) {
+      this.destination = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Double> dataLimitInGb = JsonNullable.undefined();
+
+    @JsonProperty("dataLimitInGB")
+    public CreatePurchaseRequestBuilder dataLimitInGb(Double value) {
+      this.dataLimitInGb = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> startDate = JsonNullable.undefined();
+
+    @JsonProperty("startDate")
+    public CreatePurchaseRequestBuilder startDate(String value) {
+      this.startDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> endDate = JsonNullable.undefined();
+
+    @JsonProperty("endDate")
+    public CreatePurchaseRequestBuilder endDate(String value) {
+      this.endDate = JsonNullable.of(value);
+      return this;
+    }
+
     private JsonNullable<String> email = JsonNullable.undefined();
 
     @JsonProperty("email")
     public CreatePurchaseRequestBuilder email(String value) {
-      if (value == null) {
-        throw new IllegalStateException("email cannot be null");
-      }
       this.email = JsonNullable.of(value);
       return this;
     }
@@ -139,9 +153,6 @@ public class CreatePurchaseRequest {
 
     @JsonProperty("referenceId")
     public CreatePurchaseRequestBuilder referenceId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("referenceId cannot be null");
-      }
       this.referenceId = JsonNullable.of(value);
       return this;
     }
@@ -150,9 +161,6 @@ public class CreatePurchaseRequest {
 
     @JsonProperty("networkBrand")
     public CreatePurchaseRequestBuilder networkBrand(String value) {
-      if (value == null) {
-        throw new IllegalStateException("networkBrand cannot be null");
-      }
       this.networkBrand = JsonNullable.of(value);
       return this;
     }
@@ -161,20 +169,14 @@ public class CreatePurchaseRequest {
 
     @JsonProperty("emailBrand")
     public CreatePurchaseRequestBuilder emailBrand(String value) {
-      if (value == null) {
-        throw new IllegalStateException("emailBrand cannot be null");
-      }
       this.emailBrand = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<CreatePurchaseRequestLanguage> language = JsonNullable.undefined();
+    private JsonNullable<String> language = JsonNullable.undefined();
 
     @JsonProperty("language")
-    public CreatePurchaseRequestBuilder language(CreatePurchaseRequestLanguage value) {
-      if (value == null) {
-        throw new IllegalStateException("language cannot be null");
-      }
+    public CreatePurchaseRequestBuilder language(String value) {
       this.language = JsonNullable.of(value);
       return this;
     }
@@ -183,9 +185,6 @@ public class CreatePurchaseRequest {
 
     @JsonProperty("startTime")
     public CreatePurchaseRequestBuilder startTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("startTime cannot be null");
-      }
       this.startTime = JsonNullable.of(value);
       return this;
     }
@@ -194,9 +193,6 @@ public class CreatePurchaseRequest {
 
     @JsonProperty("endTime")
     public CreatePurchaseRequestBuilder endTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("endTime cannot be null");
-      }
       this.endTime = JsonNullable.of(value);
       return this;
     }
