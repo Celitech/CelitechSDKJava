@@ -8,7 +8,8 @@ import io.github.celitech.celitechsdk.validation.ViolationAggregator;
  * Validator implementation for CreatePurchaseOkResponse model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class CreatePurchaseOkResponseValidator extends AbstractModelValidator<CreatePurchaseOkResponse> {
+public class CreatePurchaseOkResponseValidator
+  extends AbstractModelValidator<CreatePurchaseOkResponse> {
 
   /**
    * Creates a validator with a field name for nested validation paths.
