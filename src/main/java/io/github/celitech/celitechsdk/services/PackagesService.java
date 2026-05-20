@@ -2,17 +2,13 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
-import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPackagesParameters;
-import io.github.celitech.celitechsdk.models.Unauthorized;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
@@ -25,6 +21,10 @@ import okhttp3.Response;
  */
 public class PackagesService extends BaseService {
 
+  private RequestConfig listPackagesConfig = RequestConfig.builder()
+    .environment(Environment.API)
+    .build();
+
   /**
    * Constructs a new instance of PackagesService.
    *
@@ -36,62 +36,86 @@ public class PackagesService extends BaseService {
   }
 
   /**
-   * List Packages
+   * Sets method-level configuration for {@code listPackages}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
    *
-   * @return response of {@code ListPackagesOkResponse}
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
    */
-  public ListPackagesOkResponse listPackages() throws ApiError {
-    return this.listPackages(ListPackagesParameters.builder().build());
+  public PackagesService setListPackagesConfig(RequestConfig config) {
+    this.listPackagesConfig = config;
+    return this;
   }
 
   /**
    * List Packages
    *
    * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
-   * @return response of {@code ListPackagesOkResponse}
+   * @return response of {@code Object}
    */
-  public ListPackagesOkResponse listPackages(@NonNull ListPackagesParameters requestParameters) throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPackagesRequest(requestParameters);
-    Response response = this.execute(request);
+  public Object listPackages(@NonNull ListPackagesParameters requestParameters) throws ApiError {
+    return this.listPackages(requestParameters, null);
+  }
+
+  /**
+   * List Packages
+   *
+   * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
+   * @return response of {@code Object}
+   */
+  public Object listPackages(
+    @NonNull ListPackagesParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPackagesConfig, requestConfig);
+    Request request = this.buildListPackagesRequest(requestParameters, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
-  }
-
-  /**
-   * List Packages
-   *
-   * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
-   */
-  public CompletableFuture<ListPackagesOkResponse> listPackagesAsync() throws ApiError {
-    return this.listPackagesAsync(ListPackagesParameters.builder().build());
+    return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
   }
 
   /**
    * List Packages
    *
    * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
-   * @return response of {@code CompletableFuture<ListPackagesOkResponse>}
+   * @return response of {@code CompletableFuture<Object>}
    */
-  public CompletableFuture<ListPackagesOkResponse> listPackagesAsync(@NonNull ListPackagesParameters requestParameters)
-    throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPackagesRequest(requestParameters);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+  public CompletableFuture<Object> listPackagesAsync(
+    @NonNull ListPackagesParameters requestParameters
+  ) throws ApiError {
+    return this.listPackagesAsync(requestParameters, null);
+  }
+
+  /**
+   * List Packages
+   *
+   * @param requestParameters {@link ListPackagesParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> listPackagesAsync(
+    @NonNull ListPackagesParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPackagesConfig, requestConfig);
+    Request request = this.buildListPackagesRequest(requestParameters, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<ListPackagesOkResponse>() {});
+      return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
     });
   }
 
-  private Request buildListPackagesRequest(@NonNull ListPackagesParameters requestParameters) {
+  private Request buildListPackagesRequest(
+    @NonNull ListPackagesParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.API),
       "packages"
     )
+      .setHeader("Accept", requestParameters.getAccept())
       .setOptionalQueryParameter("destination", requestParameters.getDestination())
       .setOptionalQueryParameter("startDate", requestParameters.getStartDate())
       .setOptionalQueryParameter("endDate", requestParameters.getEndDate())

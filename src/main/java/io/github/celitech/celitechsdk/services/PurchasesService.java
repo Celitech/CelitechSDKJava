@@ -2,32 +2,14 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
-import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
-import io.github.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
-import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
-import io.github.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
-import io.github.celitech.celitechsdk.models.ListPurchasesOkResponse;
+import io.github.celitech.celitechsdk.models.CreatePurchaseParameters;
 import io.github.celitech.celitechsdk.models.ListPurchasesParameters;
-import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
-import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
-import io.github.celitech.celitechsdk.models.Unauthorized;
-import io.github.celitech.celitechsdk.validation.ViolationAggregator;
-import io.github.celitech.celitechsdk.validation.exceptions.ValidationException;
-import io.github.celitech.celitechsdk.validation.validators.modelValidators.CreatePurchaseV2RequestValidator;
-import io.github.celitech.celitechsdk.validation.validators.modelValidators.ListPurchasesParametersValidator;
-import io.github.celitech.celitechsdk.validation.validators.modelValidators.TopUpEsimRequestValidator;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
@@ -40,6 +22,13 @@ import okhttp3.Response;
  */
 public class PurchasesService extends BaseService {
 
+  private RequestConfig createPurchaseConfig = RequestConfig.builder()
+    .environment(Environment.API)
+    .build();
+  private RequestConfig listPurchasesConfig = RequestConfig.builder()
+    .environment(Environment.API)
+    .build();
+
   /**
    * Constructs a new instance of PurchasesService.
    *
@@ -51,117 +40,172 @@ public class PurchasesService extends BaseService {
   }
 
   /**
-   * Create Purchase V2
+   * Sets method-level configuration for {@code createPurchase}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
-   * @return response of {@code List<CreatePurchaseV2OkResponse>}
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
    */
-  public List<CreatePurchaseV2OkResponse> createPurchaseV2(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
-    throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
+  public PurchasesService setCreatePurchaseConfig(RequestConfig config) {
+    this.createPurchaseConfig = config;
+    return this;
   }
 
   /**
-   * Create Purchase V2
+   * Sets method-level configuration for {@code listPurchases}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
-   * @return response of {@code CompletableFuture<List<CreatePurchaseV2OkResponse>>}
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
    */
-  public CompletableFuture<List<CreatePurchaseV2OkResponse>> createPurchaseV2Async(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request
-  ) throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+  public PurchasesService setListPurchasesConfig(RequestConfig config) {
+    this.listPurchasesConfig = config;
+    return this;
+  }
+
+  /**
+   * This endpoint is used to purchase a new eSIM by providing the package details.
+   *
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
+   * @return response of {@code Object}
+   */
+  public Object createPurchase(@NonNull CreatePurchaseParameters requestParameters)
+    throws ApiError {
+    return this.createPurchase(requestParameters, null);
+  }
+
+  /**
+   * This endpoint is used to purchase a new eSIM by providing the package details.
+   *
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
+   * @return response of {@code Object}
+   */
+  public Object createPurchase(
+    @NonNull CreatePurchaseParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.createPurchaseConfig, requestConfig);
+    Request request = this.buildCreatePurchaseRequest(requestParameters, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
+  }
+
+  /**
+   * This endpoint is used to purchase a new eSIM by providing the package details.
+   *
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> createPurchaseAsync(
+    @NonNull CreatePurchaseParameters requestParameters
+  ) throws ApiError {
+    return this.createPurchaseAsync(requestParameters, null);
+  }
+
+  /**
+   * This endpoint is used to purchase a new eSIM by providing the package details.
+   *
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> createPurchaseAsync(
+    @NonNull CreatePurchaseParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.createPurchaseConfig, requestConfig);
+    Request request = this.buildCreatePurchaseRequest(requestParameters, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<List<CreatePurchaseV2OkResponse>>() {});
+      return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
     });
   }
 
-  private Request buildCreatePurchaseV2Request(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
-    throws ValidationException {
-    new ViolationAggregator()
-      .add(new CreatePurchaseV2RequestValidator("createPurchaseV2Request").required().validate(createPurchaseV2Request))
-      .validateAll();
+  private Request buildCreatePurchaseRequest(
+    @NonNull CreatePurchaseParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
-      "purchases/v2"
+      resolveBaseUrl(resolvedConfig, Environment.API),
+      "purchases"
     )
-      .setJsonContent(createPurchaseV2Request)
+      .setHeader("Accept", requestParameters.getAccept())
+      .setJsonContent(requestParameters.getRequestBody())
       .build();
   }
 
   /**
-   * List Purchases
+   * This endpoint can be used to list all the successful purchases made between a given interval.
    *
-   * @return response of {@code ListPurchasesOkResponse}
+   * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+   * @return response of {@code Object}
    */
-  public ListPurchasesOkResponse listPurchases() throws ApiError, ValidationException {
-    return this.listPurchases(ListPurchasesParameters.builder().build());
+  public Object listPurchases(@NonNull ListPurchasesParameters requestParameters) throws ApiError {
+    return this.listPurchases(requestParameters, null);
   }
 
   /**
-   * List Purchases
+   * This endpoint can be used to list all the successful purchases made between a given interval.
    *
    * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
-   * @return response of {@code ListPurchasesOkResponse}
+   * @return response of {@code Object}
    */
-  public ListPurchasesOkResponse listPurchases(@NonNull ListPurchasesParameters requestParameters)
-    throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPurchasesRequest(requestParameters);
-    Response response = this.execute(request);
+  public Object listPurchases(
+    @NonNull ListPurchasesParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPurchasesConfig, requestConfig);
+    Request request = this.buildListPurchasesRequest(requestParameters, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
+    return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
   }
 
   /**
-   * List Purchases
-   *
-   * @return response of {@code CompletableFuture<ListPurchasesOkResponse>}
-   */
-  public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync() throws ApiError, ValidationException {
-    return this.listPurchasesAsync(ListPurchasesParameters.builder().build());
-  }
-
-  /**
-   * List Purchases
+   * This endpoint can be used to list all the successful purchases made between a given interval.
    *
    * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
-   * @return response of {@code CompletableFuture<ListPurchasesOkResponse>}
+   * @return response of {@code CompletableFuture<Object>}
    */
-  public CompletableFuture<ListPurchasesOkResponse> listPurchasesAsync(
+  public CompletableFuture<Object> listPurchasesAsync(
     @NonNull ListPurchasesParameters requestParameters
-  ) throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPurchasesRequest(requestParameters);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+  ) throws ApiError {
+    return this.listPurchasesAsync(requestParameters, null);
+  }
+
+  /**
+   * This endpoint can be used to list all the successful purchases made between a given interval.
+   *
+   * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> listPurchasesAsync(
+    @NonNull ListPurchasesParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPurchasesConfig, requestConfig);
+    Request request = this.buildListPurchasesRequest(requestParameters, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
+      return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
     });
   }
 
-  private Request buildListPurchasesRequest(@NonNull ListPurchasesParameters requestParameters)
-    throws ValidationException {
-    new ViolationAggregator()
-      .add(new ListPurchasesParametersValidator("requestParameters").optional().validate(requestParameters))
-      .validateAll();
+  private Request buildListPurchasesRequest(
+    @NonNull ListPurchasesParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.API),
       "purchases"
     )
+      .setHeader("Accept", requestParameters.getAccept())
       .setOptionalQueryParameter("purchaseId", requestParameters.getPurchaseId())
       .setOptionalQueryParameter("iccid", requestParameters.getIccid())
       .setOptionalQueryParameter("afterDate", requestParameters.getAfterDate())
@@ -172,183 +216,6 @@ public class PurchasesService extends BaseService {
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("after", requestParameters.getAfter())
       .setOptionalQueryParameter("before", requestParameters.getBefore())
-      .build();
-  }
-
-  /**
-   * Create Purchase
-   *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
-   * @return response of {@code CreatePurchaseOkResponse}
-   */
-  public CreatePurchaseOkResponse createPurchase(@NonNull CreatePurchaseRequest createPurchaseRequest) throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
-  }
-
-  /**
-   * Create Purchase
-   *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
-   * @return response of {@code CompletableFuture<CreatePurchaseOkResponse>}
-   */
-  public CompletableFuture<CreatePurchaseOkResponse> createPurchaseAsync(
-    @NonNull CreatePurchaseRequest createPurchaseRequest
-  ) throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseRequest(createPurchaseRequest);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
-    });
-  }
-
-  private Request buildCreatePurchaseRequest(@NonNull CreatePurchaseRequest createPurchaseRequest) {
-    return new RequestBuilder(
-      HttpMethod.POST,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
-      "purchases"
-    )
-      .setJsonContent(createPurchaseRequest)
-      .build();
-  }
-
-  /**
-   * Top-up eSIM
-   *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
-   * @return response of {@code TopUpEsimOkResponse}
-   */
-  public TopUpEsimOkResponse topUpEsim(@NonNull TopUpEsimRequest topUpEsimRequest)
-    throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
-  }
-
-  /**
-   * Top-up eSIM
-   *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
-   * @return response of {@code CompletableFuture<TopUpEsimOkResponse>}
-   */
-  public CompletableFuture<TopUpEsimOkResponse> topUpEsimAsync(@NonNull TopUpEsimRequest topUpEsimRequest)
-    throws ApiError, ValidationException {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTopUpEsimRequest(topUpEsimRequest);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
-    });
-  }
-
-  private Request buildTopUpEsimRequest(@NonNull TopUpEsimRequest topUpEsimRequest) throws ValidationException {
-    new ViolationAggregator()
-      .add(new TopUpEsimRequestValidator("topUpEsimRequest").required().validate(topUpEsimRequest))
-      .validateAll();
-    return new RequestBuilder(
-      HttpMethod.POST,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
-      "purchases/topup"
-    )
-      .setJsonContent(topUpEsimRequest)
-      .build();
-  }
-
-  /**
-   * Edit Purchase
-   *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
-   * @return response of {@code EditPurchaseOkResponse}
-   */
-  public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseRequest editPurchaseRequest) throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
-  }
-
-  /**
-   * Edit Purchase
-   *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
-   * @return response of {@code CompletableFuture<EditPurchaseOkResponse>}
-   */
-  public CompletableFuture<EditPurchaseOkResponse> editPurchaseAsync(@NonNull EditPurchaseRequest editPurchaseRequest)
-    throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildEditPurchaseRequest(editPurchaseRequest);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
-    });
-  }
-
-  private Request buildEditPurchaseRequest(@NonNull EditPurchaseRequest editPurchaseRequest) {
-    return new RequestBuilder(
-      HttpMethod.POST,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
-      "purchases/edit"
-    )
-      .setJsonContent(editPurchaseRequest)
-      .build();
-  }
-
-  /**
-   * Get Purchase Consumption
-   *
-   * @param purchaseId String ID of the purchase
-   * @return response of {@code GetPurchaseConsumptionOkResponse}
-   */
-  public GetPurchaseConsumptionOkResponse getPurchaseConsumption(@NonNull String purchaseId) throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
-  }
-
-  /**
-   * Get Purchase Consumption
-   *
-   * @param purchaseId String ID of the purchase
-   * @return response of {@code CompletableFuture<GetPurchaseConsumptionOkResponse>}
-   */
-  public CompletableFuture<GetPurchaseConsumptionOkResponse> getPurchaseConsumptionAsync(@NonNull String purchaseId)
-    throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetPurchaseConsumptionRequest(purchaseId);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<GetPurchaseConsumptionOkResponse>() {});
-    });
-  }
-
-  private Request buildGetPurchaseConsumptionRequest(@NonNull String purchaseId) {
-    return new RequestBuilder(
-      HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
-      "purchases/{purchaseId}/consumption"
-    )
-      .setPathParameter("purchaseId", purchaseId)
       .build();
   }
 }

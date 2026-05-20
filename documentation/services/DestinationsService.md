@@ -13,25 +13,38 @@ List Destinations
 - HTTP Method: `GET`
 - Endpoint: `/destinations`
 
+**Parameters**
+
+| Name              | Type                                                                  | Required | Description               |
+| :---------------- | :-------------------------------------------------------------------- | :------- | :------------------------ |
+| requestParameters | [ListDestinationsParameters](../models/ListDestinationsParameters.md) | ✅       | Request Parameters Object |
+
 **Return Type**
 
-`ListDestinationsOkResponse`
+`Object`
 
 **Example Usage Code Snippet**
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
+import io.github.celitech.celitechsdk.models.ListDestinationsParameters;
 
 public class Main {
 
   public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().clientId("CLIENT_ID").clientSecret("CLIENT_SECRET").build();
+    CelitechConfig config = CelitechConfig.builder()
+      .clientId("CLIENT_ID")
+      .clientSecret("CLIENT_SECRET")
+      .build();
 
     Celitech celitech = new Celitech(config);
 
-    ListDestinationsOkResponse response = celitech.destinations.listDestinations();
+    ListDestinationsParameters requestParameters = ListDestinationsParameters.builder()
+      .accept("application/json")
+      .build();
+
+    Object response = celitech.destinations.listDestinations(requestParameters);
 
     System.out.println(response);
   }
