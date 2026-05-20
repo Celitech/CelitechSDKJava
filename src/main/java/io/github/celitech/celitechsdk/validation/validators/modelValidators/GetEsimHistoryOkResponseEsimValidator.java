@@ -9,7 +9,8 @@ import io.github.celitech.celitechsdk.validation.validators.StringValidator;
  * Validator implementation for GetEsimHistoryOkResponseEsim model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class GetEsimHistoryOkResponseEsimValidator extends AbstractModelValidator<GetEsimHistoryOkResponseEsim> {
+public class GetEsimHistoryOkResponseEsimValidator
+  extends AbstractModelValidator<GetEsimHistoryOkResponseEsim> {
 
   /**
    * Creates a validator with a field name for nested validation paths.

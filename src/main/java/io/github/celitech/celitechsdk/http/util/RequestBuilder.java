@@ -6,7 +6,12 @@ import io.github.celitech.celitechsdk.http.serialization.PathSerializationStyle;
 import io.github.celitech.celitechsdk.http.serialization.QuerySerializationStyle;
 import io.github.celitech.celitechsdk.http.serialization.SerializationStyle;
 import io.github.celitech.celitechsdk.http.serialization.Serializer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import lombok.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
@@ -36,6 +41,8 @@ public class RequestBuilder {
 
   private final HashMap<String, String> headers = new HashMap<>();
 
+  private final List<String> cookies = new ArrayList<>();
+
   private RequestBody body;
 
   /**
@@ -44,7 +51,11 @@ public class RequestBuilder {
    * @param path The path template to use for the request. Should have path parameters as
    *     placeholders surrounded by brackets (Eg. "/users/{id}", where "id" is a path parameter).
    */
-  public RequestBuilder(@NotNull HttpMethod httpMethod, @NotNull String baseUrl, @NotNull String path) {
+  public RequestBuilder(
+    @NotNull HttpMethod httpMethod,
+    @NotNull String baseUrl,
+    @NotNull String path
+  ) {
     this.httpMethod = httpMethod;
     this.baseUrl = baseUrl;
     this.path = path;
@@ -166,7 +177,13 @@ public class RequestBuilder {
    * @return This builder instance for chaining
    */
   public RequestBuilder setHeader(@NonNull String key, @NonNull Object value, boolean explode) {
-    String serializedValue = Serializer.serialize(key, value, SerializationStyle.SIMPLE, explode, false);
+    String serializedValue = Serializer.serialize(
+      key,
+      value,
+      SerializationStyle.SIMPLE,
+      explode,
+      false
+    );
     headers.put(key, serializedValue);
     return this;
   }
@@ -193,6 +210,69 @@ public class RequestBuilder {
   public RequestBuilder setOptionalHeader(@NonNull String key, Object value, boolean explode) {
     if (value != null) {
       return setHeader(key, value, explode);
+    }
+    return this;
+  }
+
+  /**
+   * Adds a cookie parameter using FORM serialization style with explode enabled.
+   * Multiple cookies are combined into a single Cookie header at build time.
+   *
+   * @param key The cookie name
+   * @param value The cookie value
+   * @return This builder instance for chaining
+   */
+  public RequestBuilder setCookie(@NonNull String key, @NonNull Object value) {
+    return setCookie(key, value, true);
+  }
+
+  /**
+   * Adds a cookie parameter using FORM serialization style with custom explode option.
+   * Multiple cookies are combined into a single Cookie header at build time.
+   *
+   * @param key The cookie name
+   * @param value The cookie value
+   * @param explode Whether to explode arrays/objects
+   * @return This builder instance for chaining
+   */
+  public RequestBuilder setCookie(@NonNull String key, @NonNull Object value, boolean explode) {
+    String serializedValue = Serializer.serialize(
+      key,
+      value,
+      SerializationStyle.FORM,
+      explode,
+      false
+    );
+    if (explode && serializedValue.contains("&")) {
+      Collections.addAll(cookies, serializedValue.split("&"));
+    } else {
+      cookies.add(serializedValue);
+    }
+    return this;
+  }
+
+  /**
+   * Adds a cookie parameter if the value is not null, using FORM style with explode enabled.
+   *
+   * @param key The cookie name
+   * @param value The cookie value (ignored if null)
+   * @return This builder instance for chaining
+   */
+  public RequestBuilder setOptionalCookie(@NonNull String key, Object value) {
+    return setOptionalCookie(key, value, true);
+  }
+
+  /**
+   * Adds a cookie parameter if the value is not null, with custom explode option.
+   *
+   * @param key The cookie name
+   * @param value The cookie value (ignored if null)
+   * @param explode Whether to explode arrays/objects
+   * @return This builder instance for chaining
+   */
+  public RequestBuilder setOptionalCookie(@NonNull String key, Object value, boolean explode) {
+    if (value != null) {
+      return setCookie(key, value, explode);
     }
     return this;
   }
@@ -229,7 +309,9 @@ public class RequestBuilder {
     if (content == null) {
       return this;
     }
-    setBody(RequestBody.create(Objects.requireNonNull(ModelConverter.modelToJson(content)), mediaType));
+    setBody(
+      RequestBody.create(Objects.requireNonNull(ModelConverter.modelToJson(content)), mediaType)
+    );
     return this;
   }
 
@@ -245,6 +327,10 @@ public class RequestBuilder {
 
     for (Map.Entry<String, String> entry : headers.entrySet()) {
       requestBuilder.addHeader(entry.getKey(), entry.getValue());
+    }
+
+    if (!cookies.isEmpty()) {
+      requestBuilder.addHeader("Cookie", String.join("; ", cookies));
     }
 
     if (httpMethod.requiresRequestBody() && this.body == null) {
@@ -270,7 +356,11 @@ public class RequestBuilder {
       path = path.replace("{" + key + "}", value);
     }
 
-    String url = Objects.requireNonNull(HttpUrl.parse(baseUrl)).newBuilder().addPathSegments(path).build().toString();
+    String url = Objects.requireNonNull(HttpUrl.parse(baseUrl))
+      .newBuilder()
+      .addPathSegments(path)
+      .build()
+      .toString();
 
     if (!queryParameters.isEmpty()) {
       url += "?" + String.join("&", queryParameters);

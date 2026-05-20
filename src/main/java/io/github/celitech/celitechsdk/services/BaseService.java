@@ -3,16 +3,21 @@ package io.github.celitech.celitechsdk.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.ModelConverter;
+import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import okhttp3.Call;
@@ -34,6 +39,9 @@ public class BaseService {
   protected CelitechConfig config;
   protected Map<Integer, ErrorMapping<?>> errorMappings;
   protected ErrorMapping<?> defaultErrorMapping;
+
+  /** Service-level configuration overrides */
+  protected RequestConfig serviceConfig;
 
   /**
    * Internal class for mapping HTTP status codes to error models and exception types.
@@ -82,6 +90,92 @@ public class BaseService {
   }
 
   /**
+   * Sets service-level configuration that applies to all methods in this service.
+   * Service-level overrides take precedence over SDK-level configuration but are
+   * overridden by method-level and request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the service level
+   */
+  public void setConfig(RequestConfig config) {
+    this.serviceConfig = config;
+  }
+
+  /**
+   * Resolves configuration from the hierarchy: requestConfig > methodConfig > serviceConfig.
+   * Merges override configs into a single {@link RequestConfig}. SDK defaults are used as
+   * fallbacks where these overrides are not provided.
+   *
+   * @param methodConfig Method-level configuration override (may be null)
+   * @param requestConfig Request-level configuration override (may be null)
+   * @return Merged configuration with all overrides applied
+   */
+  protected RequestConfig getResolvedConfig(
+    RequestConfig methodConfig,
+    RequestConfig requestConfig
+  ) {
+    return RequestConfig.merge(this.serviceConfig, methodConfig, requestConfig);
+  }
+
+  /**
+   * Resolves the base URL from the configuration hierarchy.
+   * Priority: resolvedConfig.baseUrl > sdkConfig.baseUrl > resolvedConfig.environment > defaultEnvironment.
+   *
+   * @param resolvedConfig The merged request configuration (may be null)
+   * @param defaultEnvironment The default environment for this method
+   * @return The resolved base URL
+   */
+  protected String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
+    if (resolvedConfig != null && resolvedConfig.getBaseUrl() != null) {
+      return resolvedConfig.getBaseUrl();
+    }
+    if (this.config.getBaseUrl() != null) {
+      return this.config.getBaseUrl();
+    }
+    if (resolvedConfig != null && resolvedConfig.getEnvironment() != null) {
+      return resolvedConfig.getEnvironment().getUrl();
+    }
+    return defaultEnvironment.getUrl();
+  }
+
+  /**
+   * Creates an OkHttpClient with per-request overrides from the resolved configuration.
+   * Applies timeout and/or retry config overrides when present.
+   * If no overrides are present, returns the original client.
+   *
+   * @param resolvedConfig The resolved request configuration
+   * @return An OkHttpClient with the appropriate overrides applied
+   */
+  protected OkHttpClient getHttpClientForRequest(RequestConfig resolvedConfig) {
+    if (resolvedConfig == null) {
+      return this.httpClient;
+    }
+
+    boolean needsRebuild = resolvedConfig.getTimeout() != null;
+    needsRebuild = needsRebuild || resolvedConfig.getRetryConfig() != null;
+
+    if (!needsRebuild) {
+      return this.httpClient;
+    }
+
+    OkHttpClient.Builder builder = this.httpClient.newBuilder();
+
+    if (resolvedConfig.getTimeout() != null) {
+      builder.readTimeout(resolvedConfig.getTimeout(), TimeUnit.MILLISECONDS);
+    }
+
+    if (resolvedConfig.getRetryConfig() != null) {
+      List<okhttp3.Interceptor> interceptors = new ArrayList<>(builder.interceptors());
+      interceptors.replaceAll(i ->
+        i instanceof RetryInterceptor ? new RetryInterceptor(resolvedConfig.getRetryConfig()) : i
+      );
+      builder.interceptors().clear();
+      interceptors.forEach(builder::addInterceptor);
+    }
+
+    return builder.build();
+  }
+
+  /**
    * Registers an error mapping for a specific HTTP status code.
    * When a response with this status is received, the SDK will deserialize the error
    * response to the specified model class and throw the specified exception type.
@@ -91,7 +185,11 @@ public class BaseService {
    * @param modelClass The class to deserialize the error response into
    * @param exceptionClass The exception class to throw
    */
-  protected <T> void addErrorMapping(int status, Class<T> modelClass, Class<? extends ApiError> exceptionClass) {
+  protected <T> void addErrorMapping(
+    int status,
+    Class<T> modelClass,
+    Class<? extends ApiError> exceptionClass
+  ) {
     this.errorMappings.put(status, new ErrorMapping<>(modelClass, exceptionClass));
   }
 
@@ -104,7 +202,10 @@ public class BaseService {
    * @param modelClass The class to deserialize the error response into
    * @param exceptionClass The exception class to throw
    */
-  protected <T> void addDefaultErrorMapping(Class<T> modelClass, Class<? extends ApiError> exceptionClass) {
+  protected <T> void addDefaultErrorMapping(
+    Class<T> modelClass,
+    Class<? extends ApiError> exceptionClass
+  ) {
     this.defaultErrorMapping = new ErrorMapping<>(modelClass, exceptionClass);
   }
 
@@ -133,7 +234,11 @@ public class BaseService {
     }
 
     if (Objects.isNull(message) || message.trim().isEmpty()) {
-      message = String.format("%d error in request to: %s", response.code(), response.request().url());
+      message = String.format(
+        "%d error in request to: %s",
+        response.code(),
+        response.request().url()
+      );
     }
 
     return message;
@@ -144,13 +249,15 @@ public class BaseService {
    * Handles error responses by checking error mappings and throwing appropriate exceptions.
    *
    * @param request The HTTP request to execute
+   * @param resolvedConfig The resolved request configuration (may contain timeout override)
    * @return The HTTP response if successful
    * @throws ApiError if the request fails or returns an error status code
    */
-  protected Response execute(Request request) throws ApiError {
+  protected Response execute(Request request, RequestConfig resolvedConfig) throws ApiError {
+    OkHttpClient client = this.getHttpClientForRequest(resolvedConfig);
     Response response;
     try {
-      response = this.httpClient.newCall(request).execute();
+      response = client.newCall(request).execute();
     } catch (IOException e) {
       if (e instanceof SocketTimeoutException) {
         throw new ApiError("Request timed out", 408, null);
@@ -163,13 +270,18 @@ public class BaseService {
     }
 
     // Handle error response
-    ErrorMapping<?> errorMapping = this.errorMappings.getOrDefault(response.code(), this.defaultErrorMapping);
+    ErrorMapping<?> errorMapping =
+      this.errorMappings.getOrDefault(response.code(), this.defaultErrorMapping);
     if (errorMapping != null) {
       Object errorModel = null;
       try {
         errorModel = ModelConverter.convert(response, errorMapping.modelClass);
       } catch (Exception e) {
-        logger.log(Level.WARNING, "Failed to deserialize error response to " + errorMapping.modelClass.getName(), e);
+        logger.log(
+          Level.WARNING,
+          "Failed to deserialize error response to " + errorMapping.modelClass.getName(),
+          e
+        );
       }
 
       if (errorModel != null) {
@@ -202,11 +314,18 @@ public class BaseService {
    * if an error occurs. Handles error responses by checking error mappings.
    *
    * @param request The HTTP request to execute
+   * @param resolvedConfig The resolved request configuration (may contain timeout override)
    * @return A CompletableFuture that completes with the HTTP response
    */
-  protected CompletableFuture<Response> executeAsync(Request request) {
+  protected CompletableFuture<Response> executeAsync(
+    Request request,
+    RequestConfig resolvedConfig
+  ) {
+    OkHttpClient client = this.getHttpClientForRequest(resolvedConfig);
     CompletableFuture<Response> future = new CompletableFuture<>();
-    this.httpClient.newCall(request).enqueue(
+    client
+      .newCall(request)
+      .enqueue(
         new Callback() {
           @Override
           public void onResponse(@NotNull Call call, @NotNull Response response) {
@@ -218,12 +337,13 @@ public class BaseService {
                   Object errorModel = ModelConverter.convert(response, errorMapping.modelClass);
                   if (errorModel != null) {
                     // Use reflection to create the exception
-                    Constructor<? extends ApiError> constructor = errorMapping.exceptionClass.getConstructor(
-                      errorMapping.modelClass,
-                      String.class,
-                      int.class,
-                      Response.class
-                    );
+                    Constructor<? extends ApiError> constructor =
+                      errorMapping.exceptionClass.getConstructor(
+                        errorMapping.modelClass,
+                        String.class,
+                        int.class,
+                        Response.class
+                      );
                     String message = extractErrorMessage(response, errorModel);
                     future.completeExceptionally(
                       constructor.newInstance(errorModel, message, response.code(), response)
@@ -240,7 +360,11 @@ public class BaseService {
               }
 
               // If no specific error model is mapped or conversion failed, throw generic ApiError
-              ApiError error = new ApiError(extractErrorMessage(response, null), response.code(), response);
+              ApiError error = new ApiError(
+                extractErrorMessage(response, null),
+                response.code(),
+                response
+              );
               future.completeExceptionally(error);
               return;
             }

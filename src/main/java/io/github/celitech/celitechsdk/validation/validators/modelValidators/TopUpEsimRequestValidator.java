@@ -34,7 +34,13 @@ public class TopUpEsimRequestValidator extends AbstractModelValidator<TopUpEsimR
   @Override
   protected Violation[] validateModel(TopUpEsimRequest topUpEsimRequest) {
     return new ViolationAggregator()
-      .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(topUpEsimRequest.getIccid()))
+      .add(
+        new StringValidator("iccid")
+          .minLength(18)
+          .maxLength(22)
+          .required()
+          .validate(topUpEsimRequest.getIccid())
+      )
       .aggregate();
   }
 }

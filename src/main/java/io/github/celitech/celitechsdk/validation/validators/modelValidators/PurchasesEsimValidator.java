@@ -34,7 +34,13 @@ public class PurchasesEsimValidator extends AbstractModelValidator<PurchasesEsim
   @Override
   protected Violation[] validateModel(PurchasesEsim purchasesEsim) {
     return new ViolationAggregator()
-      .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(purchasesEsim.getIccid()))
+      .add(
+        new StringValidator("iccid")
+          .minLength(18)
+          .maxLength(22)
+          .required()
+          .validate(purchasesEsim.getIccid())
+      )
       .aggregate();
   }
 }
