@@ -1,0 +1,76 @@
+{
+  "endpoints": {
+    "/destinations": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.ListDestinationsParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tListDestinationsParameters requestParameters = ListDestinationsParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.destinations.listDestinations(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/packages": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.ListPackagesParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tListPackagesParameters requestParameters = ListPackagesParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.packages.listPackages(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/purchases/v2": {
+      "post": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.CreatePurchaseV2Parameters;\nimport io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tCreatePurchaseV2Request createPurchaseV2Request = CreatePurchaseV2Request.builder()\n\t\t\t.build();\n\t\t\n\t\tCreatePurchaseV2Parameters requestParameters = CreatePurchaseV2Parameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.requestBody(createPurchaseV2Request)\n\t\t\t.build();\n\n\t\tObject response = celitech.v2.createPurchaseV2(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/purchases/topup": {
+      "post": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.TopUpESimParameters;\nimport io.github.celitech.celitechsdk.models.TopUpESimRequest;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tTopUpESimRequest topUpESimRequest = TopUpESimRequest.builder()\n\t\t\t.build();\n\t\t\n\t\tTopUpESimParameters requestParameters = TopUpESimParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.requestBody(topUpESimRequest)\n\t\t\t.build();\n\n\t\tObject response = celitech.topup.topUpESim(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/purchases/edit": {
+      "post": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.EditPurchaseParameters;\nimport io.github.celitech.celitechsdk.models.EditPurchaseRequest;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tEditPurchaseRequest editPurchaseRequest = EditPurchaseRequest.builder()\n\t\t\t.build();\n\t\t\n\t\tEditPurchaseParameters requestParameters = EditPurchaseParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.requestBody(editPurchaseRequest)\n\t\t\t.build();\n\n\t\tObject response = celitech.edit.editPurchase(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/purchases/{purchaseId}/consumption": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.GetPurchaseConsumptionParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tGetPurchaseConsumptionParameters requestParameters = GetPurchaseConsumptionParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.consumption.getPurchaseConsumption(\"purchaseId\", requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/purchases": {
+      "post": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.CreatePurchaseParameters;\nimport io.github.celitech.celitechsdk.models.CreatePurchaseRequest;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tCreatePurchaseRequest createPurchaseRequest = CreatePurchaseRequest.builder()\n\t\t\t.build();\n\t\t\n\t\tCreatePurchaseParameters requestParameters = CreatePurchaseParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.requestBody(createPurchaseRequest)\n\t\t\t.build();\n\n\t\tObject response = celitech.purchases.createPurchase(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n",
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.ListPurchasesParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tListPurchasesParameters requestParameters = ListPurchasesParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.purchases.listPurchases(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/esim/{iccid}/device": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.GetESimDeviceParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tGetESimDeviceParameters requestParameters = GetESimDeviceParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.device.getESimDevice(\"iccid\", requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/esim/{iccid}/history": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.GetESimHistoryParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tGetESimHistoryParameters requestParameters = GetESimHistoryParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.history.getESimHistory(\"iccid\", requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/esim": {
+      "get": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.GetESimParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tGetESimParameters requestParameters = GetESimParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.esim.getESim(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    },
+    "/iframe/token": {
+      "post": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.models.GenerateTokenParameters;\n\npublic class Main {\n    public static void main(String[] args) {\n\t\tCelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n\t\tCelitech celitech = new Celitech(config);\n\n\t\tGenerateTokenParameters requestParameters = GenerateTokenParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\t\tObject response = celitech.token.generateToken(requestParameters);\n\t\t\t\n\t\tSystem.out.println(response);\n    }\n}\n"
+    }
+  },
+  "methodResponses": {
+    "/destinations": {
+      "get": "System.out.println(response);"
+    },
+    "/packages": {
+      "get": "System.out.println(response);"
+    },
+    "/purchases/v2": {
+      "post": "System.out.println(response);"
+    },
+    "/purchases/topup": {
+      "post": "System.out.println(response);"
+    },
+    "/purchases/edit": {
+      "post": "System.out.println(response);"
+    },
+    "/purchases/{purchaseId}/consumption": {
+      "get": "System.out.println(response);"
+    },
+    "/purchases": {
+      "post": "System.out.println(response);",
+      "get": "System.out.println(response);"
+    },
+    "/esim/{iccid}/device": {
+      "get": "System.out.println(response);"
+    },
+    "/esim/{iccid}/history": {
+      "get": "System.out.println(response);"
+    },
+    "/esim": {
+      "get": "System.out.println(response);"
+    },
+    "/iframe/token": {
+      "post": "System.out.println(response);"
+    }
+  },
+  "example": "import io.github.celitech.celitechsdk.Celitech;\nimport io.github.celitech.celitechsdk.config.CelitechConfig;\nimport io.github.celitech.celitechsdk.exceptions.ApiError;\nimport io.github.celitech.celitechsdk.models.ListDestinationsParameters;\n  \npublic class Main {\n  public static void main(String[] args) {\n    CelitechConfig config = CelitechConfig.builder()\n\t\t\t.clientId(\"CLIENT_ID\")\n\t\t\t.clientSecret(\"CLIENT_SECRET\")\n\t\t\t.build();\n\n    Celitech celitech = new Celitech(config);\n\n    ListDestinationsParameters requestParameters = ListDestinationsParameters.builder()\n\t\t\t.accept(\"application/json\")\n\t\t\t.build();\n\n\n    try {\n      Object response = celitech.destinations.listDestinations(requestParameters);\n        \n      System.out.println(response);\n    } catch (ApiError e) {\n      e.printStackTrace();\n    }\n\n    System.exit(0);\n  }\n}\n",
+  "authentication": {}
+}

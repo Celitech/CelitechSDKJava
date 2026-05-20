@@ -6,25 +6,41 @@ import io.github.celitech.celitechsdk.http.interceptors.DefaultHeadersIntercepto
 import io.github.celitech.celitechsdk.http.interceptors.OAuthInterceptor;
 import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import io.github.celitech.celitechsdk.http.oauth.TokenManager;
+import io.github.celitech.celitechsdk.services.ConsumptionService;
 import io.github.celitech.celitechsdk.services.DestinationsService;
-import io.github.celitech.celitechsdk.services.ESimService;
-import io.github.celitech.celitechsdk.services.IFrameService;
+import io.github.celitech.celitechsdk.services.DeviceService;
+import io.github.celitech.celitechsdk.services.EditService;
+import io.github.celitech.celitechsdk.services.EsimService;
+import io.github.celitech.celitechsdk.services.HistoryService;
 import io.github.celitech.celitechsdk.services.PackagesService;
 import io.github.celitech.celitechsdk.services.PurchasesService;
+import io.github.celitech.celitechsdk.services.TokenService;
+import io.github.celitech.celitechsdk.services.TopupService;
+import io.github.celitech.celitechsdk.services.V2Service;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 
 /** Welcome to the CELITECH API documentation!
 
 Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)
- */
+
+
+Contact Support:
+ Name: CELITECH
+ Email: support@celitech.com */
 public class Celitech {
 
   public final DestinationsService destinations;
   public final PackagesService packages;
+  public final V2Service v2;
+  public final TopupService topup;
+  public final EditService edit;
+  public final ConsumptionService consumption;
   public final PurchasesService purchases;
-  public final ESimService eSim;
-  public final IFrameService iFrame;
+  public final DeviceService device;
+  public final HistoryService history;
+  public final EsimService esim;
+  public final TokenService token;
 
   private final CelitechConfig config;
 
@@ -67,9 +83,15 @@ public class Celitech {
 
     this.destinations = new DestinationsService(httpClient, config);
     this.packages = new PackagesService(httpClient, config);
+    this.v2 = new V2Service(httpClient, config);
+    this.topup = new TopupService(httpClient, config);
+    this.edit = new EditService(httpClient, config);
+    this.consumption = new ConsumptionService(httpClient, config);
     this.purchases = new PurchasesService(httpClient, config);
-    this.eSim = new ESimService(httpClient, config);
-    this.iFrame = new IFrameService(httpClient, config);
+    this.device = new DeviceService(httpClient, config);
+    this.history = new HistoryService(httpClient, config);
+    this.esim = new EsimService(httpClient, config);
+    this.token = new TokenService(httpClient, config);
   }
 
   /**

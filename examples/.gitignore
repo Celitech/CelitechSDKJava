@@ -29,6 +29,9 @@ build/
 gradle-app.setting
 !gradle-wrapper.jar
 
+# Kotlin
+.kotlin
+
 # IntelliJ
 out/
 .idea/

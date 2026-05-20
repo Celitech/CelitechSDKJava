@@ -5,6 +5,7 @@ import java.net.ProtocolException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +35,7 @@ public class RetryConfig {
   private int jitter = 50;
 
   @Builder.Default
-  private List<Integer> statusCodesToRetry = Arrays.asList(408, 429, 500, 502, 503, 504);
+  private List<Integer> statusCodesToRetry = Collections.emptyList();
 
   @Builder.Default
   private List<HttpMethod> httpMethodsToRetry = Arrays.asList(
