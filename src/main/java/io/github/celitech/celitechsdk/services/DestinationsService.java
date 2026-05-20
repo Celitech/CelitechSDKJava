@@ -2,16 +2,13 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
-import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
-import io.github.celitech.celitechsdk.models.Unauthorized;
+import io.github.celitech.celitechsdk.models.ListDestinationsParameters;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
@@ -24,6 +21,10 @@ import okhttp3.Response;
  */
 public class DestinationsService extends BaseService {
 
+  private RequestConfig listDestinationsConfig = RequestConfig.builder()
+    .environment(Environment.API)
+    .build();
+
   /**
    * Constructs a new instance of DestinationsService.
    *
@@ -35,40 +36,89 @@ public class DestinationsService extends BaseService {
   }
 
   /**
-   * List Destinations
+   * Sets method-level configuration for {@code listDestinations}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
    *
-   * @return response of {@code ListDestinationsOkResponse}
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
    */
-  public ListDestinationsOkResponse listDestinations() throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest();
-    Response response = this.execute(request);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
+  public DestinationsService setListDestinationsConfig(RequestConfig config) {
+    this.listDestinationsConfig = config;
+    return this;
   }
 
   /**
    * List Destinations
    *
-   * @return response of {@code CompletableFuture<ListDestinationsOkResponse>}
+   * @param requestParameters {@link ListDestinationsParameters} Request Parameters Object
+   * @return response of {@code Object}
    */
-  public CompletableFuture<ListDestinationsOkResponse> listDestinationsAsync() throws ApiError {
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest();
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+  public Object listDestinations(@NonNull ListDestinationsParameters requestParameters)
+    throws ApiError {
+    return this.listDestinations(requestParameters, null);
+  }
+
+  /**
+   * List Destinations
+   *
+   * @param requestParameters {@link ListDestinationsParameters} Request Parameters Object
+   * @return response of {@code Object}
+   */
+  public Object listDestinations(
+    @NonNull ListDestinationsParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig =
+      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
+    Request request = this.buildListDestinationsRequest(requestParameters, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
+    byte[] bodyBytes = ModelConverter.readBytes(response);
+    return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
+  }
+
+  /**
+   * List Destinations
+   *
+   * @param requestParameters {@link ListDestinationsParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> listDestinationsAsync(
+    @NonNull ListDestinationsParameters requestParameters
+  ) throws ApiError {
+    return this.listDestinationsAsync(requestParameters, null);
+  }
+
+  /**
+   * List Destinations
+   *
+   * @param requestParameters {@link ListDestinationsParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<Object>}
+   */
+  public CompletableFuture<Object> listDestinationsAsync(
+    @NonNull ListDestinationsParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError {
+    RequestConfig resolvedConfig =
+      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
+    Request request = this.buildListDestinationsRequest(requestParameters, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
+      return ModelConverter.convert(bodyBytes, new TypeReference<Object>() {});
     });
   }
 
-  private Request buildListDestinationsRequest() {
+  private Request buildListDestinationsRequest(
+    @NonNull ListDestinationsParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.API),
       "destinations"
-    ).build();
+    )
+      .setHeader("Accept", requestParameters.getAccept())
+      .build();
   }
 }
