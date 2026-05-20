@@ -8,7 +8,8 @@ import io.github.celitech.celitechsdk.validation.ViolationAggregator;
  * Validator implementation for GetEsimHistoryOkResponse model.
  * Validates all fields and nested structures according to the model's constraints.
  */
-public class GetEsimHistoryOkResponseValidator extends AbstractModelValidator<GetEsimHistoryOkResponse> {
+public class GetEsimHistoryOkResponseValidator
+  extends AbstractModelValidator<GetEsimHistoryOkResponse> {
 
   /**
    * Creates a validator with a field name for nested validation paths.
@@ -33,7 +34,11 @@ public class GetEsimHistoryOkResponseValidator extends AbstractModelValidator<Ge
   @Override
   protected Violation[] validateModel(GetEsimHistoryOkResponse getEsimHistoryOkResponse) {
     return new ViolationAggregator()
-      .add(new GetEsimHistoryOkResponseEsimValidator("esim").required().validate(getEsimHistoryOkResponse.getEsim()))
+      .add(
+        new GetEsimHistoryOkResponseEsimValidator("esim")
+          .required()
+          .validate(getEsimHistoryOkResponse.getEsim())
+      )
       .aggregate();
   }
 }

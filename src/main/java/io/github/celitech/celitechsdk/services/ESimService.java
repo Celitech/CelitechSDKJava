@@ -2,6 +2,7 @@ package io.github.celitech.celitechsdk.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestException;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
@@ -31,6 +32,10 @@ import okhttp3.Response;
  */
 public class ESimService extends BaseService {
 
+  private RequestConfig getEsimConfig;
+  private RequestConfig getEsimDeviceConfig;
+  private RequestConfig getEsimHistoryConfig;
+
   /**
    * Constructs a new instance of ESimService.
    *
@@ -42,16 +47,70 @@ public class ESimService extends BaseService {
   }
 
   /**
+   * Sets method-level configuration for {@code getEsim}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public ESimService setGetEsimConfig(RequestConfig config) {
+    this.getEsimConfig = config;
+    return this;
+  }
+
+  /**
+   * Sets method-level configuration for {@code getEsimDevice}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public ESimService setGetEsimDeviceConfig(RequestConfig config) {
+    this.getEsimDeviceConfig = config;
+    return this;
+  }
+
+  /**
+   * Sets method-level configuration for {@code getEsimHistory}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public ESimService setGetEsimHistoryConfig(RequestConfig config) {
+    this.getEsimHistoryConfig = config;
+    return this;
+  }
+
+  /**
    * Get eSIM
    *
    * @param requestParameters {@link GetEsimParameters} Request Parameters Object
    * @return response of {@code GetEsimOkResponse}
    */
-  public GetEsimOkResponse getEsim(@NonNull GetEsimParameters requestParameters) throws ApiError, ValidationException {
+  public GetEsimOkResponse getEsim(@NonNull GetEsimParameters requestParameters)
+    throws ApiError, ValidationException {
+    return this.getEsim(requestParameters, null);
+  }
+
+  /**
+   * Get eSIM
+   *
+   * @param requestParameters {@link GetEsimParameters} Request Parameters Object
+   * @return response of {@code GetEsimOkResponse}
+   */
+  public GetEsimOkResponse getEsim(
+    @NonNull GetEsimParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimRequest(requestParameters);
-    Response response = this.execute(request);
+    Request request = this.buildGetEsimRequest(requestParameters, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
     return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimOkResponse>() {});
   }
@@ -62,25 +121,45 @@ public class ESimService extends BaseService {
    * @param requestParameters {@link GetEsimParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<GetEsimOkResponse>}
    */
-  public CompletableFuture<GetEsimOkResponse> getEsimAsync(@NonNull GetEsimParameters requestParameters)
-    throws ApiError, ValidationException {
+  public CompletableFuture<GetEsimOkResponse> getEsimAsync(
+    @NonNull GetEsimParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.getEsimAsync(requestParameters, null);
+  }
+
+  /**
+   * Get eSIM
+   *
+   * @param requestParameters {@link GetEsimParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<GetEsimOkResponse>}
+   */
+  public CompletableFuture<GetEsimOkResponse> getEsimAsync(
+    @NonNull GetEsimParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimRequest(requestParameters);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    Request request = this.buildGetEsimRequest(requestParameters, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimOkResponse>() {});
     });
   }
 
-  private Request buildGetEsimRequest(@NonNull GetEsimParameters requestParameters) throws ValidationException {
+  private Request buildGetEsimRequest(
+    @NonNull GetEsimParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) throws ValidationException {
     new ViolationAggregator()
-      .add(new GetEsimParametersValidator("requestParameters").required().validate(requestParameters))
+      .add(
+        new GetEsimParametersValidator("requestParameters").required().validate(requestParameters)
+      )
       .validateAll();
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "esim"
     )
       .setQueryParameter("iccid", requestParameters.getIccid())
@@ -93,11 +172,24 @@ public class ESimService extends BaseService {
    * @param iccid String ID of the eSIM
    * @return response of {@code GetEsimDeviceOkResponse}
    */
-  public GetEsimDeviceOkResponse getEsimDevice(@NonNull String iccid) throws ApiError, ValidationException {
+  public GetEsimDeviceOkResponse getEsimDevice(@NonNull String iccid)
+    throws ApiError, ValidationException {
+    return this.getEsimDevice(iccid, null);
+  }
+
+  /**
+   * Get eSIM Device
+   *
+   * @param iccid String ID of the eSIM
+   * @return response of {@code GetEsimDeviceOkResponse}
+   */
+  public GetEsimDeviceOkResponse getEsimDevice(@NonNull String iccid, RequestConfig requestConfig)
+    throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimDeviceConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimDeviceRequest(iccid);
-    Response response = this.execute(request);
+    Request request = this.buildGetEsimDeviceRequest(iccid, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
     return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimDeviceOkResponse>() {});
   }
@@ -110,23 +202,38 @@ public class ESimService extends BaseService {
    */
   public CompletableFuture<GetEsimDeviceOkResponse> getEsimDeviceAsync(@NonNull String iccid)
     throws ApiError, ValidationException {
+    return this.getEsimDeviceAsync(iccid, null);
+  }
+
+  /**
+   * Get eSIM Device
+   *
+   * @param iccid String ID of the eSIM
+   * @return response of {@code CompletableFuture<GetEsimDeviceOkResponse>}
+   */
+  public CompletableFuture<GetEsimDeviceOkResponse> getEsimDeviceAsync(
+    @NonNull String iccid,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimDeviceConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimDeviceRequest(iccid);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    Request request = this.buildGetEsimDeviceRequest(iccid, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimDeviceOkResponse>() {});
     });
   }
 
-  private Request buildGetEsimDeviceRequest(@NonNull String iccid) throws ValidationException {
+  private Request buildGetEsimDeviceRequest(@NonNull String iccid, RequestConfig resolvedConfig)
+    throws ValidationException {
     new ViolationAggregator()
       .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
       .validateAll();
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "esim/{iccid}/device"
     )
       .setPathParameter("iccid", iccid)
@@ -139,11 +246,26 @@ public class ESimService extends BaseService {
    * @param iccid String ID of the eSIM
    * @return response of {@code GetEsimHistoryOkResponse}
    */
-  public GetEsimHistoryOkResponse getEsimHistory(@NonNull String iccid) throws ApiError, ValidationException {
+  public GetEsimHistoryOkResponse getEsimHistory(@NonNull String iccid)
+    throws ApiError, ValidationException {
+    return this.getEsimHistory(iccid, null);
+  }
+
+  /**
+   * Get eSIM History
+   *
+   * @param iccid String ID of the eSIM
+   * @return response of {@code GetEsimHistoryOkResponse}
+   */
+  public GetEsimHistoryOkResponse getEsimHistory(
+    @NonNull String iccid,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimHistoryConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimHistoryRequest(iccid);
-    Response response = this.execute(request);
+    Request request = this.buildGetEsimHistoryRequest(iccid, resolvedConfig);
+    Response response = this.execute(request, resolvedConfig);
     byte[] bodyBytes = ModelConverter.readBytes(response);
     return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimHistoryOkResponse>() {});
   }
@@ -156,23 +278,38 @@ public class ESimService extends BaseService {
    */
   public CompletableFuture<GetEsimHistoryOkResponse> getEsimHistoryAsync(@NonNull String iccid)
     throws ApiError, ValidationException {
+    return this.getEsimHistoryAsync(iccid, null);
+  }
+
+  /**
+   * Get eSIM History
+   *
+   * @param iccid String ID of the eSIM
+   * @return response of {@code CompletableFuture<GetEsimHistoryOkResponse>}
+   */
+  public CompletableFuture<GetEsimHistoryOkResponse> getEsimHistoryAsync(
+    @NonNull String iccid,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    RequestConfig resolvedConfig = this.getResolvedConfig(this.getEsimHistoryConfig, requestConfig);
     this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
     this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetEsimHistoryRequest(iccid);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request);
+    Request request = this.buildGetEsimHistoryRequest(iccid, resolvedConfig);
+    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
     return futureResponse.thenApplyAsync(response -> {
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return ModelConverter.convert(bodyBytes, new TypeReference<GetEsimHistoryOkResponse>() {});
     });
   }
 
-  private Request buildGetEsimHistoryRequest(@NonNull String iccid) throws ValidationException {
+  private Request buildGetEsimHistoryRequest(@NonNull String iccid, RequestConfig resolvedConfig)
+    throws ValidationException {
     new ViolationAggregator()
       .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
       .validateAll();
     return new RequestBuilder(
       HttpMethod.GET,
-      Optional.ofNullable(this.config.getBaseUrl()).orElse(Environment.DEFAULT.getUrl()),
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "esim/{iccid}/history"
     )
       .setPathParameter("iccid", iccid)

@@ -16,13 +16,10 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @ToString
 @EqualsAndHashCode
 @Jacksonized
-public class GetAccessTokenOkResponse {
+public class OAuthTokenResponse {
 
   @JsonProperty("access_token")
   private JsonNullable<String> accessToken;
-
-  @JsonProperty("token_type")
-  private JsonNullable<String> tokenType;
 
   @JsonProperty("expires_in")
   private JsonNullable<Long> expiresIn;
@@ -33,22 +30,17 @@ public class GetAccessTokenOkResponse {
   }
 
   @JsonIgnore
-  public String getTokenType() {
-    return tokenType.orElse(null);
-  }
-
-  @JsonIgnore
   public Long getExpiresIn() {
     return expiresIn.orElse(null);
   }
 
   // Overwrite lombok builder methods
-  public static class GetAccessTokenOkResponseBuilder {
+  public static class OAuthTokenResponseBuilder {
 
     private JsonNullable<String> accessToken = JsonNullable.undefined();
 
     @JsonProperty("access_token")
-    public GetAccessTokenOkResponseBuilder accessToken(String value) {
+    public OAuthTokenResponseBuilder accessToken(String value) {
       if (value == null) {
         throw new IllegalStateException("accessToken cannot be null");
       }
@@ -56,24 +48,10 @@ public class GetAccessTokenOkResponse {
       return this;
     }
 
-    private JsonNullable<String> tokenType = JsonNullable.undefined();
-
-    @JsonProperty("token_type")
-    public GetAccessTokenOkResponseBuilder tokenType(String value) {
-      if (value == null) {
-        throw new IllegalStateException("tokenType cannot be null");
-      }
-      this.tokenType = JsonNullable.of(value);
-      return this;
-    }
-
     private JsonNullable<Long> expiresIn = JsonNullable.undefined();
 
     @JsonProperty("expires_in")
-    public GetAccessTokenOkResponseBuilder expiresIn(Long value) {
-      if (value == null) {
-        throw new IllegalStateException("expiresIn cannot be null");
-      }
+    public OAuthTokenResponseBuilder expiresIn(Long value) {
       this.expiresIn = JsonNullable.of(value);
       return this;
     }

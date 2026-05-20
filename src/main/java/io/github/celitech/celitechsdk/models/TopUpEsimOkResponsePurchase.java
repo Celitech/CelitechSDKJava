@@ -120,7 +120,15 @@ public class TopUpEsimOkResponsePurchase {
       if (!endDate$set) {
         throw new IllegalStateException("endDate is required");
       }
-      return new TopUpEsimOkResponsePurchase(id, packageId, startDate, endDate, createdDate, startTime, endTime);
+      return new TopUpEsimOkResponsePurchase(
+        id,
+        packageId,
+        startDate,
+        endDate,
+        createdDate,
+        startTime,
+        endTime
+      );
     }
   }
 }
