@@ -16,6 +16,9 @@ public enum GrantType {
 
   @JsonCreator
   public static GrantType fromValue(String value) {
-    return Arrays.stream(GrantType.values()).filter(item -> item.value.equals(value)).findFirst().orElse(null);
+    return Arrays.stream(GrantType.values())
+      .filter(item -> item.value.equals(value))
+      .findFirst()
+      .orElse(null);
   }
 }
