@@ -1,6 +1,7 @@
 package io.github.celitech.celitechsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,10 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @EqualsAndHashCode
 @Jacksonized
 public class ListPurchasesParameters {
+
+  @JsonInclude(JsonInclude.Include.ALWAYS)
+  @JsonProperty("Accept")
+  private String accept;
 
   /**
    * ID of the purchase
@@ -64,19 +69,19 @@ public class ListPurchasesParameters {
    * Maximum number of purchases to be returned in the response. The value must be greater than 0 and less than or equal to 100. If not provided, the default value is 20
    */
   @JsonProperty("limit")
-  private JsonNullable<Double> limit;
+  private JsonNullable<String> limit;
 
   /**
    * Epoch value representing the start of the time interval for filtering purchases
    */
   @JsonProperty("after")
-  private JsonNullable<Double> after;
+  private JsonNullable<String> after;
 
   /**
    * Epoch value representing the end of the time interval for filtering purchases
    */
   @JsonProperty("before")
-  private JsonNullable<Double> before;
+  private JsonNullable<String> before;
 
   @JsonIgnore
   public String getPurchaseId() {
@@ -114,30 +119,38 @@ public class ListPurchasesParameters {
   }
 
   @JsonIgnore
-  public Double getLimit() {
+  public String getLimit() {
     return limit.orElse(null);
   }
 
   @JsonIgnore
-  public Double getAfter() {
+  public String getAfter() {
     return after.orElse(null);
   }
 
   @JsonIgnore
-  public Double getBefore() {
+  public String getBefore() {
     return before.orElse(null);
   }
 
   // Overwrite lombok builder methods
   public static class ListPurchasesParametersBuilder {
 
+    /**
+     * Flag to track if the accept property has been set.
+     */
+    private boolean accept$set = false;
+
+    public ListPurchasesParametersBuilder accept(String accept) {
+      this.accept$set = true;
+      this.accept = accept;
+      return this;
+    }
+
     private JsonNullable<String> purchaseId = JsonNullable.undefined();
 
     @JsonProperty("purchaseId")
     public ListPurchasesParametersBuilder purchaseId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("purchaseId cannot be null");
-      }
       this.purchaseId = JsonNullable.of(value);
       return this;
     }
@@ -146,9 +159,6 @@ public class ListPurchasesParameters {
 
     @JsonProperty("iccid")
     public ListPurchasesParametersBuilder iccid(String value) {
-      if (value == null) {
-        throw new IllegalStateException("iccid cannot be null");
-      }
       this.iccid = JsonNullable.of(value);
       return this;
     }
@@ -157,9 +167,6 @@ public class ListPurchasesParameters {
 
     @JsonProperty("afterDate")
     public ListPurchasesParametersBuilder afterDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("afterDate cannot be null");
-      }
       this.afterDate = JsonNullable.of(value);
       return this;
     }
@@ -168,9 +175,6 @@ public class ListPurchasesParameters {
 
     @JsonProperty("beforeDate")
     public ListPurchasesParametersBuilder beforeDate(String value) {
-      if (value == null) {
-        throw new IllegalStateException("beforeDate cannot be null");
-      }
       this.beforeDate = JsonNullable.of(value);
       return this;
     }
@@ -179,9 +183,6 @@ public class ListPurchasesParameters {
 
     @JsonProperty("email")
     public ListPurchasesParametersBuilder email(String value) {
-      if (value == null) {
-        throw new IllegalStateException("email cannot be null");
-      }
       this.email = JsonNullable.of(value);
       return this;
     }
@@ -190,9 +191,6 @@ public class ListPurchasesParameters {
 
     @JsonProperty("referenceId")
     public ListPurchasesParametersBuilder referenceId(String value) {
-      if (value == null) {
-        throw new IllegalStateException("referenceId cannot be null");
-      }
       this.referenceId = JsonNullable.of(value);
       return this;
     }
@@ -201,44 +199,51 @@ public class ListPurchasesParameters {
 
     @JsonProperty("afterCursor")
     public ListPurchasesParametersBuilder afterCursor(String value) {
-      if (value == null) {
-        throw new IllegalStateException("afterCursor cannot be null");
-      }
       this.afterCursor = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Double> limit = JsonNullable.undefined();
+    private JsonNullable<String> limit = JsonNullable.undefined();
 
     @JsonProperty("limit")
-    public ListPurchasesParametersBuilder limit(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("limit cannot be null");
-      }
+    public ListPurchasesParametersBuilder limit(String value) {
       this.limit = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Double> after = JsonNullable.undefined();
+    private JsonNullable<String> after = JsonNullable.undefined();
 
     @JsonProperty("after")
-    public ListPurchasesParametersBuilder after(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("after cannot be null");
-      }
+    public ListPurchasesParametersBuilder after(String value) {
       this.after = JsonNullable.of(value);
       return this;
     }
 
-    private JsonNullable<Double> before = JsonNullable.undefined();
+    private JsonNullable<String> before = JsonNullable.undefined();
 
     @JsonProperty("before")
-    public ListPurchasesParametersBuilder before(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("before cannot be null");
-      }
+    public ListPurchasesParametersBuilder before(String value) {
       this.before = JsonNullable.of(value);
       return this;
+    }
+
+    public ListPurchasesParameters build() {
+      if (!accept$set) {
+        throw new IllegalStateException("accept is required");
+      }
+      return new ListPurchasesParameters(
+        accept,
+        purchaseId,
+        iccid,
+        afterDate,
+        beforeDate,
+        email,
+        referenceId,
+        afterCursor,
+        limit,
+        after,
+        before
+      );
     }
   }
 }
