@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
@@ -19,35 +18,35 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @Jacksonized
 public class EditPurchaseRequest {
 
-  /**
-   * ID of the purchase
-   */
-  @NonNull
-  private String purchaseId;
+  @JsonProperty("purchaseId")
+  private JsonNullable<String> purchaseId;
 
-  /**
-   * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
-   */
-  @NonNull
-  private String startDate;
+  @JsonProperty("startDate")
+  private JsonNullable<String> startDate;
 
-  /**
-   * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
-   */
-  @NonNull
-  private String endDate;
+  @JsonProperty("endDate")
+  private JsonNullable<String> endDate;
 
-  /**
-   * Epoch value representing the start time of the package's validity. This timestamp can be set to the current time or any time within the next 12 months.
-   */
   @JsonProperty("startTime")
   private JsonNullable<Double> startTime;
 
-  /**
-   * Epoch value representing the end time of the package's validity. End time can be maximum 90 days after Start time.
-   */
   @JsonProperty("endTime")
   private JsonNullable<Double> endTime;
+
+  @JsonIgnore
+  public String getPurchaseId() {
+    return purchaseId.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getStartDate() {
+    return startDate.orElse(null);
+  }
+
+  @JsonIgnore
+  public String getEndDate() {
+    return endDate.orElse(null);
+  }
 
   @JsonIgnore
   public Double getStartTime() {
@@ -62,13 +61,34 @@ public class EditPurchaseRequest {
   // Overwrite lombok builder methods
   public static class EditPurchaseRequestBuilder {
 
+    private JsonNullable<String> purchaseId = JsonNullable.undefined();
+
+    @JsonProperty("purchaseId")
+    public EditPurchaseRequestBuilder purchaseId(String value) {
+      this.purchaseId = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> startDate = JsonNullable.undefined();
+
+    @JsonProperty("startDate")
+    public EditPurchaseRequestBuilder startDate(String value) {
+      this.startDate = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<String> endDate = JsonNullable.undefined();
+
+    @JsonProperty("endDate")
+    public EditPurchaseRequestBuilder endDate(String value) {
+      this.endDate = JsonNullable.of(value);
+      return this;
+    }
+
     private JsonNullable<Double> startTime = JsonNullable.undefined();
 
     @JsonProperty("startTime")
     public EditPurchaseRequestBuilder startTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("startTime cannot be null");
-      }
       this.startTime = JsonNullable.of(value);
       return this;
     }
@@ -77,9 +97,6 @@ public class EditPurchaseRequest {
 
     @JsonProperty("endTime")
     public EditPurchaseRequestBuilder endTime(Double value) {
-      if (value == null) {
-        throw new IllegalStateException("endTime cannot be null");
-      }
       this.endTime = JsonNullable.of(value);
       return this;
     }
