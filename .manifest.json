@@ -1,6 +1,6 @@
 {
-  "sdkGenVersion": "1.1.2",
-  "date": "2026-05-20T14:57:25.257Z",
+  "sdkGenVersion": "1.3.3",
+  "date": "2026-06-01T09:18:28.109Z",
   "config": {
     "languages": [
       "java"
@@ -10,7 +10,7 @@
     ],
     "languageOptions": {
       "java": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKJava",
         "retry": {
           "enabled": true,
@@ -58,7 +58,7 @@
         ]
       },
       "typescript": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKTypeScript",
         "retry": {
           "enabled": true,
@@ -96,7 +96,7 @@
         "npmName": "celitech-sdk"
       },
       "python": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKPython",
         "retry": {
           "enabled": true,
@@ -134,7 +134,7 @@
         "pypiPackageName": "celitech-sdk"
       },
       "go": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKGo",
         "retry": {
           "enabled": true,
@@ -172,7 +172,7 @@
         "goModuleName": "github.com/Celitech/CelitechSDKGo"
       },
       "csharp": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKCSharp",
         "retry": {
           "enabled": true,
@@ -211,7 +211,7 @@
         "useOptionalWrapper": false
       },
       "php": {
-        "sdkVersion": "2.0.0",
+        "sdkVersion": "2.0.1",
         "githubRepoName": "CelitechSDKPHP",
         "retry": {
           "enabled": true,
@@ -252,11 +252,11 @@
     "includeWatermark": false,
     "responseHeaders": false,
     "sdkName": "Celitech",
-    "sdkVersion": "2.0.0",
+    "sdkVersion": "2.0.1",
     "auth": [
       "oauth"
     ],
-    "apiVersion": "2.0.0",
+    "apiVersion": "2.0.1",
     "publishing": {
       "githubOrg": "Celitech"
     },
@@ -522,7 +522,7 @@
     ".idea/misc.xml": "042abf22dfaa2dc7e5f3d7956f778c18bdfb7404f4a9bddd388d49e48e00f90e",
     ".idea/workspace.xml": "4d10ccfa6c224926ec01c2f28beada28a066755d258532b63687c141c1ec956d",
     "LICENSE": "3ec558dc6e9c9355ab4b28c942caa92bf90b0b82c12d7838d2ef92467ad135c1",
-    "README.md": "28f00dec936025b7894ad86874ea9fc5af7e7ec75464549aa6c0031f5564a3bd",
+    "README.md": "b66ed3bff3e31c5e4db825cb35964445d26763ec8c752b943ab22f3c1d5a7730",
     "documentation/models/BadRequest.md": "5d003c913257eecfdd9ed8691307b566530ce6c81ccfb2b1c438faddaa748632",
     "documentation/models/CreatePurchaseOkResponse.md": "c476c3fe6f7a93f6e946858f834e11a7899bd1deb610e0de30ab5d86de643cc4",
     "documentation/models/CreatePurchaseOkResponseProfile.md": "82a9e9f2abb9c86c97678aef3a0ec0c63290a11f133b06480ae183e49f65b49b",
@@ -570,13 +570,13 @@
     "documentation/snippets/snippets.json": "42a7cf77596a54610441a296006b14e046b86eaf5bb0e23197700f7411d0a7e4",
     "examples/.gitignore": "16c2381047d584e96eb9c89da75b41f24abb5df5e1b9b770321ef9bf9f46b7b4",
     "examples/README.md": "3956036b4ea353b3ce6b194c949eca4d7ca2c1ee82ccde7e7ab059a79d400952",
-    "examples/pom.xml": "998db1c7c8e944548d7652fd335a090e8f6c12d0b3c771e558e42c7065d735c8",
+    "examples/pom.xml": "8fc9bf85b4a977c2eab8efbc9718d624baff1836e8d70962b4d9875185689e34",
     "examples/run.sh": "b421122e2d707b60e35b125a39a47dd9b1bec16d241aec1ba5a7357816e4757b",
     "examples/src/main/java/com/example/Main.java": "2791dfa847f5185a3a60d84cb520e962677bf77574200ef6fa5ac2a3bc26ab2f",
-    "pom.xml": "63f4abc311cc7249d85afc277f4b4c3083344a8a70d573fb37124f070c457bd8",
+    "pom.xml": "cdfd0df52f723bc3560839aeb4bccb3bd4893a8fad3993d48fbdb064503ecd01",
     "prettier.config.js": "2fe33fda52344779fcf235afa8152cfd356880dc3161da09403dc26231bc72d9",
     "src/main/java/io/github/celitech/celitechsdk/Celitech.java": "4fad329e0040393e185ba71259d01ec6a88903cd05b6a604c4360899c11de820",
-    "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java": "84376c0cca7625e610fd3ddcb98f8297f96e9d4862eb96d320556dbbfbe492cc",
+    "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java": "77d3b52f77525bb3ee5043703ad66343128981e29ada1f489f63327134406a2c",
     "src/main/java/io/github/celitech/celitechsdk/config/RequestConfig.java": "2402cef75f9cf062e5e6c798c5574318f9cabc8b020c30244b989a430f443d5c",
     "src/main/java/io/github/celitech/celitechsdk/config/RetryConfig.java": "82bfe54a2f5a76edb6905503d8b5bb89ca4c4a0f9b2df423324947948df072dc",
     "src/main/java/io/github/celitech/celitechsdk/exceptions/ApiError.java": "3defe5ad279826418718d394f99a73080bfc192446a257367ba9200a785259e3",

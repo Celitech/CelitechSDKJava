@@ -1,11 +1,11 @@
-# Celitech Java SDK 2.0.0
+# Celitech Java SDK 2.0.1
 
 Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
 
 ## Versions
 
-- API version: `2.0.0`
-- SDK version: `2.0.0`
+- API version: `2.0.1`
+- SDK version: `2.0.1`
 - Homepage: [https://docs.celitech.com/](https://docs.celitech.com/)
 
 ## About the API
@@ -42,14 +42,14 @@ If you use Maven, place the following within the _dependency_ tag in your `pom.x
 <dependency>
     <groupId>io.github.celitech</groupId>
     <artifactId>celitech-sdk</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
 If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
 
 ```Gradle
-implementation("io.github.celitech:celitech-sdk:2.0.0")
+implementation("io.github.celitech:celitech-sdk:2.0.1")
 ```
 
 If you use JAR files, package the SDK by running the following command:
