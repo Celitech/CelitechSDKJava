@@ -17,7 +17,7 @@ public class CelitechConfig {
 
   @NonNull
   @Builder.Default
-  private String userAgent = "postman-codegen/1.3.3 celitechsdk/2.0.1 (java)";
+  private String userAgent = "postman-codegen/1.4.0 celitechsdk/2.0.2 (java)";
 
   @Setter
   private String baseUrl;

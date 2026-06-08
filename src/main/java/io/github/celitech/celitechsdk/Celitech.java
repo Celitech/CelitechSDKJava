@@ -14,9 +14,11 @@ import io.github.celitech.celitechsdk.services.PurchasesService;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 
-/** Welcome to the CELITECH API documentation!
-
-Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)
+/**
+ * Welcome to the CELITECH API documentation!
+ *
+ * Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:support@celitech.com) | [Blog](https://www.celitech.com/blog/)
+ *
  */
 public class Celitech {
 
