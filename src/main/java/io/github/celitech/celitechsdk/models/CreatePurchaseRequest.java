@@ -26,7 +26,7 @@ public class CreatePurchaseRequest {
   private String destination;
 
   /**
-   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB
+   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB. Use `-1` to purchase an unlimited (date-based) package — provide `startDate`/`endDate` spanning 3 to 30 days.
    */
   @NonNull
   @JsonProperty("dataLimitInGB")

@@ -24,13 +24,13 @@ public class Package_ {
   private String id;
 
   /**
-   * Size of the package in Bytes
+   * Size of the package in Bytes. A value of `-1` indicates an unlimited package.
    */
   @NonNull
   private Double dataLimitInBytes;
 
   /**
-   * Size of the package in GB
+   * Size of the package in GB. A value of `-1` indicates an unlimited (date-based) package.
    */
   @NonNull
   @JsonProperty("dataLimitInGB")

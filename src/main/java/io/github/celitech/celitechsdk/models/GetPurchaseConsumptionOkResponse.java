@@ -18,13 +18,13 @@ import lombok.extern.jackson.Jacksonized;
 public class GetPurchaseConsumptionOkResponse {
 
   /**
-   * Remaining balance of the package in bytes
+   * Remaining balance of the package in bytes. Returns `-1` for unlimited packages.
    */
   @NonNull
   private Double dataUsageRemainingInBytes;
 
   /**
-   * Remaining balance of the package in GB
+   * Remaining balance of the package in GB. Returns `-1` for unlimited packages.
    */
   @NonNull
   @JsonProperty("dataUsageRemainingInGB")

@@ -2,13 +2,13 @@
 
 **Properties**
 
-| Name             | Type   | Required | Description                                       |
-| :--------------- | :----- | :------- | :------------------------------------------------ |
-| id               | String | ✅       | ID of the package                                 |
-| destination      | String | ✅       | ISO3 representation of the package's destination. |
-| destinationIso2  | String | ✅       | ISO2 representation of the package's destination. |
-| dataLimitInBytes | Double | ✅       | Size of the package in Bytes                      |
-| dataLimitInGb    | Double | ✅       | Size of the package in GB                         |
-| minDays          | Double | ✅       | Min number of days for the package                |
-| maxDays          | Double | ✅       | Max number of days for the package                |
-| priceInCents     | Double | ✅       | Price of the package in cents                     |
+| Name             | Type   | Required | Description                                                                             |
+| :--------------- | :----- | :------- | :-------------------------------------------------------------------------------------- |
+| id               | String | ✅       | ID of the package                                                                       |
+| destination      | String | ✅       | ISO3 representation of the package's destination.                                       |
+| destinationIso2  | String | ✅       | ISO2 representation of the package's destination.                                       |
+| dataLimitInBytes | Double | ✅       | Size of the package in Bytes. A value of `-1` indicates an unlimited package.           |
+| dataLimitInGb    | Double | ✅       | Size of the package in GB. A value of `-1` indicates an unlimited (date-based) package. |
+| minDays          | Double | ✅       | Min number of days for the package                                                      |
+| maxDays          | Double | ✅       | Max number of days for the package                                                      |
+| priceInCents     | Double | ✅       | Price of the package in cents                                                           |
