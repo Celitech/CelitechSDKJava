@@ -64,7 +64,7 @@ public class Purchases {
   private String purchaseType;
 
   /**
-   * Duration of the package in days. Possible values are 1, 2, 7, 14, 30, or 90.
+   * Duration of the package in days. Possible values are 1, 2, 7, 14, 30, or 90. `null` for unlimited (date-based) packages.
    */
   @JsonProperty("duration")
   private JsonNullable<Double> duration;

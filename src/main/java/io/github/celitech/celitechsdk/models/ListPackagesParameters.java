@@ -25,6 +25,12 @@ public class ListPackagesParameters {
   private JsonNullable<String> destination;
 
   /**
+   * Filter packages by data limit in GB. When provided, only packages with this exact data limit are returned. Use `-1` together with `includeUnlimited=true` to return only unlimited packages. A value of `0` is ignored.
+   */
+  @JsonProperty("dataLimitInGB")
+  private JsonNullable<Double> dataLimitInGb;
+
+  /**
    * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
    */
   @JsonProperty("startDate")
@@ -60,9 +66,20 @@ public class ListPackagesParameters {
   @JsonProperty("endTime")
   private JsonNullable<Long> endTime;
 
+  /**
+   * Whether to include unlimited (date-based) packages in the results. Unlimited packages are excluded by default; set this to `true` to include them. An unlimited package has `dataLimitInGB` and `dataLimitInBytes` equal to `-1`, and is offered for 3 to 30 days with `minDays` equal to `maxDays`.
+   */
+  @JsonProperty("includeUnlimited")
+  private JsonNullable<Boolean> includeUnlimited;
+
   @JsonIgnore
   public String getDestination() {
     return destination.orElse(null);
+  }
+
+  @JsonIgnore
+  public Double getDataLimitInGb() {
+    return dataLimitInGb.orElse(null);
   }
 
   @JsonIgnore
@@ -95,6 +112,11 @@ public class ListPackagesParameters {
     return endTime.orElse(null);
   }
 
+  @JsonIgnore
+  public Boolean getIncludeUnlimited() {
+    return includeUnlimited.orElse(null);
+  }
+
   // Overwrite lombok builder methods
   public static class ListPackagesParametersBuilder {
 
@@ -106,6 +128,17 @@ public class ListPackagesParameters {
         throw new IllegalStateException("destination cannot be null");
       }
       this.destination = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Double> dataLimitInGb = JsonNullable.undefined();
+
+    @JsonProperty("dataLimitInGB")
+    public ListPackagesParametersBuilder dataLimitInGb(Double value) {
+      if (value == null) {
+        throw new IllegalStateException("dataLimitInGb cannot be null");
+      }
+      this.dataLimitInGb = JsonNullable.of(value);
       return this;
     }
 
@@ -172,6 +205,17 @@ public class ListPackagesParameters {
         throw new IllegalStateException("endTime cannot be null");
       }
       this.endTime = JsonNullable.of(value);
+      return this;
+    }
+
+    private JsonNullable<Boolean> includeUnlimited = JsonNullable.undefined();
+
+    @JsonProperty("includeUnlimited")
+    public ListPackagesParametersBuilder includeUnlimited(Boolean value) {
+      if (value == null) {
+        throw new IllegalStateException("includeUnlimited cannot be null");
+      }
+      this.includeUnlimited = JsonNullable.of(value);
       return this;
     }
   }

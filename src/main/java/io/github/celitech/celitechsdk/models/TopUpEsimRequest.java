@@ -26,7 +26,7 @@ public class TopUpEsimRequest {
   private String iccid;
 
   /**
-   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB
+   * Size of the package in GB. The available options are 0.5, 1, 2, 3, 5, 8, 20, 50GB. Use `-1` to top up with an unlimited (date-based) package — provide `startDate`/`endDate` spanning 3 to 30 days (`duration` is not supported for unlimited packages).
    */
   @NonNull
   @JsonProperty("dataLimitInGB")
@@ -45,7 +45,7 @@ public class TopUpEsimRequest {
   private JsonNullable<String> endDate;
 
   /**
-   * Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration.
+   * Duration of the package in days. Available values are 1, 2, 7, 14, 30, or 90. Either provide startDate/endDate or duration. Not supported for unlimited packages (`dataLimitInGB` = -1), which are date-based — provide startDate/endDate instead.
    */
   @JsonProperty("duration")
   private JsonNullable<Double> duration;

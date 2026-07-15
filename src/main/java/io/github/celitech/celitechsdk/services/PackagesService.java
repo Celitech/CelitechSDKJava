@@ -142,12 +142,14 @@ public class PackagesService extends BaseService {
       "packages"
     )
       .setOptionalQueryParameter("destination", requestParameters.getDestination())
+      .setOptionalQueryParameter("dataLimitInGB", requestParameters.getDataLimitInGb())
       .setOptionalQueryParameter("startDate", requestParameters.getStartDate())
       .setOptionalQueryParameter("endDate", requestParameters.getEndDate())
       .setOptionalQueryParameter("afterCursor", requestParameters.getAfterCursor())
       .setOptionalQueryParameter("limit", requestParameters.getLimit())
       .setOptionalQueryParameter("startTime", requestParameters.getStartTime())
       .setOptionalQueryParameter("endTime", requestParameters.getEndTime())
+      .setOptionalQueryParameter("includeUnlimited", requestParameters.getIncludeUnlimited())
       .build();
   }
 }
