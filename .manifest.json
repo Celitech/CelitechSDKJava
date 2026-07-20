@@ -1,6 +1,6 @@
 {
-  "sdkGenVersion": "1.6.0",
-  "date": "2026-07-15T12:00:29.935Z",
+  "sdkGenVersion": "1.7.0",
+  "date": "2026-07-20T09:14:38.649Z",
   "config": {
     "languages": [
       "java"
@@ -10,7 +10,7 @@
     ],
     "languageOptions": {
       "java": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKJava",
         "retry": {
           "enabled": true,
@@ -58,7 +58,7 @@
         ]
       },
       "typescript": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKTypeScript",
         "retry": {
           "enabled": true,
@@ -96,7 +96,7 @@
         "npmName": "celitech-sdk"
       },
       "python": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKPython",
         "retry": {
           "enabled": true,
@@ -134,7 +134,7 @@
         "pypiPackageName": "celitech-sdk"
       },
       "go": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKGo",
         "retry": {
           "enabled": true,
@@ -172,7 +172,7 @@
         "goModuleName": "github.com/Celitech/CelitechSDKGo/v2"
       },
       "csharp": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKCSharp",
         "retry": {
           "enabled": true,
@@ -211,7 +211,7 @@
         "useOptionalWrapper": false
       },
       "php": {
-        "sdkVersion": "2.0.5",
+        "sdkVersion": "2.0.6",
         "githubRepoName": "CelitechSDKPHP",
         "retry": {
           "enabled": true,
@@ -252,11 +252,11 @@
     "includeWatermark": false,
     "responseHeaders": false,
     "sdkName": "Celitech",
-    "sdkVersion": "2.0.5",
+    "sdkVersion": "2.0.6",
     "auth": [
       "oauth"
     ],
-    "apiVersion": "2.0.5",
+    "apiVersion": "2.0.6",
     "publishing": {
       "githubOrg": "Celitech"
     },
@@ -278,7 +278,8 @@
         "PATCH",
         "HEAD",
         "OPTIONS"
-      ]
+      ],
+      "maxRetryAfterDelay": 60000
     },
     "license": {
       "type": "MIT",
@@ -516,7 +517,7 @@
   "fileHashes": {
     ".devcontainer/devcontainer.json": "96075f977511b529b545cd4be0d03ebdec1806c1fcfcb985eadfc7c2e94daa2d",
     ".env.example": "69a3ee82f15d8bcc221e9c34c99e5a851d8b318ac2ac7e78f97ef32b743b303e",
-    ".github/workflows/release.yml": "794f6fb0bcca0a31337c5ef086273088ea27c9410f3db84f7e4612b57b45ad1f",
+    ".github/workflows/release.yml": "5fa05206581d7701f08bdee044af75b87c90a6ca436e7f87d8c6049880a6eae0",
     ".gitignore": "16c2381047d584e96eb9c89da75b41f24abb5df5e1b9b770321ef9bf9f46b7b4",
     ".idea/compiler.xml": "d4b3c50d88d994f6b45771590618d6bb974dd4686aee2207f98e4f2d6425f438",
     ".idea/encoding.xml": "c08731aff01601ae1dce0f19fe8f058b750a167cdef4fb92b8ba104eeb7ec038",
@@ -524,7 +525,7 @@
     ".idea/misc.xml": "042abf22dfaa2dc7e5f3d7956f778c18bdfb7404f4a9bddd388d49e48e00f90e",
     ".idea/workspace.xml": "4d10ccfa6c224926ec01c2f28beada28a066755d258532b63687c141c1ec956d",
     "LICENSE": "3ec558dc6e9c9355ab4b28c942caa92bf90b0b82c12d7838d2ef92467ad135c1",
-    "README.md": "3a78eb0cf0b831420e17f85e823216720a1bd7731858c583fb0683ea2e0e8d0c",
+    "README.md": "738e15a228019735ac92899ec5300126346288a9f33be9284b6c0315cc9179e9",
     "documentation/models/BadRequest.md": "5d003c913257eecfdd9ed8691307b566530ce6c81ccfb2b1c438faddaa748632",
     "documentation/models/CreatePurchaseOkResponse.md": "c476c3fe6f7a93f6e946858f834e11a7899bd1deb610e0de30ab5d86de643cc4",
     "documentation/models/CreatePurchaseOkResponseProfile.md": "82a9e9f2abb9c86c97678aef3a0ec0c63290a11f133b06480ae183e49f65b49b",
@@ -572,13 +573,13 @@
     "documentation/snippets/snippets.json": "42a7cf77596a54610441a296006b14e046b86eaf5bb0e23197700f7411d0a7e4",
     "examples/.gitignore": "16c2381047d584e96eb9c89da75b41f24abb5df5e1b9b770321ef9bf9f46b7b4",
     "examples/README.md": "3956036b4ea353b3ce6b194c949eca4d7ca2c1ee82ccde7e7ab059a79d400952",
-    "examples/pom.xml": "755ffd7f34a916e653498d23015aeed8edf112414eaf3d5196174ea9e1c7e00e",
+    "examples/pom.xml": "9b91d9a12eda09c20b8706d471b811c233857bc423aba5dd833214ff9aa767bb",
     "examples/run.sh": "b421122e2d707b60e35b125a39a47dd9b1bec16d241aec1ba5a7357816e4757b",
     "examples/src/main/java/com/example/Main.java": "2791dfa847f5185a3a60d84cb520e962677bf77574200ef6fa5ac2a3bc26ab2f",
-    "pom.xml": "db3bb35e79582c0e66ac6adce42dbbd018aa591f7409132c9f0e6c172cc10254",
+    "pom.xml": "19a3e8614d062e090c62b4dc485b202b82519a4073d968a1b094d29fa47b312c",
     "prettier.config.js": "2fe33fda52344779fcf235afa8152cfd356880dc3161da09403dc26231bc72d9",
     "src/main/java/io/github/celitech/celitechsdk/Celitech.java": "438615b115fad52d16bed12092c5bde77c6aec1105f775dcc8282963afbc4bf4",
-    "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java": "83e2994b3a54bfee6c63fd9aa02484e40a36547cff40b1f697fd3da9cd30a0ee",
+    "src/main/java/io/github/celitech/celitechsdk/config/CelitechConfig.java": "d4fb58ca4a656118a7c4c4babc90abf58dc6aab0b89594cd1a8ed1f472c6daed",
     "src/main/java/io/github/celitech/celitechsdk/config/RequestConfig.java": "2402cef75f9cf062e5e6c798c5574318f9cabc8b020c30244b989a430f443d5c",
     "src/main/java/io/github/celitech/celitechsdk/config/RetryConfig.java": "82bfe54a2f5a76edb6905503d8b5bb89ca4c4a0f9b2df423324947948df072dc",
     "src/main/java/io/github/celitech/celitechsdk/exceptions/ApiError.java": "3defe5ad279826418718d394f99a73080bfc192446a257367ba9200a785259e3",
