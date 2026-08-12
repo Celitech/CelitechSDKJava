@@ -6,9 +6,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.celitech.celitechsdk.http.util.ContentTypes;
+import io.github.celitech.celitechsdk.json.DateDeserializer;
+import io.github.celitech.celitechsdk.json.DateTimeDeserializer;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import okhttp3.MediaType;
@@ -36,6 +42,11 @@ public final class ModelConverter {
     mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
     mapper.enable(DeserializationFeature.USE_LONG_FOR_INTS);
     mapper.registerModule(new JsonNullableModule());
+    mapper.registerModule(new JavaTimeModule());
+    SimpleModule dateModule = new SimpleModule();
+    dateModule.addDeserializer(OffsetDateTime.class, new DateTimeDeserializer());
+    dateModule.addDeserializer(LocalDate.class, new DateDeserializer());
+    mapper.registerModule(dateModule);
   }
 
   private ModelConverter() {}

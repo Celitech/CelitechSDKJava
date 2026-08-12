@@ -5,13 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
+import io.github.celitech.celitechsdk.exceptions.ConflictError;
+import io.github.celitech.celitechsdk.exceptions.ForbiddenError;
+import io.github.celitech.celitechsdk.exceptions.MethodNotAllowedError;
+import io.github.celitech.celitechsdk.exceptions.NotFoundError;
+import io.github.celitech.celitechsdk.exceptions.TooManyRequestsError;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,18 +49,27 @@ public class BaseService {
   protected RequestConfig serviceConfig;
 
   /**
-   * Internal class for mapping HTTP status codes to error models and exception types.
+   * Factory that builds the status-named {@link ApiError} for a mapped status code.
+   * Registered per status so exceptions are constructed with a typed body without reflection.
+   */
+  @FunctionalInterface
+  public interface ApiErrorFactory {
+    ApiError create(String message, int statusCode, Object body, Map<String, List<String>> headers);
+  }
+
+  /**
+   * Internal class for mapping HTTP status codes to error models and exception factories.
    *
    * @param <T> The error model type
    */
   private static class ErrorMapping<T> {
 
     private final Class<T> modelClass;
-    private final Class<? extends ApiError> exceptionClass;
+    private final ApiErrorFactory factory;
 
-    public ErrorMapping(Class<T> modelClass, Class<? extends ApiError> exceptionClass) {
+    public ErrorMapping(Class<T> modelClass, ApiErrorFactory factory) {
       this.modelClass = modelClass;
-      this.exceptionClass = exceptionClass;
+      this.factory = factory;
     }
   }
 
@@ -69,6 +83,24 @@ public class BaseService {
     this.httpClient = httpClient;
     this.config = config;
     this.errorMappings = new HashMap<>();
+    // Seed the standard status-named exceptions (FSM-640) so every endpoint throws
+    // them regardless of whether the spec declared that status. Per-method mappings
+    // override these for statuses the spec models with a typed body.
+    this.addErrorMapping(403, Object.class, (message, code, body, headers) ->
+        new ForbiddenError(message, body, headers)
+      );
+    this.addErrorMapping(404, Object.class, (message, code, body, headers) ->
+        new NotFoundError(message, body, headers)
+      );
+    this.addErrorMapping(405, Object.class, (message, code, body, headers) ->
+        new MethodNotAllowedError(message, body, headers)
+      );
+    this.addErrorMapping(409, Object.class, (message, code, body, headers) ->
+        new ConflictError(message, body, headers)
+      );
+    this.addErrorMapping(429, Object.class, (message, code, body, headers) ->
+        new TooManyRequestsError(message, body, headers)
+      );
   }
 
   /**
@@ -183,30 +215,23 @@ public class BaseService {
    * @param <T> The error model type
    * @param status The HTTP status code to map
    * @param modelClass The class to deserialize the error response into
-   * @param exceptionClass The exception class to throw
+   * @param factory The factory that builds the exception to throw
    */
-  protected <T> void addErrorMapping(
-    int status,
-    Class<T> modelClass,
-    Class<? extends ApiError> exceptionClass
-  ) {
-    this.errorMappings.put(status, new ErrorMapping<>(modelClass, exceptionClass));
+  protected <T> void addErrorMapping(int status, Class<T> modelClass, ApiErrorFactory factory) {
+    this.errorMappings.put(status, new ErrorMapping<>(modelClass, factory));
   }
 
   /**
    * Registers a default error mapping for unmapped HTTP status codes.
    * When a response with an unmapped status is received the SDK will deserialize the error
-   * response to the specified model class and throw the specified exception type.
+   * response to the specified model class and build the exception via the given factory.
    *
    * @param <T> The error model type
    * @param modelClass The class to deserialize the error response into
-   * @param exceptionClass The exception class to throw
+   * @param factory The factory that builds the exception to throw
    */
-  protected <T> void addDefaultErrorMapping(
-    Class<T> modelClass,
-    Class<? extends ApiError> exceptionClass
-  ) {
-    this.defaultErrorMapping = new ErrorMapping<>(modelClass, exceptionClass);
+  protected <T> void addDefaultErrorMapping(Class<T> modelClass, ApiErrorFactory factory) {
+    this.defaultErrorMapping = new ErrorMapping<>(modelClass, factory);
   }
 
   /**
@@ -260,9 +285,9 @@ public class BaseService {
       response = client.newCall(request).execute();
     } catch (IOException e) {
       if (e instanceof SocketTimeoutException) {
-        throw new ApiError("Request timed out", 408, null);
+        throw new ApiError("Request timed out", 408, null, Collections.emptyMap());
       }
-      throw new ApiError(e.getMessage(), 0, null);
+      throw new ApiError(e.getMessage(), 0, null, Collections.emptyMap());
     }
 
     if (response.isSuccessful()) {
@@ -270,6 +295,7 @@ public class BaseService {
     }
 
     // Handle error response
+    Map<String, List<String>> headers = response.headers().toMultimap();
     ErrorMapping<?> errorMapping =
       this.errorMappings.getOrDefault(response.code(), this.defaultErrorMapping);
     if (errorMapping != null) {
@@ -284,28 +310,15 @@ public class BaseService {
         );
       }
 
-      if (errorModel != null) {
-        try {
-          Constructor<? extends ApiError> constructor = errorMapping.exceptionClass.getConstructor(
-            errorMapping.modelClass,
-            String.class,
-            int.class,
-            Response.class
-          );
-          String message = extractErrorMessage(response, errorModel);
-          throw constructor.newInstance(errorModel, message, response.code(), response);
-        } catch (ReflectiveOperationException e) {
-          logger.log(
-            Level.WARNING,
-            "Failed to create exception instance for " + errorMapping.exceptionClass.getName(),
-            e
-          );
-        }
-      }
+      // A mapped status always throws its status-named exception, even when the body is
+      // absent or fails to deserialize (errorModel is then null). Only a status with no
+      // mapping at all falls through to the base ApiError below.
+      String message = extractErrorMessage(response, errorModel);
+      throw errorMapping.factory.create(message, response.code(), errorModel, headers);
     }
 
-    // If no specific error model is mapped or conversion failed, throw generic ApiError
-    throw new ApiError(extractErrorMessage(response, null), response.code(), response);
+    // No mapping (and no default) for this status: throw the base ApiError with parsed headers.
+    throw new ApiError(extractErrorMessage(response, null), response.code(), null, headers);
   }
 
   /**
@@ -331,25 +344,15 @@ public class BaseService {
           public void onResponse(@NotNull Call call, @NotNull Response response) {
             if (!response.isSuccessful()) {
               // Handle error response
-              ErrorMapping<?> errorMapping = errorMappings.get(response.code());
+              Map<String, List<String>> headers = response.headers().toMultimap();
+              ErrorMapping<?> errorMapping = errorMappings.getOrDefault(
+                response.code(),
+                defaultErrorMapping
+              );
               if (errorMapping != null) {
+                Object errorModel = null;
                 try {
-                  Object errorModel = ModelConverter.convert(response, errorMapping.modelClass);
-                  if (errorModel != null) {
-                    // Use reflection to create the exception
-                    Constructor<? extends ApiError> constructor =
-                      errorMapping.exceptionClass.getConstructor(
-                        errorMapping.modelClass,
-                        String.class,
-                        int.class,
-                        Response.class
-                      );
-                    String message = extractErrorMessage(response, errorModel);
-                    future.completeExceptionally(
-                      constructor.newInstance(errorModel, message, response.code(), response)
-                    );
-                    return;
-                  }
+                  errorModel = ModelConverter.convert(response, errorMapping.modelClass);
                 } catch (Exception e) {
                   logger.log(
                     Level.WARNING,
@@ -357,13 +360,21 @@ public class BaseService {
                     e
                   );
                 }
+                // A mapped status always throws its status-named exception, even when the
+                // body is absent or fails to deserialize (errorModel is then null).
+                String message = extractErrorMessage(response, errorModel);
+                future.completeExceptionally(
+                  errorMapping.factory.create(message, response.code(), errorModel, headers)
+                );
+                return;
               }
 
-              // If no specific error model is mapped or conversion failed, throw generic ApiError
+              // No mapping (and no default) for this status: complete with the base ApiError.
               ApiError error = new ApiError(
                 extractErrorMessage(response, null),
                 response.code(),
-                response
+                null,
+                headers
               );
               future.completeExceptionally(error);
               return;
@@ -375,10 +386,10 @@ public class BaseService {
           @Override
           public void onFailure(@NotNull Call call, @NotNull IOException e) {
             if (e instanceof SocketTimeoutException) {
-              ApiError error = new ApiError("Request timed out", 408, null);
+              ApiError error = new ApiError("Request timed out", 408, null, Collections.emptyMap());
               future.completeExceptionally(error);
             } else {
-              ApiError error = new ApiError(e.getMessage(), 0, null);
+              ApiError error = new ApiError(e.getMessage(), 0, null, Collections.emptyMap());
               future.completeExceptionally(error);
             }
           }
