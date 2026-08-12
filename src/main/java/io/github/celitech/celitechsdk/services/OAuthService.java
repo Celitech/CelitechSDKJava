@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
+import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
@@ -71,11 +72,7 @@ public class OAuthService extends BaseService {
     @NonNull OAuthTokenRequest oAuthTokenRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.getAccessTokenConfig, requestConfig);
-    Request request = this.buildGetAccessTokenRequest(oAuthTokenRequest, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<OAuthTokenResponse>() {});
+    return withRawResponse().getAccessToken(oAuthTokenRequest, requestConfig).getData();
   }
 
   /**
@@ -102,13 +99,9 @@ public class OAuthService extends BaseService {
     @NonNull OAuthTokenRequest oAuthTokenRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.getAccessTokenConfig, requestConfig);
-    Request request = this.buildGetAccessTokenRequest(oAuthTokenRequest, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<OAuthTokenResponse>() {});
-    });
+    return withRawResponse()
+      .getAccessTokenAsync(oAuthTokenRequest, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildGetAccessTokenRequest(
@@ -118,12 +111,101 @@ public class OAuthService extends BaseService {
     return new RequestBuilder(HttpMethod.POST, this.config.getBaseOAuthUrl(), "oauth2/token")
       .setBody(
         new FormBody.Builder()
-          .add("grant_type", String.valueOf(oAuthTokenRequest.getGrantType().getValue()))
+          .add("grant_type", String.valueOf(oAuthTokenRequest.getGrantType().toString()))
           .add("client_id", oAuthTokenRequest.getClientId())
           .add("client_secret", oAuthTokenRequest.getClientSecret())
           .add("scope", oAuthTokenRequest.getScope())
           .build()
       )
       .build();
+  }
+
+  /**
+   * Returns an accessor whose methods mirror this service but return the full HTTP response
+   * (status code, headers, and raw body) wrapped alongside the parsed data.
+   *
+   * @return An accessor exposing raw-response variants of this service's methods
+   */
+  public WithRawResponse withRawResponse() {
+    return new WithRawResponse();
+  }
+
+  /**
+   * Per-call accessor exposing raw-response variants of {@link OAuthService}'s methods.
+   * Reuses the enclosing service's request builders and configuration.
+   */
+  public class WithRawResponse {
+
+    /**
+     * Method getAccessToken
+     * POST /oauth2/token
+     *
+     * @param oAuthTokenRequest {@link OAuthTokenRequest} Request Body
+     * @return response of {@code CelitechResponse<OAuthTokenResponse>}
+     */
+    public CelitechResponse<OAuthTokenResponse> getAccessToken(
+      @NonNull OAuthTokenRequest oAuthTokenRequest
+    ) throws ApiError {
+      return this.getAccessToken(oAuthTokenRequest, null);
+    }
+
+    /**
+     * Method getAccessToken
+     * POST /oauth2/token
+     *
+     * @param oAuthTokenRequest {@link OAuthTokenRequest} Request Body
+     * @return response of {@code CelitechResponse<OAuthTokenResponse>}
+     */
+    public CelitechResponse<OAuthTokenResponse> getAccessToken(
+      @NonNull OAuthTokenRequest oAuthTokenRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(getAccessTokenConfig, requestConfig);
+      Request request = buildGetAccessTokenRequest(oAuthTokenRequest, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<OAuthTokenResponse>() {})
+      );
+    }
+
+    /**
+     * Method getAccessToken
+     * POST /oauth2/token
+     *
+     * @param oAuthTokenRequest {@link OAuthTokenRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<OAuthTokenResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<OAuthTokenResponse>> getAccessTokenAsync(
+      @NonNull OAuthTokenRequest oAuthTokenRequest
+    ) throws ApiError {
+      return this.getAccessTokenAsync(oAuthTokenRequest, null);
+    }
+
+    /**
+     * Method getAccessToken
+     * POST /oauth2/token
+     *
+     * @param oAuthTokenRequest {@link OAuthTokenRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<OAuthTokenResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<OAuthTokenResponse>> getAccessTokenAsync(
+      @NonNull OAuthTokenRequest oAuthTokenRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(getAccessTokenConfig, requestConfig);
+      Request request = buildGetAccessTokenRequest(oAuthTokenRequest, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<OAuthTokenResponse>() {})
+        );
+      });
+    }
   }
 }

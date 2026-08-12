@@ -29,6 +29,9 @@ public class RetryConfig {
   private int maxDelay = 5000;
 
   @Builder.Default
+  private int maxRetryAfterDelay = 60000;
+
+  @Builder.Default
   private double backoffFactor = 2;
 
   @Builder.Default

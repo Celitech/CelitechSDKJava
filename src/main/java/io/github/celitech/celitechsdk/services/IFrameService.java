@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
+import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
@@ -65,13 +66,7 @@ public class IFrameService extends BaseService {
    * @return response of {@code TokenOkResponse}
    */
   public TokenOkResponse token(RequestConfig requestConfig) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.tokenConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTokenRequest(resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
+    return withRawResponse().token(requestConfig).getData();
   }
 
   /**
@@ -90,15 +85,7 @@ public class IFrameService extends BaseService {
    */
   public CompletableFuture<TokenOkResponse> tokenAsync(RequestConfig requestConfig)
     throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.tokenConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTokenRequest(resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {});
-    });
+    return withRawResponse().tokenAsync(requestConfig).thenApply(response -> response.getData());
   }
 
   private Request buildTokenRequest(RequestConfig resolvedConfig) {
@@ -107,5 +94,90 @@ public class IFrameService extends BaseService {
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "iframe/token"
     ).build();
+  }
+
+  /**
+   * Returns an accessor whose methods mirror this service but return the full HTTP response
+   * (status code, headers, and raw body) wrapped alongside the parsed data.
+   *
+   * @return An accessor exposing raw-response variants of this service's methods
+   */
+  public WithRawResponse withRawResponse() {
+    return new WithRawResponse();
+  }
+
+  /**
+   * Per-call accessor exposing raw-response variants of {@link IFrameService}'s methods.
+   * Reuses the enclosing service's request builders and configuration.
+   */
+  public class WithRawResponse {
+
+    /**
+     * Generate Token
+     *
+     * @return response of {@code CelitechResponse<TokenOkResponse>}
+     */
+    public CelitechResponse<TokenOkResponse> token() throws ApiError {
+      return this.token(null);
+    }
+
+    /**
+     * Generate Token
+     *
+     * @return response of {@code CelitechResponse<TokenOkResponse>}
+     */
+    public CelitechResponse<TokenOkResponse> token(RequestConfig requestConfig) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(tokenConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildTokenRequest(resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {})
+      );
+    }
+
+    /**
+     * Generate Token
+     *
+     * @return response of {@code CompletableFuture<CelitechResponse<TokenOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<TokenOkResponse>> tokenAsync() throws ApiError {
+      return this.tokenAsync(null);
+    }
+
+    /**
+     * Generate Token
+     *
+     * @return response of {@code CompletableFuture<CelitechResponse<TokenOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<TokenOkResponse>> tokenAsync(
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(tokenConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildTokenRequest(resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<TokenOkResponse>() {})
+        );
+      });
+    }
   }
 }

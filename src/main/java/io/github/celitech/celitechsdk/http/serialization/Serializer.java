@@ -94,6 +94,8 @@ public class Serializer {
       return serialize(key, (Boolean) value, style, encode);
     } else if (value instanceof String) {
       return serialize(key, (String) value, style, encode);
+    } else if (value instanceof java.time.temporal.Temporal) {
+      return serialize(key, value.toString(), style, encode);
     } else if (value instanceof List) {
       return serializeList(key, (List<?>) value, style, explode, encode);
     }
@@ -106,6 +108,9 @@ public class Serializer {
       return value.toString();
     } else if (value instanceof String) {
       return encode ? Util.urlEncode((String) value) : (String) value;
+    } else if (value instanceof java.time.temporal.Temporal) {
+      String temporalValue = value.toString();
+      return encode ? Util.urlEncode(temporalValue) : temporalValue;
     } else if (value instanceof List) {
       return serializeList("", (List<?>) value, SerializationStyle.SIMPLE, false, encode);
     }
