@@ -1,7 +1,12 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,13 +39,13 @@ public class ListPackagesParameters {
    * Start date of the package's validity in the format 'yyyy-MM-dd'. This date can be set to the current day or any day within the next 12 months.
    */
   @JsonProperty("startDate")
-  private JsonNullable<String> startDate;
+  private JsonNullable<LocalDate> startDate;
 
   /**
    * End date of the package's validity in the format 'yyyy-MM-dd'. End date can be maximum 90 days after Start date.
    */
   @JsonProperty("endDate")
-  private JsonNullable<String> endDate;
+  private JsonNullable<LocalDate> endDate;
 
   /**
    * To get the next batch of results, use this parameter. It tells the API where to start fetching data after the last item you received. It helps you avoid repeats and efficiently browse through large sets of data.
@@ -72,6 +77,24 @@ public class ListPackagesParameters {
   @JsonProperty("includeUnlimited")
   private JsonNullable<Boolean> includeUnlimited;
 
+  // FSM-59: capture unknown JSON fields so they round-trip on re-serialize.
+  // @Builder.Default keeps the empty-map default in the Lombok-generated builder; without it the
+  // builder would leave the map null and the any-setter would NPE on the first unknown field.
+  // Deserialization is wired via the builder's @JsonAnySetter (see the Builder below), NOT here:
+  // Lombok @Jacksonized deserializes through the builder and does not copy a field-level
+  // @JsonAnySetter across, so unknown fields would be silently dropped if it lived on this field.
+  @Builder.Default
+  private Map<String, Object> additionalProperties = new HashMap<>();
+
+  // @JsonAnyGetter must sit on the getter (not the field) so Jackson inlines the unknown entries on
+  // serialize. On the field it double-registers with the Lombok getter and leaks a literal
+  // "additionalProperties" property into every request body and object parameter.
+  // Declaring the getter here also stops Lombok @Data from generating its own.
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
   @JsonIgnore
   public String getDestination() {
     return destination.orElse(null);
@@ -83,12 +106,12 @@ public class ListPackagesParameters {
   }
 
   @JsonIgnore
-  public String getStartDate() {
+  public LocalDate getStartDate() {
     return startDate.orElse(null);
   }
 
   @JsonIgnore
-  public String getEndDate() {
+  public LocalDate getEndDate() {
     return endDate.orElse(null);
   }
 
@@ -142,10 +165,10 @@ public class ListPackagesParameters {
       return this;
     }
 
-    private JsonNullable<String> startDate = JsonNullable.undefined();
+    private JsonNullable<LocalDate> startDate = JsonNullable.undefined();
 
     @JsonProperty("startDate")
-    public ListPackagesParametersBuilder startDate(String value) {
+    public ListPackagesParametersBuilder startDate(LocalDate value) {
       if (value == null) {
         throw new IllegalStateException("startDate cannot be null");
       }
@@ -153,10 +176,10 @@ public class ListPackagesParameters {
       return this;
     }
 
-    private JsonNullable<String> endDate = JsonNullable.undefined();
+    private JsonNullable<LocalDate> endDate = JsonNullable.undefined();
 
     @JsonProperty("endDate")
-    public ListPackagesParametersBuilder endDate(String value) {
+    public ListPackagesParametersBuilder endDate(LocalDate value) {
       if (value == null) {
         throw new IllegalStateException("endDate cannot be null");
       }
@@ -216,6 +239,16 @@ public class ListPackagesParameters {
         throw new IllegalStateException("includeUnlimited cannot be null");
       }
       this.includeUnlimited = JsonNullable.of(value);
+      return this;
+    }
+
+    @JsonAnySetter
+    public ListPackagesParametersBuilder additionalProperties(String key, Object value) {
+      if (this.additionalProperties$value == null) {
+        this.additionalProperties$value = new HashMap<>();
+      }
+      this.additionalProperties$value.put(key, value);
+      this.additionalProperties$set = true;
       return this;
     }
   }

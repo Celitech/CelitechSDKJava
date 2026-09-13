@@ -31,7 +31,7 @@ public class GetEsimParametersValidator extends AbstractModelValidator<GetEsimPa
    * @param requestParameters The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(GetEsimParameters requestParameters) {
     return new ViolationAggregator()
       .add(

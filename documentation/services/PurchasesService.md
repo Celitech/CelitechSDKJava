@@ -130,6 +130,7 @@ import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
+import java.time.LocalDate;
 
 public class Main {
 
@@ -144,8 +145,8 @@ public class Main {
     CreatePurchaseRequest createPurchaseRequest = CreatePurchaseRequest.builder()
       .destination("FRA")
       .dataLimitInGb(1D)
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
+      .startDate(LocalDate.parse("2023-11-01"))
+      .endDate(LocalDate.parse("2023-11-20"))
       .build();
 
     CreatePurchaseOkResponse response = celitech.purchases.createPurchase(createPurchaseRequest);
@@ -228,6 +229,7 @@ import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
 import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
+import java.time.LocalDate;
 
 public class Main {
 
@@ -241,8 +243,8 @@ public class Main {
 
     EditPurchaseRequest editPurchaseRequest = EditPurchaseRequest.builder()
       .purchaseId("ae471106-c8b4-42cf-b83a-b061291f2922")
-      .startDate("2023-11-01")
-      .endDate("2023-11-20")
+      .startDate(LocalDate.parse("2023-11-01"))
+      .endDate(LocalDate.parse("2023-11-20"))
       .build();
 
     EditPurchaseOkResponse response = celitech.purchases.editPurchase(editPurchaseRequest);

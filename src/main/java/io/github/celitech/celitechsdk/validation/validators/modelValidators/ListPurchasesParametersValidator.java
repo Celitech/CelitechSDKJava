@@ -32,7 +32,7 @@ public class ListPurchasesParametersValidator
    * @param requestParameters The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(ListPurchasesParameters requestParameters) {
     return new ViolationAggregator()
       .add(
