@@ -3,9 +3,11 @@ package io.github.celitech.celitechsdk;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.interceptors.DefaultHeadersInterceptor;
+import io.github.celitech.celitechsdk.http.interceptors.LoggingInterceptor;
 import io.github.celitech.celitechsdk.http.interceptors.OAuthInterceptor;
 import io.github.celitech.celitechsdk.http.interceptors.RetryInterceptor;
 import io.github.celitech.celitechsdk.http.oauth.TokenManager;
+import io.github.celitech.celitechsdk.logging.Logger;
 import io.github.celitech.celitechsdk.services.DestinationsService;
 import io.github.celitech.celitechsdk.services.ESimService;
 import io.github.celitech.celitechsdk.services.IFrameService;
@@ -51,12 +53,27 @@ public class Celitech {
 
     OAuthInterceptor oauthInterceptor = new OAuthInterceptor();
 
-    final OkHttpClient httpClient = new OkHttpClient.Builder()
-      .addInterceptor(new DefaultHeadersInterceptor(config))
-      .addInterceptor(oauthInterceptor)
-      .addInterceptor(new RetryInterceptor(config.getRetryConfig()))
-      .readTimeout(config.getTimeout(), TimeUnit.MILLISECONDS)
-      .build();
+    // A user-supplied client is augmented (not replaced): the SDK derives its client from
+    // the injected instance so its transport settings and interceptors are preserved, then
+    // layers the SDK's own interceptors on top.
+    final OkHttpClient customHttpClient = config.getHttpClient();
+    final OkHttpClient.Builder httpClientBuilder =
+      (customHttpClient != null
+          ? customHttpClient.newBuilder()
+          : new OkHttpClient.Builder()).addInterceptor(new DefaultHeadersInterceptor(config))
+        .addInterceptor(oauthInterceptor)
+        .addInterceptor(new RetryInterceptor(config.getRetryConfig()))
+        // Logging is added last so it observes the fully-decorated request (auth headers
+        // included, then redacted). Silent by default — see LogConfig.
+        .addInterceptor(new LoggingInterceptor(Logger.from(config.getLogConfig())));
+
+    // Only apply the SDK's default read timeout when building the client ourselves; a
+    // user-supplied client owns its own transport (timeout) settings.
+    if (customHttpClient == null) {
+      httpClientBuilder.readTimeout(config.getTimeout(), TimeUnit.MILLISECONDS);
+    }
+
+    final OkHttpClient httpClient = httpClientBuilder.build();
 
     this.tokenManager = TokenManager.builder()
       .httpClient(httpClient)

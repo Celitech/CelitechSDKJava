@@ -31,7 +31,7 @@ public class CreatePurchaseOkResponseValidator
    * @param createPurchaseOkResponse The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(CreatePurchaseOkResponse createPurchaseOkResponse) {
     return new ViolationAggregator()
       .add(

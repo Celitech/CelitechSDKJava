@@ -30,7 +30,7 @@ public class PurchasesValidator extends AbstractModelValidator<Purchases> {
    * @param purchases The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(Purchases purchases) {
     return new ViolationAggregator()
       .add(new PurchasesEsimValidator("esim").required().validate(purchases.getEsim()))
