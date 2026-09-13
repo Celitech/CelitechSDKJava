@@ -31,7 +31,7 @@ public class GetEsimHistoryOkResponseValidator
    * @param getEsimHistoryOkResponse The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(GetEsimHistoryOkResponse getEsimHistoryOkResponse) {
     return new ViolationAggregator()
       .add(

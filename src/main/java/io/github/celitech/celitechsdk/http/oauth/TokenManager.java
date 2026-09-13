@@ -103,9 +103,9 @@ public class TokenManager {
     this.token = oAuth.getAccessToken(requestBody);
     this.scopes = scopes;
 
-    Long expiresIn = this.token.getExpiresIn();
+    Number expiresIn = this.token.getExpiresIn();
     if (expiresIn != null) {
-      this.expiresAt = (System.currentTimeMillis() / 1000L) + expiresIn;
+      this.expiresAt = (System.currentTimeMillis() / 1000L) + expiresIn.longValue();
     } else {
       this.expiresAt = null;
     }

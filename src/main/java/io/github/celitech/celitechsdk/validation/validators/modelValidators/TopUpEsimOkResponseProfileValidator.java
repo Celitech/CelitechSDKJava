@@ -32,7 +32,7 @@ public class TopUpEsimOkResponseProfileValidator
    * @param topUpEsimOkResponseProfile The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(TopUpEsimOkResponseProfile topUpEsimOkResponseProfile) {
     return new ViolationAggregator()
       .add(
