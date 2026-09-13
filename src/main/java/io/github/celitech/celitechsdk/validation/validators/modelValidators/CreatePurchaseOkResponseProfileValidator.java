@@ -32,7 +32,7 @@ public class CreatePurchaseOkResponseProfileValidator
    * @param createPurchaseOkResponseProfile The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(
     CreatePurchaseOkResponseProfile createPurchaseOkResponseProfile
   ) {

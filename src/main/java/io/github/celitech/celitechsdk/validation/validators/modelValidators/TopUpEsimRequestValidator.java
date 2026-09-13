@@ -31,7 +31,7 @@ public class TopUpEsimRequestValidator extends AbstractModelValidator<TopUpEsimR
    * @param topUpEsimRequest The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(TopUpEsimRequest topUpEsimRequest) {
     return new ViolationAggregator()
       .add(

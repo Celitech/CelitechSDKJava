@@ -31,7 +31,7 @@ public class GetEsimOkResponseEsimValidator extends AbstractModelValidator<GetEs
    * @param getEsimOkResponseEsim The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(GetEsimOkResponseEsim getEsimOkResponseEsim) {
     return new ViolationAggregator()
       .add(
