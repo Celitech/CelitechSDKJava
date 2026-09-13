@@ -1,7 +1,12 @@
 package io.github.celitech.celitechsdk.models;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,13 +39,13 @@ public class ListPurchasesParameters {
    * Start date of the interval for filtering purchases in the format 'yyyy-MM-dd'
    */
   @JsonProperty("afterDate")
-  private JsonNullable<String> afterDate;
+  private JsonNullable<LocalDate> afterDate;
 
   /**
    * End date of the interval for filtering purchases in the format 'yyyy-MM-dd'
    */
   @JsonProperty("beforeDate")
-  private JsonNullable<String> beforeDate;
+  private JsonNullable<LocalDate> beforeDate;
 
   /**
    * Email associated to the purchase.
@@ -78,6 +83,24 @@ public class ListPurchasesParameters {
   @JsonProperty("before")
   private JsonNullable<Double> before;
 
+  // FSM-59: capture unknown JSON fields so they round-trip on re-serialize.
+  // @Builder.Default keeps the empty-map default in the Lombok-generated builder; without it the
+  // builder would leave the map null and the any-setter would NPE on the first unknown field.
+  // Deserialization is wired via the builder's @JsonAnySetter (see the Builder below), NOT here:
+  // Lombok @Jacksonized deserializes through the builder and does not copy a field-level
+  // @JsonAnySetter across, so unknown fields would be silently dropped if it lived on this field.
+  @Builder.Default
+  private Map<String, Object> additionalProperties = new HashMap<>();
+
+  // @JsonAnyGetter must sit on the getter (not the field) so Jackson inlines the unknown entries on
+  // serialize. On the field it double-registers with the Lombok getter and leaks a literal
+  // "additionalProperties" property into every request body and object parameter.
+  // Declaring the getter here also stops Lombok @Data from generating its own.
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
   @JsonIgnore
   public String getPurchaseId() {
     return purchaseId.orElse(null);
@@ -89,12 +112,12 @@ public class ListPurchasesParameters {
   }
 
   @JsonIgnore
-  public String getAfterDate() {
+  public LocalDate getAfterDate() {
     return afterDate.orElse(null);
   }
 
   @JsonIgnore
-  public String getBeforeDate() {
+  public LocalDate getBeforeDate() {
     return beforeDate.orElse(null);
   }
 
@@ -153,10 +176,10 @@ public class ListPurchasesParameters {
       return this;
     }
 
-    private JsonNullable<String> afterDate = JsonNullable.undefined();
+    private JsonNullable<LocalDate> afterDate = JsonNullable.undefined();
 
     @JsonProperty("afterDate")
-    public ListPurchasesParametersBuilder afterDate(String value) {
+    public ListPurchasesParametersBuilder afterDate(LocalDate value) {
       if (value == null) {
         throw new IllegalStateException("afterDate cannot be null");
       }
@@ -164,10 +187,10 @@ public class ListPurchasesParameters {
       return this;
     }
 
-    private JsonNullable<String> beforeDate = JsonNullable.undefined();
+    private JsonNullable<LocalDate> beforeDate = JsonNullable.undefined();
 
     @JsonProperty("beforeDate")
-    public ListPurchasesParametersBuilder beforeDate(String value) {
+    public ListPurchasesParametersBuilder beforeDate(LocalDate value) {
       if (value == null) {
         throw new IllegalStateException("beforeDate cannot be null");
       }
@@ -238,6 +261,16 @@ public class ListPurchasesParameters {
         throw new IllegalStateException("before cannot be null");
       }
       this.before = JsonNullable.of(value);
+      return this;
+    }
+
+    @JsonAnySetter
+    public ListPurchasesParametersBuilder additionalProperties(String key, Object value) {
+      if (this.additionalProperties$value == null) {
+        this.additionalProperties$value = new HashMap<>();
+      }
+      this.additionalProperties$value.put(key, value);
+      this.additionalProperties$set = true;
       return this;
     }
   }

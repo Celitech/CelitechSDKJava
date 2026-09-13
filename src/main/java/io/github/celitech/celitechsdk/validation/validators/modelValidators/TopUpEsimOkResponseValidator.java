@@ -30,7 +30,7 @@ public class TopUpEsimOkResponseValidator extends AbstractModelValidator<TopUpEs
    * @param topUpEsimOkResponse The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(TopUpEsimOkResponse topUpEsimOkResponse) {
     return new ViolationAggregator()
       .add(

@@ -33,7 +33,7 @@ public class ListPurchasesOkResponseValidator
    * @param listPurchasesOkResponse The model instance to validate
    * @return Array of violations found during validation
    */
-  @Override
+  @java.lang.Override
   protected Violation[] validateModel(ListPurchasesOkResponse listPurchasesOkResponse) {
     return new ViolationAggregator()
       .add(

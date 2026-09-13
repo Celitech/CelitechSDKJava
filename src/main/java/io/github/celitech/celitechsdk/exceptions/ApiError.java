@@ -1,51 +1,56 @@
 package io.github.celitech.celitechsdk.exceptions;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import okhttp3.Response;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Class representing an API Error.
+ * Base type for all API errors thrown by the SDK.
  *
- * @param message The error message
- * @param status The status code of the HTTP error
- * @param response The response associated with the error
+ * <p>This is an unchecked exception (extends {@link RuntimeException}) and is
+ * the root of a two-level, status-named exception hierarchy. It exposes the
+ * HTTP status code, the deserialized error body, and the response headers
+ * without leaking the underlying HTTP transport type.
  */
-@Data
-@NoArgsConstructor
 public class ApiError extends RuntimeException {
 
-  /**
-   * The message describing the error.
-   */
-  @JsonProperty("message")
-  private String message;
+  private final int statusCode;
+  private final Object body;
+  private final Map<String, List<String>> headers;
 
   /**
-   * The HTTP status code associated with the error.
-   */
-  @JsonIgnore
-  private Integer status;
-
-  /**
-   * The response associated with the error.
-   */
-  @JsonIgnore
-  private Response response;
-
-  /**
-   * Initialize a new instance of API Error.
+   * Initializes a new API error.
    *
-   * @param message The error message
-   * @param status The status code of the HTTP error
-   * @param response The response associated with the error
+   * @param message    The error message
+   * @param statusCode The HTTP status code of the response that triggered the error
+   * @param body       The deserialized error body, or null if none could be parsed
+   * @param headers    The response headers, keyed by name
    */
-  public ApiError(String message, Integer status, Response response) {
+  public ApiError(String message, int statusCode, Object body, Map<String, List<String>> headers) {
     super(message);
-    this.message = message;
-    this.status = status;
-    this.response = response;
+    this.statusCode = statusCode;
+    this.body = body;
+    this.headers = headers == null ? Collections.emptyMap() : headers;
+  }
+
+  /**
+   * @return The HTTP status code of the response that triggered this error.
+   */
+  public int statusCode() {
+    return this.statusCode;
+  }
+
+  /**
+   * @return The deserialized error body, or null when the response body could not be typed.
+   */
+  public Object body() {
+    return this.body;
+  }
+
+  /**
+   * @return The response headers as an unmodifiable map keyed by header name.
+   */
+  public Map<String, List<String>> headers() {
+    return this.headers;
   }
 }
