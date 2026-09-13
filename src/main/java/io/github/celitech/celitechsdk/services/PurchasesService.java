@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
+import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
@@ -158,17 +159,7 @@ public class PurchasesService extends BaseService {
     @NonNull CreatePurchaseV2Request createPurchaseV2Request,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.createPurchaseV2Config, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(
-      bodyBytes,
-      new TypeReference<List<CreatePurchaseV2OkResponse>>() {}
-    );
+    return withRawResponse().createPurchaseV2(createPurchaseV2Request, requestConfig).getData();
   }
 
   /**
@@ -193,19 +184,9 @@ public class PurchasesService extends BaseService {
     @NonNull CreatePurchaseV2Request createPurchaseV2Request,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.createPurchaseV2Config, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(
-        bodyBytes,
-        new TypeReference<List<CreatePurchaseV2OkResponse>>() {}
-      );
-    });
+    return withRawResponse()
+      .createPurchaseV2Async(createPurchaseV2Request, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildCreatePurchaseV2Request(
@@ -258,13 +239,7 @@ public class PurchasesService extends BaseService {
     @NonNull ListPurchasesParameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPurchasesConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPurchasesRequest(requestParameters, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
+    return withRawResponse().listPurchases(requestParameters, requestConfig).getData();
   }
 
   /**
@@ -299,15 +274,9 @@ public class PurchasesService extends BaseService {
     @NonNull ListPurchasesParameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.listPurchasesConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListPurchasesRequest(requestParameters, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {});
-    });
+    return withRawResponse()
+      .listPurchasesAsync(requestParameters, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildListPurchasesRequest(
@@ -361,13 +330,7 @@ public class PurchasesService extends BaseService {
     @NonNull CreatePurchaseRequest createPurchaseRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.createPurchaseConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
+    return withRawResponse().createPurchase(createPurchaseRequest, requestConfig).getData();
   }
 
   /**
@@ -392,15 +355,9 @@ public class PurchasesService extends BaseService {
     @NonNull CreatePurchaseRequest createPurchaseRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.createPurchaseConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {});
-    });
+    return withRawResponse()
+      .createPurchaseAsync(createPurchaseRequest, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildCreatePurchaseRequest(
@@ -437,13 +394,7 @@ public class PurchasesService extends BaseService {
     @NonNull TopUpEsimRequest topUpEsimRequest,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.topUpEsimConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
+    return withRawResponse().topUpEsim(topUpEsimRequest, requestConfig).getData();
   }
 
   /**
@@ -468,15 +419,9 @@ public class PurchasesService extends BaseService {
     @NonNull TopUpEsimRequest topUpEsimRequest,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.topUpEsimConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {});
-    });
+    return withRawResponse()
+      .topUpEsimAsync(topUpEsimRequest, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildTopUpEsimRequest(
@@ -516,13 +461,7 @@ public class PurchasesService extends BaseService {
     @NonNull EditPurchaseRequest editPurchaseRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.editPurchaseConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
+    return withRawResponse().editPurchase(editPurchaseRequest, requestConfig).getData();
   }
 
   /**
@@ -547,15 +486,9 @@ public class PurchasesService extends BaseService {
     @NonNull EditPurchaseRequest editPurchaseRequest,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig = this.getResolvedConfig(this.editPurchaseConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {});
-    });
+    return withRawResponse()
+      .editPurchaseAsync(editPurchaseRequest, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildEditPurchaseRequest(
@@ -592,17 +525,7 @@ public class PurchasesService extends BaseService {
     @NonNull String purchaseId,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.getPurchaseConsumptionConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(
-      bodyBytes,
-      new TypeReference<GetPurchaseConsumptionOkResponse>() {}
-    );
+    return withRawResponse().getPurchaseConsumption(purchaseId, requestConfig).getData();
   }
 
   /**
@@ -627,19 +550,9 @@ public class PurchasesService extends BaseService {
     @NonNull String purchaseId,
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.getPurchaseConsumptionConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(
-        bodyBytes,
-        new TypeReference<GetPurchaseConsumptionOkResponse>() {}
-      );
-    });
+    return withRawResponse()
+      .getPurchaseConsumptionAsync(purchaseId, requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildGetPurchaseConsumptionRequest(
@@ -653,5 +566,531 @@ public class PurchasesService extends BaseService {
     )
       .setPathParameter("purchaseId", purchaseId)
       .build();
+  }
+
+  /**
+   * Returns an accessor whose methods mirror this service but return the full HTTP response
+   * (status code, headers, and raw body) wrapped alongside the parsed data.
+   *
+   * @return An accessor exposing raw-response variants of this service's methods
+   */
+  public WithRawResponse withRawResponse() {
+    return new WithRawResponse();
+  }
+
+  /**
+   * Per-call accessor exposing raw-response variants of {@link PurchasesService}'s methods.
+   * Reuses the enclosing service's request builders and configuration.
+   */
+  public class WithRawResponse {
+
+    /**
+     * Create Purchase V2
+     *
+     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @return response of {@code CelitechResponse<List<CreatePurchaseV2OkResponse>>}
+     */
+    public CelitechResponse<List<CreatePurchaseV2OkResponse>> createPurchaseV2(
+      @NonNull CreatePurchaseV2Request createPurchaseV2Request
+    ) throws ApiError, ValidationException {
+      return this.createPurchaseV2(createPurchaseV2Request, null);
+    }
+
+    /**
+     * Create Purchase V2
+     *
+     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @return response of {@code CelitechResponse<List<CreatePurchaseV2OkResponse>>}
+     */
+    public CelitechResponse<List<CreatePurchaseV2OkResponse>> createPurchaseV2(
+      @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(createPurchaseV2Config, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<List<CreatePurchaseV2OkResponse>>() {})
+      );
+    }
+
+    /**
+     * Create Purchase V2
+     *
+     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<List<CreatePurchaseV2OkResponse>>>}
+     */
+    public CompletableFuture<
+      CelitechResponse<List<CreatePurchaseV2OkResponse>>
+    > createPurchaseV2Async(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
+      throws ApiError, ValidationException {
+      return this.createPurchaseV2Async(createPurchaseV2Request, null);
+    }
+
+    /**
+     * Create Purchase V2
+     *
+     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<List<CreatePurchaseV2OkResponse>>>}
+     */
+    public CompletableFuture<
+      CelitechResponse<List<CreatePurchaseV2OkResponse>>
+    > createPurchaseV2Async(
+      @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(createPurchaseV2Config, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(
+            bodyBytes,
+            new TypeReference<List<CreatePurchaseV2OkResponse>>() {}
+          )
+        );
+      });
+    }
+
+    /**
+     * List Purchases
+     *
+     * @return response of {@code CelitechResponse<ListPurchasesOkResponse>}
+     */
+    public CelitechResponse<ListPurchasesOkResponse> listPurchases()
+      throws ApiError, ValidationException {
+      return this.listPurchases(ListPurchasesParameters.builder().build());
+    }
+
+    /**
+     * List Purchases
+     *
+     * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+     * @return response of {@code CelitechResponse<ListPurchasesOkResponse>}
+     */
+    public CelitechResponse<ListPurchasesOkResponse> listPurchases(
+      @NonNull ListPurchasesParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.listPurchases(requestParameters, null);
+    }
+
+    /**
+     * List Purchases
+     *
+     * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+     * @return response of {@code CelitechResponse<ListPurchasesOkResponse>}
+     */
+    public CelitechResponse<ListPurchasesOkResponse> listPurchases(
+      @NonNull ListPurchasesParameters requestParameters,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(listPurchasesConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildListPurchasesRequest(requestParameters, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {})
+      );
+    }
+
+    /**
+     * List Purchases
+     *
+     * @return response of {@code CompletableFuture<CelitechResponse<ListPurchasesOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<ListPurchasesOkResponse>> listPurchasesAsync()
+      throws ApiError, ValidationException {
+      return this.listPurchasesAsync(ListPurchasesParameters.builder().build());
+    }
+
+    /**
+     * List Purchases
+     *
+     * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+     * @return response of {@code CompletableFuture<CelitechResponse<ListPurchasesOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<ListPurchasesOkResponse>> listPurchasesAsync(
+      @NonNull ListPurchasesParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.listPurchasesAsync(requestParameters, null);
+    }
+
+    /**
+     * List Purchases
+     *
+     * @param requestParameters {@link ListPurchasesParameters} Request Parameters Object
+     * @return response of {@code CompletableFuture<CelitechResponse<ListPurchasesOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<ListPurchasesOkResponse>> listPurchasesAsync(
+      @NonNull ListPurchasesParameters requestParameters,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(listPurchasesConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildListPurchasesRequest(requestParameters, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<ListPurchasesOkResponse>() {})
+        );
+      });
+    }
+
+    /**
+     * Create Purchase
+     *
+     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @return response of {@code CelitechResponse<CreatePurchaseOkResponse>}
+     */
+    public CelitechResponse<CreatePurchaseOkResponse> createPurchase(
+      @NonNull CreatePurchaseRequest createPurchaseRequest
+    ) throws ApiError {
+      return this.createPurchase(createPurchaseRequest, null);
+    }
+
+    /**
+     * Create Purchase
+     *
+     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @return response of {@code CelitechResponse<CreatePurchaseOkResponse>}
+     */
+    public CelitechResponse<CreatePurchaseOkResponse> createPurchase(
+      @NonNull CreatePurchaseRequest createPurchaseRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(createPurchaseConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {})
+      );
+    }
+
+    /**
+     * Create Purchase
+     *
+     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>> createPurchaseAsync(
+      @NonNull CreatePurchaseRequest createPurchaseRequest
+    ) throws ApiError {
+      return this.createPurchaseAsync(createPurchaseRequest, null);
+    }
+
+    /**
+     * Create Purchase
+     *
+     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>> createPurchaseAsync(
+      @NonNull CreatePurchaseRequest createPurchaseRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(createPurchaseConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<CreatePurchaseOkResponse>() {})
+        );
+      });
+    }
+
+    /**
+     * Top-up eSIM
+     *
+     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @return response of {@code CelitechResponse<TopUpEsimOkResponse>}
+     */
+    public CelitechResponse<TopUpEsimOkResponse> topUpEsim(
+      @NonNull TopUpEsimRequest topUpEsimRequest
+    ) throws ApiError, ValidationException {
+      return this.topUpEsim(topUpEsimRequest, null);
+    }
+
+    /**
+     * Top-up eSIM
+     *
+     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @return response of {@code CelitechResponse<TopUpEsimOkResponse>}
+     */
+    public CelitechResponse<TopUpEsimOkResponse> topUpEsim(
+      @NonNull TopUpEsimRequest topUpEsimRequest,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(topUpEsimConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {})
+      );
+    }
+
+    /**
+     * Top-up eSIM
+     *
+     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<TopUpEsimOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<TopUpEsimOkResponse>> topUpEsimAsync(
+      @NonNull TopUpEsimRequest topUpEsimRequest
+    ) throws ApiError, ValidationException {
+      return this.topUpEsimAsync(topUpEsimRequest, null);
+    }
+
+    /**
+     * Top-up eSIM
+     *
+     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<TopUpEsimOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<TopUpEsimOkResponse>> topUpEsimAsync(
+      @NonNull TopUpEsimRequest topUpEsimRequest,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(topUpEsimConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<TopUpEsimOkResponse>() {})
+        );
+      });
+    }
+
+    /**
+     * Edit Purchase
+     *
+     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @return response of {@code CelitechResponse<EditPurchaseOkResponse>}
+     */
+    public CelitechResponse<EditPurchaseOkResponse> editPurchase(
+      @NonNull EditPurchaseRequest editPurchaseRequest
+    ) throws ApiError {
+      return this.editPurchase(editPurchaseRequest, null);
+    }
+
+    /**
+     * Edit Purchase
+     *
+     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @return response of {@code CelitechResponse<EditPurchaseOkResponse>}
+     */
+    public CelitechResponse<EditPurchaseOkResponse> editPurchase(
+      @NonNull EditPurchaseRequest editPurchaseRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(editPurchaseConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {})
+      );
+    }
+
+    /**
+     * Edit Purchase
+     *
+     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<EditPurchaseOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<EditPurchaseOkResponse>> editPurchaseAsync(
+      @NonNull EditPurchaseRequest editPurchaseRequest
+    ) throws ApiError {
+      return this.editPurchaseAsync(editPurchaseRequest, null);
+    }
+
+    /**
+     * Edit Purchase
+     *
+     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @return response of {@code CompletableFuture<CelitechResponse<EditPurchaseOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<EditPurchaseOkResponse>> editPurchaseAsync(
+      @NonNull EditPurchaseRequest editPurchaseRequest,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(editPurchaseConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<EditPurchaseOkResponse>() {})
+        );
+      });
+    }
+
+    /**
+     * Get Purchase Consumption
+     *
+     * @param purchaseId String ID of the purchase
+     * @return response of {@code CelitechResponse<GetPurchaseConsumptionOkResponse>}
+     */
+    public CelitechResponse<GetPurchaseConsumptionOkResponse> getPurchaseConsumption(
+      @NonNull String purchaseId
+    ) throws ApiError {
+      return this.getPurchaseConsumption(purchaseId, null);
+    }
+
+    /**
+     * Get Purchase Consumption
+     *
+     * @param purchaseId String ID of the purchase
+     * @return response of {@code CelitechResponse<GetPurchaseConsumptionOkResponse>}
+     */
+    public CelitechResponse<GetPurchaseConsumptionOkResponse> getPurchaseConsumption(
+      @NonNull String purchaseId,
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(getPurchaseConsumptionConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<GetPurchaseConsumptionOkResponse>() {})
+      );
+    }
+
+    /**
+     * Get Purchase Consumption
+     *
+     * @param purchaseId String ID of the purchase
+     * @return response of {@code CompletableFuture<CelitechResponse<GetPurchaseConsumptionOkResponse>>}
+     */
+    public CompletableFuture<
+      CelitechResponse<GetPurchaseConsumptionOkResponse>
+    > getPurchaseConsumptionAsync(@NonNull String purchaseId) throws ApiError {
+      return this.getPurchaseConsumptionAsync(purchaseId, null);
+    }
+
+    /**
+     * Get Purchase Consumption
+     *
+     * @param purchaseId String ID of the purchase
+     * @return response of {@code CompletableFuture<CelitechResponse<GetPurchaseConsumptionOkResponse>>}
+     */
+    public CompletableFuture<
+      CelitechResponse<GetPurchaseConsumptionOkResponse>
+    > getPurchaseConsumptionAsync(@NonNull String purchaseId, RequestConfig requestConfig)
+      throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(getPurchaseConsumptionConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(
+            bodyBytes,
+            new TypeReference<GetPurchaseConsumptionOkResponse>() {}
+          )
+        );
+      });
+    }
   }
 }

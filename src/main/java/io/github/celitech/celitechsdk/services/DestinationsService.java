@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.BadRequestException;
-import io.github.celitech.celitechsdk.exceptions.UnauthorizedException;
+import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
@@ -65,14 +66,7 @@ public class DestinationsService extends BaseService {
    * @return response of {@code ListDestinationsOkResponse}
    */
   public ListDestinationsOkResponse listDestinations(RequestConfig requestConfig) throws ApiError {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest(resolvedConfig);
-    Response response = this.execute(request, resolvedConfig);
-    byte[] bodyBytes = ModelConverter.readBytes(response);
-    return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
+    return withRawResponse().listDestinations(requestConfig).getData();
   }
 
   /**
@@ -92,16 +86,9 @@ public class DestinationsService extends BaseService {
   public CompletableFuture<ListDestinationsOkResponse> listDestinationsAsync(
     RequestConfig requestConfig
   ) throws ApiError {
-    RequestConfig resolvedConfig =
-      this.getResolvedConfig(this.listDestinationsConfig, requestConfig);
-    this.addErrorMapping(400, BadRequest.class, BadRequestException.class);
-    this.addErrorMapping(401, Unauthorized.class, UnauthorizedException.class);
-    Request request = this.buildListDestinationsRequest(resolvedConfig);
-    CompletableFuture<Response> futureResponse = this.executeAsync(request, resolvedConfig);
-    return futureResponse.thenApplyAsync(response -> {
-      byte[] bodyBytes = ModelConverter.readBytes(response);
-      return ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {});
-    });
+    return withRawResponse()
+      .listDestinationsAsync(requestConfig)
+      .thenApply(response -> response.getData());
   }
 
   private Request buildListDestinationsRequest(RequestConfig resolvedConfig) {
@@ -110,5 +97,93 @@ public class DestinationsService extends BaseService {
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "destinations"
     ).build();
+  }
+
+  /**
+   * Returns an accessor whose methods mirror this service but return the full HTTP response
+   * (status code, headers, and raw body) wrapped alongside the parsed data.
+   *
+   * @return An accessor exposing raw-response variants of this service's methods
+   */
+  public WithRawResponse withRawResponse() {
+    return new WithRawResponse();
+  }
+
+  /**
+   * Per-call accessor exposing raw-response variants of {@link DestinationsService}'s methods.
+   * Reuses the enclosing service's request builders and configuration.
+   */
+  public class WithRawResponse {
+
+    /**
+     * List Destinations
+     *
+     * @return response of {@code CelitechResponse<ListDestinationsOkResponse>}
+     */
+    public CelitechResponse<ListDestinationsOkResponse> listDestinations() throws ApiError {
+      return this.listDestinations(null);
+    }
+
+    /**
+     * List Destinations
+     *
+     * @return response of {@code CelitechResponse<ListDestinationsOkResponse>}
+     */
+    public CelitechResponse<ListDestinationsOkResponse> listDestinations(
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(listDestinationsConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildListDestinationsRequest(resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {})
+      );
+    }
+
+    /**
+     * List Destinations
+     *
+     * @return response of {@code CompletableFuture<CelitechResponse<ListDestinationsOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<ListDestinationsOkResponse>> listDestinationsAsync()
+      throws ApiError {
+      return this.listDestinationsAsync(null);
+    }
+
+    /**
+     * List Destinations
+     *
+     * @return response of {@code CompletableFuture<CelitechResponse<ListDestinationsOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<ListDestinationsOkResponse>> listDestinationsAsync(
+      RequestConfig requestConfig
+    ) throws ApiError {
+      RequestConfig resolvedConfig = getResolvedConfig(listDestinationsConfig, requestConfig);
+      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
+        new BadRequestError(message, (BadRequest) body, headers)
+      );
+      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (Unauthorized) body, headers)
+      );
+      Request request = buildListDestinationsRequest(resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<ListDestinationsOkResponse>() {})
+        );
+      });
+    }
   }
 }
