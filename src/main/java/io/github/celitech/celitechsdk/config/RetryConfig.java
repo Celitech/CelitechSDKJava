@@ -43,10 +43,8 @@ public class RetryConfig {
   @Builder.Default
   private List<HttpMethod> httpMethodsToRetry = Arrays.asList(
     HttpMethod.GET,
-    HttpMethod.POST,
     HttpMethod.PUT,
     HttpMethod.DELETE,
-    HttpMethod.PATCH,
     HttpMethod.HEAD,
     HttpMethod.OPTIONS
   );
