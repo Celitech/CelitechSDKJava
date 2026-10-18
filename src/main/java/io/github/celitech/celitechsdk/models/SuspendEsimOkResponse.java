@@ -2,19 +2,15 @@ package io.github.celitech.celitechsdk.models;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
-import org.openapitools.jackson.nullable.JsonNullable;
 
 @Data
 @Builder
@@ -22,15 +18,13 @@ import org.openapitools.jackson.nullable.JsonNullable;
 @ToString
 @EqualsAndHashCode
 @Jacksonized
-@NoArgsConstructor
-@AllArgsConstructor
-public class BadRequest {
+public class SuspendEsimOkResponse {
 
   /**
-   * Message of the error
+   * Confirmation message
    */
-  @JsonProperty("message")
-  private JsonNullable<String> message;
+  @NonNull
+  private String message;
 
   // FSM-59: capture unknown JSON fields so they round-trip on re-serialize.
   // @Builder.Default keeps the empty-map default in the Lombok-generated builder; without it the
@@ -50,27 +44,11 @@ public class BadRequest {
     return additionalProperties;
   }
 
-  @JsonIgnore
-  public String getMessage() {
-    return message.orElse(null);
-  }
-
   // Overwrite lombok builder methods
-  public static class BadRequestBuilder {
-
-    private JsonNullable<String> message = JsonNullable.undefined();
-
-    @JsonProperty("message")
-    public BadRequestBuilder message(String value) {
-      if (value == null) {
-        throw new IllegalStateException("message cannot be null");
-      }
-      this.message = JsonNullable.of(value);
-      return this;
-    }
+  public static class SuspendEsimOkResponseBuilder {
 
     @JsonAnySetter
-    public BadRequestBuilder additionalProperties(String key, Object value) {
+    public SuspendEsimOkResponseBuilder additionalProperties(String key, Object value) {
       if (this.additionalProperties$value == null) {
         this.additionalProperties$value = new HashMap<>();
       }

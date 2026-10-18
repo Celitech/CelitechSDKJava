@@ -5,22 +5,27 @@ import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.ConflictError;
+import io.github.celitech.celitechsdk.exceptions.ServiceUnavailableError;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.exceptions.UnprocessableEntityError;
 import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
+import io.github.celitech.celitechsdk.models.ErrorResponse;
 import io.github.celitech.celitechsdk.models.GetEsimDeviceOkResponse;
 import io.github.celitech.celitechsdk.models.GetEsimHistoryOkResponse;
 import io.github.celitech.celitechsdk.models.GetEsimOkResponse;
 import io.github.celitech.celitechsdk.models.GetEsimParameters;
-import io.github.celitech.celitechsdk.models.Unauthorized;
+import io.github.celitech.celitechsdk.models.SuspendEsimOkResponse;
+import io.github.celitech.celitechsdk.models.SuspendEsimParameters;
 import io.github.celitech.celitechsdk.validation.ViolationAggregator;
 import io.github.celitech.celitechsdk.validation.exceptions.ValidationException;
 import io.github.celitech.celitechsdk.validation.validators.StringValidator;
 import io.github.celitech.celitechsdk.validation.validators.modelValidators.GetEsimParametersValidator;
+import io.github.celitech.celitechsdk.validation.validators.modelValidators.SuspendEsimParametersValidator;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
@@ -36,6 +41,7 @@ public class ESimService extends BaseService {
   private RequestConfig getEsimConfig;
   private RequestConfig getEsimDeviceConfig;
   private RequestConfig getEsimHistoryConfig;
+  private RequestConfig suspendEsimConfig;
 
   /**
    * Constructs a new instance of ESimService.
@@ -83,6 +89,19 @@ public class ESimService extends BaseService {
    */
   public ESimService setGetEsimHistoryConfig(RequestConfig config) {
     this.getEsimHistoryConfig = config;
+    return this;
+  }
+
+  /**
+   * Sets method-level configuration for {@code suspendEsim}.
+   * Method-level overrides take precedence over service-level configuration but are
+   * overridden by request-level configurations.
+   *
+   * @param config The configuration overrides to apply at the method level
+   * @return This service instance for method chaining
+   */
+  public ESimService setSuspendEsimConfig(RequestConfig config) {
+    this.suspendEsimConfig = config;
     return this;
   }
 
@@ -282,6 +301,89 @@ public class ESimService extends BaseService {
   }
 
   /**
+   * Suspend eSIM
+   *
+   * @param iccid String ID of the eSIM
+   * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+   * @return response of {@code SuspendEsimOkResponse}
+   */
+  public SuspendEsimOkResponse suspendEsim(
+    @NonNull String iccid,
+    @NonNull SuspendEsimParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.suspendEsim(iccid, requestParameters, null);
+  }
+
+  /**
+   * Suspend eSIM
+   *
+   * @param iccid String ID of the eSIM
+   * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+   * @return response of {@code SuspendEsimOkResponse}
+   */
+  public SuspendEsimOkResponse suspendEsim(
+    @NonNull String iccid,
+    @NonNull SuspendEsimParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    return withRawResponse().suspendEsim(iccid, requestParameters, requestConfig).getData();
+  }
+
+  /**
+   * Suspend eSIM
+   *
+   * @param iccid String ID of the eSIM
+   * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<SuspendEsimOkResponse>}
+   */
+  public CompletableFuture<SuspendEsimOkResponse> suspendEsimAsync(
+    @NonNull String iccid,
+    @NonNull SuspendEsimParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.suspendEsimAsync(iccid, requestParameters, null);
+  }
+
+  /**
+   * Suspend eSIM
+   *
+   * @param iccid String ID of the eSIM
+   * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+   * @return response of {@code CompletableFuture<SuspendEsimOkResponse>}
+   */
+  public CompletableFuture<SuspendEsimOkResponse> suspendEsimAsync(
+    @NonNull String iccid,
+    @NonNull SuspendEsimParameters requestParameters,
+    RequestConfig requestConfig
+  ) throws ApiError, ValidationException {
+    return withRawResponse()
+      .suspendEsimAsync(iccid, requestParameters, requestConfig)
+      .thenApply(response -> response.getData());
+  }
+
+  private Request buildSuspendEsimRequest(
+    @NonNull String iccid,
+    @NonNull SuspendEsimParameters requestParameters,
+    RequestConfig resolvedConfig
+  ) throws ValidationException {
+    new ViolationAggregator()
+      .add(new StringValidator("iccid").minLength(18).maxLength(22).required().validate(iccid))
+      .add(
+        new SuspendEsimParametersValidator("requestParameters")
+          .optional()
+          .validate(requestParameters)
+      )
+      .validateAll();
+    return new RequestBuilder(
+      HttpMethod.POST,
+      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      "esim/{iccid}/suspend"
+    )
+      .setPathParameter("iccid", iccid)
+      .setOptionalHeader("Idempotency-Key", requestParameters.getIdempotencyKey())
+      .build();
+  }
+
+  /**
    * Returns an accessor whose methods mirror this service but return the full HTTP response
    * (status code, headers, and raw body) wrapped alongside the parsed data.
    *
@@ -320,11 +422,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -359,11 +470,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
@@ -399,11 +519,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimDeviceConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimDeviceRequest(iccid, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -438,11 +567,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimDeviceConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimDeviceRequest(iccid, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
@@ -478,11 +616,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimHistoryConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimHistoryRequest(iccid, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -517,11 +664,20 @@ public class ESimService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(getEsimHistoryConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetEsimHistoryRequest(iccid, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
@@ -531,6 +687,112 @@ public class ESimService extends BaseService {
           response,
           bodyBytes,
           ModelConverter.convert(bodyBytes, new TypeReference<GetEsimHistoryOkResponse>() {})
+        );
+      });
+    }
+
+    /**
+     * Suspend eSIM
+     *
+     * @param iccid String ID of the eSIM
+     * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+     * @return response of {@code CelitechResponse<SuspendEsimOkResponse>}
+     */
+    public CelitechResponse<SuspendEsimOkResponse> suspendEsim(
+      @NonNull String iccid,
+      @NonNull SuspendEsimParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.suspendEsim(iccid, requestParameters, null);
+    }
+
+    /**
+     * Suspend eSIM
+     *
+     * @param iccid String ID of the eSIM
+     * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+     * @return response of {@code CelitechResponse<SuspendEsimOkResponse>}
+     */
+    public CelitechResponse<SuspendEsimOkResponse> suspendEsim(
+      @NonNull String iccid,
+      @NonNull SuspendEsimParameters requestParameters,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(suspendEsimConfig, requestConfig);
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildSuspendEsimRequest(iccid, requestParameters, resolvedConfig);
+      Response response = execute(request, resolvedConfig);
+      byte[] bodyBytes = ModelConverter.readBytes(response);
+      return new CelitechResponse<>(
+        response,
+        bodyBytes,
+        ModelConverter.convert(bodyBytes, new TypeReference<SuspendEsimOkResponse>() {})
+      );
+    }
+
+    /**
+     * Suspend eSIM
+     *
+     * @param iccid String ID of the eSIM
+     * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+     * @return response of {@code CompletableFuture<CelitechResponse<SuspendEsimOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<SuspendEsimOkResponse>> suspendEsimAsync(
+      @NonNull String iccid,
+      @NonNull SuspendEsimParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.suspendEsimAsync(iccid, requestParameters, null);
+    }
+
+    /**
+     * Suspend eSIM
+     *
+     * @param iccid String ID of the eSIM
+     * @param requestParameters {@link SuspendEsimParameters} Request Parameters Object
+     * @return response of {@code CompletableFuture<CelitechResponse<SuspendEsimOkResponse>>}
+     */
+    public CompletableFuture<CelitechResponse<SuspendEsimOkResponse>> suspendEsimAsync(
+      @NonNull String iccid,
+      @NonNull SuspendEsimParameters requestParameters,
+      RequestConfig requestConfig
+    ) throws ApiError, ValidationException {
+      RequestConfig resolvedConfig = getResolvedConfig(suspendEsimConfig, requestConfig);
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildSuspendEsimRequest(iccid, requestParameters, resolvedConfig);
+      CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
+      return futureResponse.thenApplyAsync(response -> {
+        byte[] bodyBytes = ModelConverter.readBytes(response);
+        return new CelitechResponse<>(
+          response,
+          bodyBytes,
+          ModelConverter.convert(bodyBytes, new TypeReference<SuspendEsimOkResponse>() {})
         );
       });
     }
