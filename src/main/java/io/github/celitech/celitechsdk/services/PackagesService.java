@@ -5,16 +5,18 @@ import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.ConflictError;
+import io.github.celitech.celitechsdk.exceptions.ServiceUnavailableError;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.exceptions.UnprocessableEntityError;
 import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
+import io.github.celitech.celitechsdk.models.ErrorResponse;
 import io.github.celitech.celitechsdk.models.ListPackagesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPackagesParameters;
-import io.github.celitech.celitechsdk.models.Unauthorized;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import lombok.NonNull;
@@ -190,11 +192,20 @@ public class PackagesService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError {
       RequestConfig resolvedConfig = getResolvedConfig(listPackagesConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildListPackagesRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -239,11 +250,20 @@ public class PackagesService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError {
       RequestConfig resolvedConfig = getResolvedConfig(listPackagesConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildListPackagesRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);

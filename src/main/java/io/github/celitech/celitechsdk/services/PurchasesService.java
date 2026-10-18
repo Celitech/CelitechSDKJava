@@ -5,30 +5,34 @@ import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
 import io.github.celitech.celitechsdk.exceptions.BadRequestError;
+import io.github.celitech.celitechsdk.exceptions.ConflictError;
+import io.github.celitech.celitechsdk.exceptions.ServiceUnavailableError;
 import io.github.celitech.celitechsdk.exceptions.UnauthorizedError;
+import io.github.celitech.celitechsdk.exceptions.UnprocessableEntityError;
 import io.github.celitech.celitechsdk.http.CelitechResponse;
 import io.github.celitech.celitechsdk.http.Environment;
 import io.github.celitech.celitechsdk.http.HttpMethod;
 import io.github.celitech.celitechsdk.http.ModelConverter;
 import io.github.celitech.celitechsdk.http.util.RequestBuilder;
-import io.github.celitech.celitechsdk.models.BadRequest;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
+import io.github.celitech.celitechsdk.models.CreatePurchaseParameters;
 import io.github.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
-import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
+import io.github.celitech.celitechsdk.models.CreatePurchaseV2Parameters;
 import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
-import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
+import io.github.celitech.celitechsdk.models.EditPurchaseParameters;
+import io.github.celitech.celitechsdk.models.ErrorResponse;
 import io.github.celitech.celitechsdk.models.GetPurchaseConsumptionOkResponse;
 import io.github.celitech.celitechsdk.models.ListPurchasesOkResponse;
 import io.github.celitech.celitechsdk.models.ListPurchasesParameters;
 import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
-import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
-import io.github.celitech.celitechsdk.models.Unauthorized;
+import io.github.celitech.celitechsdk.models.TopUpEsimParameters;
 import io.github.celitech.celitechsdk.validation.ViolationAggregator;
 import io.github.celitech.celitechsdk.validation.exceptions.ValidationException;
-import io.github.celitech.celitechsdk.validation.validators.modelValidators.CreatePurchaseV2RequestValidator;
+import io.github.celitech.celitechsdk.validation.validators.modelValidators.CreatePurchaseParametersValidator;
+import io.github.celitech.celitechsdk.validation.validators.modelValidators.CreatePurchaseV2ParametersValidator;
+import io.github.celitech.celitechsdk.validation.validators.modelValidators.EditPurchaseParametersValidator;
 import io.github.celitech.celitechsdk.validation.validators.modelValidators.ListPurchasesParametersValidator;
-import io.github.celitech.celitechsdk.validation.validators.modelValidators.TopUpEsimRequestValidator;
+import io.github.celitech.celitechsdk.validation.validators.modelValidators.TopUpEsimParametersValidator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -140,64 +144,64 @@ public class PurchasesService extends BaseService {
   /**
    * Create Purchase V2
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+   * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
    * @return response of {@code List<CreatePurchaseV2OkResponse>}
    */
   public List<CreatePurchaseV2OkResponse> createPurchaseV2(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request
+    @NonNull CreatePurchaseV2Parameters requestParameters
   ) throws ApiError, ValidationException {
-    return this.createPurchaseV2(createPurchaseV2Request, null);
+    return this.createPurchaseV2(requestParameters, null);
   }
 
   /**
    * Create Purchase V2
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+   * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
    * @return response of {@code List<CreatePurchaseV2OkResponse>}
    */
   public List<CreatePurchaseV2OkResponse> createPurchaseV2(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+    @NonNull CreatePurchaseV2Parameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    return withRawResponse().createPurchaseV2(createPurchaseV2Request, requestConfig).getData();
+    return withRawResponse().createPurchaseV2(requestParameters, requestConfig).getData();
   }
 
   /**
    * Create Purchase V2
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+   * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
    * @return response of {@code CompletableFuture<List<CreatePurchaseV2OkResponse>>}
    */
   public CompletableFuture<List<CreatePurchaseV2OkResponse>> createPurchaseV2Async(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request
+    @NonNull CreatePurchaseV2Parameters requestParameters
   ) throws ApiError, ValidationException {
-    return this.createPurchaseV2Async(createPurchaseV2Request, null);
+    return this.createPurchaseV2Async(requestParameters, null);
   }
 
   /**
    * Create Purchase V2
    *
-   * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+   * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
    * @return response of {@code CompletableFuture<List<CreatePurchaseV2OkResponse>>}
    */
   public CompletableFuture<List<CreatePurchaseV2OkResponse>> createPurchaseV2Async(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+    @NonNull CreatePurchaseV2Parameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
     return withRawResponse()
-      .createPurchaseV2Async(createPurchaseV2Request, requestConfig)
+      .createPurchaseV2Async(requestParameters, requestConfig)
       .thenApply(response -> response.getData());
   }
 
   private Request buildCreatePurchaseV2Request(
-    @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+    @NonNull CreatePurchaseV2Parameters requestParameters,
     RequestConfig resolvedConfig
   ) throws ValidationException {
     new ViolationAggregator()
       .add(
-        new CreatePurchaseV2RequestValidator("createPurchaseV2Request")
+        new CreatePurchaseV2ParametersValidator("requestParameters")
           .required()
-          .validate(createPurchaseV2Request)
+          .validate(requestParameters)
       )
       .validateAll();
     return new RequestBuilder(
@@ -205,7 +209,8 @@ public class PurchasesService extends BaseService {
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "purchases/v2"
     )
-      .setJsonContent(createPurchaseV2Request)
+      .setOptionalHeader("Idempotency-Key", requestParameters.getIdempotencyKey())
+      .setJsonContent(requestParameters.getRequestBody())
       .build();
   }
 
@@ -311,196 +316,215 @@ public class PurchasesService extends BaseService {
   /**
    * Create Purchase
    *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
    * @return response of {@code CreatePurchaseOkResponse}
    */
   public CreatePurchaseOkResponse createPurchase(
-    @NonNull CreatePurchaseRequest createPurchaseRequest
-  ) throws ApiError {
-    return this.createPurchase(createPurchaseRequest, null);
+    @NonNull CreatePurchaseParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.createPurchase(requestParameters, null);
   }
 
   /**
    * Create Purchase
    *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
    * @return response of {@code CreatePurchaseOkResponse}
    */
   public CreatePurchaseOkResponse createPurchase(
-    @NonNull CreatePurchaseRequest createPurchaseRequest,
+    @NonNull CreatePurchaseParameters requestParameters,
     RequestConfig requestConfig
-  ) throws ApiError {
-    return withRawResponse().createPurchase(createPurchaseRequest, requestConfig).getData();
+  ) throws ApiError, ValidationException {
+    return withRawResponse().createPurchase(requestParameters, requestConfig).getData();
   }
 
   /**
    * Create Purchase
    *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<CreatePurchaseOkResponse>}
    */
   public CompletableFuture<CreatePurchaseOkResponse> createPurchaseAsync(
-    @NonNull CreatePurchaseRequest createPurchaseRequest
-  ) throws ApiError {
-    return this.createPurchaseAsync(createPurchaseRequest, null);
+    @NonNull CreatePurchaseParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.createPurchaseAsync(requestParameters, null);
   }
 
   /**
    * Create Purchase
    *
-   * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+   * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<CreatePurchaseOkResponse>}
    */
   public CompletableFuture<CreatePurchaseOkResponse> createPurchaseAsync(
-    @NonNull CreatePurchaseRequest createPurchaseRequest,
+    @NonNull CreatePurchaseParameters requestParameters,
     RequestConfig requestConfig
-  ) throws ApiError {
+  ) throws ApiError, ValidationException {
     return withRawResponse()
-      .createPurchaseAsync(createPurchaseRequest, requestConfig)
+      .createPurchaseAsync(requestParameters, requestConfig)
       .thenApply(response -> response.getData());
   }
 
   private Request buildCreatePurchaseRequest(
-    @NonNull CreatePurchaseRequest createPurchaseRequest,
+    @NonNull CreatePurchaseParameters requestParameters,
     RequestConfig resolvedConfig
-  ) {
+  ) throws ValidationException {
+    new ViolationAggregator()
+      .add(
+        new CreatePurchaseParametersValidator("requestParameters")
+          .required()
+          .validate(requestParameters)
+      )
+      .validateAll();
     return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "purchases"
     )
-      .setJsonContent(createPurchaseRequest)
+      .setOptionalHeader("Idempotency-Key", requestParameters.getIdempotencyKey())
+      .setJsonContent(requestParameters.getRequestBody())
       .build();
   }
 
   /**
    * Top-up eSIM
    *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+   * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
    * @return response of {@code TopUpEsimOkResponse}
    */
-  public TopUpEsimOkResponse topUpEsim(@NonNull TopUpEsimRequest topUpEsimRequest)
+  public TopUpEsimOkResponse topUpEsim(@NonNull TopUpEsimParameters requestParameters)
     throws ApiError, ValidationException {
-    return this.topUpEsim(topUpEsimRequest, null);
+    return this.topUpEsim(requestParameters, null);
   }
 
   /**
    * Top-up eSIM
    *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+   * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
    * @return response of {@code TopUpEsimOkResponse}
    */
   public TopUpEsimOkResponse topUpEsim(
-    @NonNull TopUpEsimRequest topUpEsimRequest,
+    @NonNull TopUpEsimParameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
-    return withRawResponse().topUpEsim(topUpEsimRequest, requestConfig).getData();
+    return withRawResponse().topUpEsim(requestParameters, requestConfig).getData();
   }
 
   /**
    * Top-up eSIM
    *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+   * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<TopUpEsimOkResponse>}
    */
   public CompletableFuture<TopUpEsimOkResponse> topUpEsimAsync(
-    @NonNull TopUpEsimRequest topUpEsimRequest
+    @NonNull TopUpEsimParameters requestParameters
   ) throws ApiError, ValidationException {
-    return this.topUpEsimAsync(topUpEsimRequest, null);
+    return this.topUpEsimAsync(requestParameters, null);
   }
 
   /**
    * Top-up eSIM
    *
-   * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+   * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<TopUpEsimOkResponse>}
    */
   public CompletableFuture<TopUpEsimOkResponse> topUpEsimAsync(
-    @NonNull TopUpEsimRequest topUpEsimRequest,
+    @NonNull TopUpEsimParameters requestParameters,
     RequestConfig requestConfig
   ) throws ApiError, ValidationException {
     return withRawResponse()
-      .topUpEsimAsync(topUpEsimRequest, requestConfig)
+      .topUpEsimAsync(requestParameters, requestConfig)
       .thenApply(response -> response.getData());
   }
 
   private Request buildTopUpEsimRequest(
-    @NonNull TopUpEsimRequest topUpEsimRequest,
+    @NonNull TopUpEsimParameters requestParameters,
     RequestConfig resolvedConfig
   ) throws ValidationException {
     new ViolationAggregator()
-      .add(new TopUpEsimRequestValidator("topUpEsimRequest").required().validate(topUpEsimRequest))
+      .add(
+        new TopUpEsimParametersValidator("requestParameters").required().validate(requestParameters)
+      )
       .validateAll();
     return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "purchases/topup"
     )
-      .setJsonContent(topUpEsimRequest)
+      .setOptionalHeader("Idempotency-Key", requestParameters.getIdempotencyKey())
+      .setJsonContent(requestParameters.getRequestBody())
       .build();
   }
 
   /**
    * Edit Purchase
    *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+   * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
    * @return response of {@code EditPurchaseOkResponse}
    */
-  public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseRequest editPurchaseRequest)
-    throws ApiError {
-    return this.editPurchase(editPurchaseRequest, null);
+  public EditPurchaseOkResponse editPurchase(@NonNull EditPurchaseParameters requestParameters)
+    throws ApiError, ValidationException {
+    return this.editPurchase(requestParameters, null);
   }
 
   /**
    * Edit Purchase
    *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+   * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
    * @return response of {@code EditPurchaseOkResponse}
    */
   public EditPurchaseOkResponse editPurchase(
-    @NonNull EditPurchaseRequest editPurchaseRequest,
+    @NonNull EditPurchaseParameters requestParameters,
     RequestConfig requestConfig
-  ) throws ApiError {
-    return withRawResponse().editPurchase(editPurchaseRequest, requestConfig).getData();
+  ) throws ApiError, ValidationException {
+    return withRawResponse().editPurchase(requestParameters, requestConfig).getData();
   }
 
   /**
    * Edit Purchase
    *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+   * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<EditPurchaseOkResponse>}
    */
   public CompletableFuture<EditPurchaseOkResponse> editPurchaseAsync(
-    @NonNull EditPurchaseRequest editPurchaseRequest
-  ) throws ApiError {
-    return this.editPurchaseAsync(editPurchaseRequest, null);
+    @NonNull EditPurchaseParameters requestParameters
+  ) throws ApiError, ValidationException {
+    return this.editPurchaseAsync(requestParameters, null);
   }
 
   /**
    * Edit Purchase
    *
-   * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+   * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
    * @return response of {@code CompletableFuture<EditPurchaseOkResponse>}
    */
   public CompletableFuture<EditPurchaseOkResponse> editPurchaseAsync(
-    @NonNull EditPurchaseRequest editPurchaseRequest,
+    @NonNull EditPurchaseParameters requestParameters,
     RequestConfig requestConfig
-  ) throws ApiError {
+  ) throws ApiError, ValidationException {
     return withRawResponse()
-      .editPurchaseAsync(editPurchaseRequest, requestConfig)
+      .editPurchaseAsync(requestParameters, requestConfig)
       .thenApply(response -> response.getData());
   }
 
   private Request buildEditPurchaseRequest(
-    @NonNull EditPurchaseRequest editPurchaseRequest,
+    @NonNull EditPurchaseParameters requestParameters,
     RequestConfig resolvedConfig
-  ) {
+  ) throws ValidationException {
+    new ViolationAggregator()
+      .add(
+        new EditPurchaseParametersValidator("requestParameters")
+          .required()
+          .validate(requestParameters)
+      )
+      .validateAll();
     return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "purchases/edit"
     )
-      .setJsonContent(editPurchaseRequest)
+      .setOptionalHeader("Idempotency-Key", requestParameters.getIdempotencyKey())
+      .setJsonContent(requestParameters.getRequestBody())
       .build();
   }
 
@@ -587,33 +611,42 @@ public class PurchasesService extends BaseService {
     /**
      * Create Purchase V2
      *
-     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
      * @return response of {@code CelitechResponse<List<CreatePurchaseV2OkResponse>>}
      */
     public CelitechResponse<List<CreatePurchaseV2OkResponse>> createPurchaseV2(
-      @NonNull CreatePurchaseV2Request createPurchaseV2Request
+      @NonNull CreatePurchaseV2Parameters requestParameters
     ) throws ApiError, ValidationException {
-      return this.createPurchaseV2(createPurchaseV2Request, null);
+      return this.createPurchaseV2(requestParameters, null);
     }
 
     /**
      * Create Purchase V2
      *
-     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
      * @return response of {@code CelitechResponse<List<CreatePurchaseV2OkResponse>>}
      */
     public CelitechResponse<List<CreatePurchaseV2OkResponse>> createPurchaseV2(
-      @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+      @NonNull CreatePurchaseV2Parameters requestParameters,
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(createPurchaseV2Config, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildCreatePurchaseV2Request(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return new CelitechResponse<>(
@@ -626,36 +659,45 @@ public class PurchasesService extends BaseService {
     /**
      * Create Purchase V2
      *
-     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<List<CreatePurchaseV2OkResponse>>>}
      */
     public CompletableFuture<
       CelitechResponse<List<CreatePurchaseV2OkResponse>>
-    > createPurchaseV2Async(@NonNull CreatePurchaseV2Request createPurchaseV2Request)
+    > createPurchaseV2Async(@NonNull CreatePurchaseV2Parameters requestParameters)
       throws ApiError, ValidationException {
-      return this.createPurchaseV2Async(createPurchaseV2Request, null);
+      return this.createPurchaseV2Async(requestParameters, null);
     }
 
     /**
      * Create Purchase V2
      *
-     * @param createPurchaseV2Request {@link CreatePurchaseV2Request} Request Body
+     * @param requestParameters {@link CreatePurchaseV2Parameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<List<CreatePurchaseV2OkResponse>>>}
      */
     public CompletableFuture<
       CelitechResponse<List<CreatePurchaseV2OkResponse>>
     > createPurchaseV2Async(
-      @NonNull CreatePurchaseV2Request createPurchaseV2Request,
+      @NonNull CreatePurchaseV2Parameters requestParameters,
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(createPurchaseV2Config, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildCreatePurchaseV2Request(createPurchaseV2Request, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildCreatePurchaseV2Request(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
         byte[] bodyBytes = ModelConverter.readBytes(response);
@@ -703,11 +745,20 @@ public class PurchasesService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(listPurchasesConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildListPurchasesRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -752,11 +803,20 @@ public class PurchasesService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(listPurchasesConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildListPurchasesRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
@@ -773,33 +833,42 @@ public class PurchasesService extends BaseService {
     /**
      * Create Purchase
      *
-     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<CreatePurchaseOkResponse>}
      */
     public CelitechResponse<CreatePurchaseOkResponse> createPurchase(
-      @NonNull CreatePurchaseRequest createPurchaseRequest
-    ) throws ApiError {
-      return this.createPurchase(createPurchaseRequest, null);
+      @NonNull CreatePurchaseParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.createPurchase(requestParameters, null);
     }
 
     /**
      * Create Purchase
      *
-     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<CreatePurchaseOkResponse>}
      */
     public CelitechResponse<CreatePurchaseOkResponse> createPurchase(
-      @NonNull CreatePurchaseRequest createPurchaseRequest,
+      @NonNull CreatePurchaseParameters requestParameters,
       RequestConfig requestConfig
-    ) throws ApiError {
+    ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(createPurchaseConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildCreatePurchaseRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return new CelitechResponse<>(
@@ -812,33 +881,42 @@ public class PurchasesService extends BaseService {
     /**
      * Create Purchase
      *
-     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>> createPurchaseAsync(
-      @NonNull CreatePurchaseRequest createPurchaseRequest
-    ) throws ApiError {
-      return this.createPurchaseAsync(createPurchaseRequest, null);
+      @NonNull CreatePurchaseParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.createPurchaseAsync(requestParameters, null);
     }
 
     /**
      * Create Purchase
      *
-     * @param createPurchaseRequest {@link CreatePurchaseRequest} Request Body
+     * @param requestParameters {@link CreatePurchaseParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<CreatePurchaseOkResponse>> createPurchaseAsync(
-      @NonNull CreatePurchaseRequest createPurchaseRequest,
+      @NonNull CreatePurchaseParameters requestParameters,
       RequestConfig requestConfig
-    ) throws ApiError {
+    ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(createPurchaseConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildCreatePurchaseRequest(createPurchaseRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildCreatePurchaseRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
         byte[] bodyBytes = ModelConverter.readBytes(response);
@@ -853,33 +931,42 @@ public class PurchasesService extends BaseService {
     /**
      * Top-up eSIM
      *
-     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<TopUpEsimOkResponse>}
      */
     public CelitechResponse<TopUpEsimOkResponse> topUpEsim(
-      @NonNull TopUpEsimRequest topUpEsimRequest
+      @NonNull TopUpEsimParameters requestParameters
     ) throws ApiError, ValidationException {
-      return this.topUpEsim(topUpEsimRequest, null);
+      return this.topUpEsim(requestParameters, null);
     }
 
     /**
      * Top-up eSIM
      *
-     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<TopUpEsimOkResponse>}
      */
     public CelitechResponse<TopUpEsimOkResponse> topUpEsim(
-      @NonNull TopUpEsimRequest topUpEsimRequest,
+      @NonNull TopUpEsimParameters requestParameters,
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(topUpEsimConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildTopUpEsimRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return new CelitechResponse<>(
@@ -892,33 +979,42 @@ public class PurchasesService extends BaseService {
     /**
      * Top-up eSIM
      *
-     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<TopUpEsimOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<TopUpEsimOkResponse>> topUpEsimAsync(
-      @NonNull TopUpEsimRequest topUpEsimRequest
+      @NonNull TopUpEsimParameters requestParameters
     ) throws ApiError, ValidationException {
-      return this.topUpEsimAsync(topUpEsimRequest, null);
+      return this.topUpEsimAsync(requestParameters, null);
     }
 
     /**
      * Top-up eSIM
      *
-     * @param topUpEsimRequest {@link TopUpEsimRequest} Request Body
+     * @param requestParameters {@link TopUpEsimParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<TopUpEsimOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<TopUpEsimOkResponse>> topUpEsimAsync(
-      @NonNull TopUpEsimRequest topUpEsimRequest,
+      @NonNull TopUpEsimParameters requestParameters,
       RequestConfig requestConfig
     ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(topUpEsimConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildTopUpEsimRequest(topUpEsimRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildTopUpEsimRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
         byte[] bodyBytes = ModelConverter.readBytes(response);
@@ -933,33 +1029,42 @@ public class PurchasesService extends BaseService {
     /**
      * Edit Purchase
      *
-     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<EditPurchaseOkResponse>}
      */
     public CelitechResponse<EditPurchaseOkResponse> editPurchase(
-      @NonNull EditPurchaseRequest editPurchaseRequest
-    ) throws ApiError {
-      return this.editPurchase(editPurchaseRequest, null);
+      @NonNull EditPurchaseParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.editPurchase(requestParameters, null);
     }
 
     /**
      * Edit Purchase
      *
-     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
      * @return response of {@code CelitechResponse<EditPurchaseOkResponse>}
      */
     public CelitechResponse<EditPurchaseOkResponse> editPurchase(
-      @NonNull EditPurchaseRequest editPurchaseRequest,
+      @NonNull EditPurchaseParameters requestParameters,
       RequestConfig requestConfig
-    ) throws ApiError {
+    ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(editPurchaseConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildEditPurchaseRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return new CelitechResponse<>(
@@ -972,33 +1077,42 @@ public class PurchasesService extends BaseService {
     /**
      * Edit Purchase
      *
-     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<EditPurchaseOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<EditPurchaseOkResponse>> editPurchaseAsync(
-      @NonNull EditPurchaseRequest editPurchaseRequest
-    ) throws ApiError {
-      return this.editPurchaseAsync(editPurchaseRequest, null);
+      @NonNull EditPurchaseParameters requestParameters
+    ) throws ApiError, ValidationException {
+      return this.editPurchaseAsync(requestParameters, null);
     }
 
     /**
      * Edit Purchase
      *
-     * @param editPurchaseRequest {@link EditPurchaseRequest} Request Body
+     * @param requestParameters {@link EditPurchaseParameters} Request Parameters Object
      * @return response of {@code CompletableFuture<CelitechResponse<EditPurchaseOkResponse>>}
      */
     public CompletableFuture<CelitechResponse<EditPurchaseOkResponse>> editPurchaseAsync(
-      @NonNull EditPurchaseRequest editPurchaseRequest,
+      @NonNull EditPurchaseParameters requestParameters,
       RequestConfig requestConfig
-    ) throws ApiError {
+    ) throws ApiError, ValidationException {
       RequestConfig resolvedConfig = getResolvedConfig(editPurchaseConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
       );
-      Request request = buildEditPurchaseRequest(editPurchaseRequest, resolvedConfig);
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
+      );
+      Request request = buildEditPurchaseRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
         byte[] bodyBytes = ModelConverter.readBytes(response);
@@ -1033,11 +1147,20 @@ public class PurchasesService extends BaseService {
       RequestConfig requestConfig
     ) throws ApiError {
       RequestConfig resolvedConfig = getResolvedConfig(getPurchaseConsumptionConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
       Response response = execute(request, resolvedConfig);
@@ -1072,11 +1195,20 @@ public class PurchasesService extends BaseService {
     > getPurchaseConsumptionAsync(@NonNull String purchaseId, RequestConfig requestConfig)
       throws ApiError {
       RequestConfig resolvedConfig = getResolvedConfig(getPurchaseConsumptionConfig, requestConfig);
-      addErrorMapping(400, BadRequest.class, (message, code, body, headers) ->
-        new BadRequestError(message, (BadRequest) body, headers)
+      addErrorMapping(400, ErrorResponse.class, (message, code, body, headers) ->
+        new BadRequestError(message, (ErrorResponse) body, headers)
       );
-      addErrorMapping(401, Unauthorized.class, (message, code, body, headers) ->
-        new UnauthorizedError(message, (Unauthorized) body, headers)
+      addErrorMapping(401, ErrorResponse.class, (message, code, body, headers) ->
+        new UnauthorizedError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(409, ErrorResponse.class, (message, code, body, headers) ->
+        new ConflictError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(422, ErrorResponse.class, (message, code, body, headers) ->
+        new UnprocessableEntityError(message, (ErrorResponse) body, headers)
+      );
+      addErrorMapping(503, ErrorResponse.class, (message, code, body, headers) ->
+        new ServiceUnavailableError(message, (ErrorResponse) body, headers)
       );
       Request request = buildGetPurchaseConsumptionRequest(purchaseId, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);

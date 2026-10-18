@@ -1,6 +1,6 @@
 package io.github.celitech.celitechsdk.exceptions;
 
-import io.github.celitech.celitechsdk.models.Unauthorized;
+import io.github.celitech.celitechsdk.models.ErrorResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class UnauthorizedError extends ApiError {
 
-  public UnauthorizedError(String message, Unauthorized body, Map<String, List<String>> headers) {
+  public UnauthorizedError(String message, ErrorResponse body, Map<String, List<String>> headers) {
     super(message, 401, body, headers);
   }
 
@@ -20,7 +20,7 @@ public class UnauthorizedError extends ApiError {
    * @return The typed error body for this response.
    */
   @java.lang.Override
-  public Unauthorized body() {
-    return (Unauthorized) super.body();
+  public ErrorResponse body() {
+    return (ErrorResponse) super.body();
   }
 }

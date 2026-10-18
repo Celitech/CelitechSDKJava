@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.config.RequestConfig;
 import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.exceptions.ConflictError;
 import io.github.celitech.celitechsdk.exceptions.ForbiddenError;
 import io.github.celitech.celitechsdk.exceptions.MethodNotAllowedError;
 import io.github.celitech.celitechsdk.exceptions.NotFoundError;
@@ -94,9 +93,6 @@ public class BaseService {
       );
     this.addErrorMapping(405, Object.class, (message, code, body, headers) ->
         new MethodNotAllowedError(message, body, headers)
-      );
-    this.addErrorMapping(409, Object.class, (message, code, body, headers) ->
-        new ConflictError(message, body, headers)
       );
     this.addErrorMapping(429, Object.class, (message, code, body, headers) ->
         new TooManyRequestsError(message, body, headers)

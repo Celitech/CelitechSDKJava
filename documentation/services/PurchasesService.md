@@ -20,9 +20,9 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 
 **Parameters**
 
-| Name                    | Type                                                            | Required | Description  |
-| :---------------------- | :-------------------------------------------------------------- | :------- | :----------- |
-| createPurchaseV2Request | [CreatePurchaseV2Request](../models/CreatePurchaseV2Request.md) | ✅       | Request Body |
+| Name              | Type                                                                  | Required | Description               |
+| :---------------- | :-------------------------------------------------------------------- | :------- | :------------------------ |
+| requestParameters | [CreatePurchaseV2Parameters](../models/CreatePurchaseV2Parameters.md) | ✅       | Request Parameters Object |
 
 **Return Type**
 
@@ -34,6 +34,7 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.CreatePurchaseV2OkResponse;
+import io.github.celitech.celitechsdk.models.CreatePurchaseV2Parameters;
 import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
 import java.util.List;
 
@@ -53,8 +54,12 @@ public class Main {
       .quantity(1D)
       .build();
 
+    CreatePurchaseV2Parameters requestParameters = CreatePurchaseV2Parameters.builder()
+      .requestBody(createPurchaseV2Request)
+      .build();
+
     List<CreatePurchaseV2OkResponse> response = celitech.purchases.createPurchaseV2(
-      createPurchaseV2Request
+      requestParameters
     );
 
     System.out.println(response);
@@ -115,9 +120,9 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 
 **Parameters**
 
-| Name                  | Type                                                        | Required | Description  |
-| :-------------------- | :---------------------------------------------------------- | :------- | :----------- |
-| createPurchaseRequest | [CreatePurchaseRequest](../models/CreatePurchaseRequest.md) | ✅       | Request Body |
+| Name              | Type                                                              | Required | Description               |
+| :---------------- | :---------------------------------------------------------------- | :------- | :------------------------ |
+| requestParameters | [CreatePurchaseParameters](../models/CreatePurchaseParameters.md) | ✅       | Request Parameters Object |
 
 **Return Type**
 
@@ -129,6 +134,7 @@ This endpoint is used to purchase a new eSIM by providing the package details.
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.CreatePurchaseOkResponse;
+import io.github.celitech.celitechsdk.models.CreatePurchaseParameters;
 import io.github.celitech.celitechsdk.models.CreatePurchaseRequest;
 import java.time.LocalDate;
 
@@ -149,7 +155,11 @@ public class Main {
       .endDate(LocalDate.parse("2023-11-20"))
       .build();
 
-    CreatePurchaseOkResponse response = celitech.purchases.createPurchase(createPurchaseRequest);
+    CreatePurchaseParameters requestParameters = CreatePurchaseParameters.builder()
+      .requestBody(createPurchaseRequest)
+      .build();
+
+    CreatePurchaseOkResponse response = celitech.purchases.createPurchase(requestParameters);
 
     System.out.println(response);
   }
@@ -166,9 +176,9 @@ This endpoint is used to top-up an existing eSIM with the previously associated 
 
 **Parameters**
 
-| Name             | Type                                              | Required | Description  |
-| :--------------- | :------------------------------------------------ | :------- | :----------- |
-| topUpEsimRequest | [TopUpEsimRequest](../models/TopUpEsimRequest.md) | ✅       | Request Body |
+| Name              | Type                                                    | Required | Description               |
+| :---------------- | :------------------------------------------------------ | :------- | :------------------------ |
+| requestParameters | [TopUpEsimParameters](../models/TopUpEsimParameters.md) | ✅       | Request Parameters Object |
 
 **Return Type**
 
@@ -180,6 +190,7 @@ This endpoint is used to top-up an existing eSIM with the previously associated 
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.TopUpEsimOkResponse;
+import io.github.celitech.celitechsdk.models.TopUpEsimParameters;
 import io.github.celitech.celitechsdk.models.TopUpEsimRequest;
 
 public class Main {
@@ -197,7 +208,11 @@ public class Main {
       .dataLimitInGb(1D)
       .build();
 
-    TopUpEsimOkResponse response = celitech.purchases.topUpEsim(topUpEsimRequest);
+    TopUpEsimParameters requestParameters = TopUpEsimParameters.builder()
+      .requestBody(topUpEsimRequest)
+      .build();
+
+    TopUpEsimOkResponse response = celitech.purchases.topUpEsim(requestParameters);
 
     System.out.println(response);
   }
@@ -214,9 +229,9 @@ This endpoint allows you to modify the validity dates of an existing purchase. *
 
 **Parameters**
 
-| Name                | Type                                                    | Required | Description  |
-| :------------------ | :------------------------------------------------------ | :------- | :----------- |
-| editPurchaseRequest | [EditPurchaseRequest](../models/EditPurchaseRequest.md) | ✅       | Request Body |
+| Name              | Type                                                          | Required | Description               |
+| :---------------- | :------------------------------------------------------------ | :------- | :------------------------ |
+| requestParameters | [EditPurchaseParameters](../models/EditPurchaseParameters.md) | ✅       | Request Parameters Object |
 
 **Return Type**
 
@@ -228,6 +243,7 @@ This endpoint allows you to modify the validity dates of an existing purchase. *
 import io.github.celitech.celitechsdk.Celitech;
 import io.github.celitech.celitechsdk.config.CelitechConfig;
 import io.github.celitech.celitechsdk.models.EditPurchaseOkResponse;
+import io.github.celitech.celitechsdk.models.EditPurchaseParameters;
 import io.github.celitech.celitechsdk.models.EditPurchaseRequest;
 import java.time.LocalDate;
 
@@ -247,7 +263,11 @@ public class Main {
       .endDate(LocalDate.parse("2023-11-20"))
       .build();
 
-    EditPurchaseOkResponse response = celitech.purchases.editPurchase(editPurchaseRequest);
+    EditPurchaseParameters requestParameters = EditPurchaseParameters.builder()
+      .requestBody(editPurchaseRequest)
+      .build();
+
+    EditPurchaseOkResponse response = celitech.purchases.editPurchase(requestParameters);
 
     System.out.println(response);
   }

@@ -41,6 +41,13 @@ public class TopUpEsimRequestValidator extends AbstractModelValidator<TopUpEsimR
           .required()
           .validate(topUpEsimRequest.getIccid())
       )
+      .add(
+        new StringValidator("referenceId")
+          .maxLength(255)
+          .pattern("^[a-zA-Z0-9\\-_.@+]+$")
+          .optional()
+          .validate(topUpEsimRequest.getReferenceId())
+      )
       .aggregate();
   }
 }
