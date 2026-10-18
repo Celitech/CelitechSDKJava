@@ -43,6 +43,11 @@ public class ScopeManager {
         .path("/esim/{iccid}/history")
         .scopes(new HashSet<String>())
         .build(),
+      Scope.builder()
+        .method("POST")
+        .path("/esim/{iccid}/suspend")
+        .scopes(new HashSet<String>())
+        .build(),
       Scope.builder().method("POST").path("/iframe/token").scopes(new HashSet<String>()).build(),
     };
   }

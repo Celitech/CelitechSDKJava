@@ -4,6 +4,7 @@ import io.github.celitech.celitechsdk.models.CreatePurchaseV2Request;
 import io.github.celitech.celitechsdk.validation.Violation;
 import io.github.celitech.celitechsdk.validation.ViolationAggregator;
 import io.github.celitech.celitechsdk.validation.validators.NumericValidator;
+import io.github.celitech.celitechsdk.validation.validators.StringValidator;
 
 /**
  * Validator implementation for CreatePurchaseV2Request model.
@@ -41,6 +42,13 @@ public class CreatePurchaseV2RequestValidator
           .max(5D)
           .required()
           .validate(createPurchaseV2Request.getQuantity())
+      )
+      .add(
+        new StringValidator("referenceId")
+          .maxLength(255)
+          .pattern("^[a-zA-Z0-9\\-_.@+]+$")
+          .optional()
+          .validate(createPurchaseV2Request.getReferenceId())
       )
       .aggregate();
   }
