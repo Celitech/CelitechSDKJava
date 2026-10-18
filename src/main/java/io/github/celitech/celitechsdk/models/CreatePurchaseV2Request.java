@@ -68,7 +68,7 @@ public class CreatePurchaseV2Request {
   private JsonNullable<String> email;
 
   /**
-   * An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes.
+   * An identifier provided by the partner to link this purchase to their booking or transaction for analytics and debugging purposes. Letters, digits, `-`, `_`, `.`, `@` and `+` are allowed (so an email address works), up to 255 characters.
    */
   @JsonProperty("referenceId")
   private JsonNullable<String> referenceId;
