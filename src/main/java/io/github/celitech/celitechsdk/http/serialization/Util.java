@@ -2,6 +2,7 @@ package io.github.celitech.celitechsdk.http.serialization;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.celitech.celitechsdk.json.TypeUtils;
 import java.lang.reflect.Field;
@@ -94,5 +95,24 @@ public class Util {
    */
   public static boolean isObject(Object value) {
     return !isPrimitive(value) && !(value instanceof Iterable);
+  }
+
+  /**
+   * Returns the text of a value whose JSON form is a scalar, such as an enum, or null otherwise.
+   *
+   * @param value The value to inspect
+   * @return The scalar's text, or null when the value serializes to an object, an array or null
+   */
+  public static String scalarText(Object value) {
+    if (
+      value == null ||
+      value instanceof Map ||
+      value instanceof Iterable ||
+      value.getClass().isArray()
+    ) {
+      return null;
+    }
+    JsonNode node = OBJECT_MAPPER.valueToTree(value);
+    return node != null && node.isValueNode() && !node.isNull() ? node.asText() : null;
   }
 }

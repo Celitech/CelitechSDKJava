@@ -98,6 +98,10 @@ public class Serializer {
       return serializeList(key, (List<?>) value, style, explode, encode);
     }
 
+    String scalar = Util.scalarText(value);
+    if (scalar != null) {
+      return serialize(key, scalar, style, encode);
+    }
     return serializeObject(key, value, style, explode, encode);
   }
 
@@ -111,6 +115,10 @@ public class Serializer {
       return encode ? Util.urlEncode(temporalValue) : temporalValue;
     } else if (value instanceof List) {
       return serializeList("", (List<?>) value, SerializationStyle.SIMPLE, false, encode);
+    }
+    String scalar = Util.scalarText(value);
+    if (scalar != null) {
+      return encode ? Util.urlEncode(scalar) : scalar;
     }
     return serializeObject("", value, SerializationStyle.SIMPLE, false, encode);
   }

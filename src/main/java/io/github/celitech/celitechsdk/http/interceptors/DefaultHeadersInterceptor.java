@@ -11,7 +11,7 @@ import okhttp3.Response;
 
 /**
  * OkHttp interceptor that adds default headers to all requests.
- * Currently adds the User-Agent header based on SDK configuration.
+ * Adds the User-Agent header based on SDK configuration.
  */
 public class DefaultHeadersInterceptor implements Interceptor {
 
