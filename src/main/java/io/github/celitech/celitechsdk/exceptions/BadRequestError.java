@@ -1,6 +1,6 @@
 package io.github.celitech.celitechsdk.exceptions;
 
-import io.github.celitech.celitechsdk.models.BadRequest;
+import io.github.celitech.celitechsdk.models.ErrorResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class BadRequestError extends ApiError {
 
-  public BadRequestError(String message, BadRequest body, Map<String, List<String>> headers) {
+  public BadRequestError(String message, ErrorResponse body, Map<String, List<String>> headers) {
     super(message, 400, body, headers);
   }
 
@@ -20,7 +20,7 @@ public class BadRequestError extends ApiError {
    * @return The typed error body for this response.
    */
   @java.lang.Override
-  public BadRequest body() {
-    return (BadRequest) super.body();
+  public ErrorResponse body() {
+    return (ErrorResponse) super.body();
   }
 }

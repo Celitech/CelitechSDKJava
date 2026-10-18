@@ -1,4 +1,4 @@
-# BadRequest
+# ErrorResponse
 
 **Properties**
 
