@@ -1,180 +1,218 @@
-# Celitech Java SDK 2.0.10
+# Celitech Java Library
 
-Welcome to the Celitech SDK documentation. This guide will help you get started with integrating and using the Celitech SDK in your project.
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Celitech%2FJava)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.celitech/celitech-sdk)](https://central.sonatype.com/artifact/io.github.celitech/celitech-sdk)
 
-## Versions
-
-- API version: `2.0.10`
-- SDK version: `2.0.10`
-- Homepage: [https://docs.celitech.com/](https://docs.celitech.com/)
-
-## About the API
-
-Welcome to the CELITECH API documentation!
-
-Useful links: [Homepage](https://www.celitech.com) | [Support email](mailto:devops@celitech.com) | [Blog](https://www.celitech.com/blog/)
-
-# Introduction
-
-This is the reference documentation and schemas for the CELITECH API and webhooks. For tutorials and other documentation please refer to the [CELITECH Documentation](https://docs.celitech.com).
-
-"Partners" refers to online service providers that use our eSIM API. Access levels include Gold, Platinum, and Diamond.
-
-## API
-
-The CELITECH API is designed for use by partner platforms, including both web and mobile applications. It's assumed all endpoint calls are initiated from the backend of an integrated platform.
-
-API URL: `https://api.celitech.net/v1`
-
-## Authentication & Authorization
-
-CELITECH API uses the OAuth 2.0 protocol for authentication and authorization.
-The endpoints are protected using client credentials flow which is based on a token exchange. The token has a defined life span (typically 1 hour), after which a new token must be obtained.
-
-To begin, obtain OAuth 2.0 client credentials ( **CLIENT_ID** & **CLIENT_SECRET** ) from the [CELITECH Dashboard](https://www.dashboard.celitech.com/). Then your client application requests an access token from the CELITECH Authorization Server, extracts a token from the response, and sends the token to the CELITECH API that you want to access.
-
-Security Scheme Type: `OAuth2`
-
-Flow type: `clientCredentials`
-
-Token URL: `https://auth.celitech.net/oauth2/token`
+The Celitech Java library provides convenient access to the Celitech APIs from Java.
 
 ## Table of Contents
 
-- [Setup & Configuration](#setup--configuration)
-  - [Supported Language Versions](#supported-language-versions)
-  - [Installation](#installation)
-- [Authentication](#authentication)
-  - [OAuth Authentication](#oauth-authentication)
-  - [Environment Variables](#environment-variables)
-- [Setting a Custom Timeout](#setting-a-custom-timeout)
-- [Injecting a Custom HTTP Client](#injecting-a-custom-http-client)
-- [Accessing the Raw HTTP Response](#accessing-the-raw-http-response)
-- [Sample Usage](#sample-usage)
-- [Services](#services)
-- [Models](#models)
-- [License](#license)
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Reference](#reference)
+- [Usage](#usage)
+- [Environments](#environments)
+- [Base Url](#base-url)
+- [Exception Handling](#exception-handling)
+- [Advanced](#advanced)
+  - [Custom Client](#custom-client)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+  - [Custom Headers](#custom-headers)
+  - [Access Raw Response Data](#access-raw-response-data)
+- [Contributing](#contributing)
 
-# Setup & Configuration
+## Documentation
 
-## Supported Language Versions
-
-This SDK is compatible with the following versions: `Java >= 1.8`
+API reference documentation is available [here](https://docs.celitech.com/).
 
 ## Installation
 
-If you use Maven, place the following within the _dependency_ tag in your `pom.xml` file:
+### Gradle
 
-```XML
+Add the dependency in your `build.gradle` file:
+
+```groovy
+dependencies {
+  implementation 'io.github.celitech:celitech-sdk:3.0.0'
+}
+```
+
+### Maven
+
+Add the dependency in your `pom.xml` file:
+
+```xml
 <dependency>
-    <groupId>io.github.celitech</groupId>
-    <artifactId>celitech-sdk</artifactId>
-    <version>2.0.10</version>
+  <groupId>io.github.celitech</groupId>
+  <artifactId>celitech-sdk</artifactId>
+  <version>3.0.0</version>
 </dependency>
 ```
 
-If you use Gradle, paste the next line inside the _dependencies_ block of your `build.gradle` file:
+## Reference
 
-```Gradle
-implementation("io.github.celitech:celitech-sdk:2.0.10")
-```
+A full reference for this library is available [here](./reference.md).
 
-If you use JAR files, package the SDK by running the following command:
+## Usage
 
-```shell
-mvn compile assembly:single
-```
-
-Then, add the JAR file to your project's classpath.
-
-## Authentication
-
-### OAuth Authentication
-
-The Celitech API uses OAuth 2.0 for authentication.
-
-You need to provide your OAuth credentials when initializing the SDK. Tokens are automatically fetched, cached, and refreshed — you do not need to manage them yourself.
+Instantiate and use the client with the following:
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
 
-public class Main {
+Celitech client = Celitech
+    .builder()
+    .build();
 
-  public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder()
-      .clientId("CLIENT_ID")
-      .clientSecret("CLIENT_SECRET")
-      .build();
-
-    Celitech celitech = new Celitech(config);
-  }
-}
-
+client.destinations().listDestinations();
 ```
 
-If you need to set or update the OAuth credentials after the SDK initialization, you can use:
+## Environments
 
-```java
-celitech.setClientId("CLIENT_ID");
-celitech.setClientSecret("CLIENT_SECRET");
-```
-
-## Environment Variables
-
-These are the environment variables for the SDK:
-
-| Name          | Description             |
-| :------------ | :---------------------- |
-| CLIENT_ID     | Client ID parameter     |
-| CLIENT_SECRET | Client Secret parameter |
-
-Environment variables are a way to configure your application outside the code. You can set these environment variables on the command line or use your project's existing tooling for managing environment variables.
-
-If you are using a `.env` file, a template with the variable names is provided in the `.env.example` file located in the same directory as this README.
-
-## Setting a Custom Timeout
-
-You can set a custom timeout for the SDK's HTTP requests as follows:
+This SDK allows you to configure different environments for API requests.
 
 ```java
 import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
+import io.github.celitech.celitechsdk.core.Environment;
 
-public class Main {
+Celitech client = Celitech.builder().environment(Environment.DEFAULT).build();
 
-  public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder().timeout(10000).build();
-    Celitech celitech = new Celitech(config);
-  }
+```
+
+## Base Url
+
+You can set a custom base URL when constructing the client.
+
+```java
+import io.github.celitech.celitechsdk.Celitech;
+
+Celitech client = Celitech.builder().url("https://example.com").build();
+
+```
+
+## Exception Handling
+
+When the API returns a non-success status code (4xx or 5xx response), an API exception will be thrown.
+
+```java
+import io.github.celitech.celitechsdk.core.CelitechApiException;
+
+try {
+    client.destinations().listDestinations();
+} catch (CelitechApiException e) {
+    // Do something with the API exception...
 }
+```
+
+## Advanced
+
+### Custom Client
+
+This SDK is built to work with any instance of `OkHttpClient`. By default, if no client is provided, the SDK will construct one.
+However, you can pass your own client like so:
+
+```java
+import io.github.celitech.celitechsdk.Celitech;
+import okhttp3.OkHttpClient;
+
+OkHttpClient customClient = ...;
+
+Celitech client = Celitech
+    .builder()
+    .httpClient(customClient)
+    .build();
+```
+
+### Retries
+
+The SDK is instrumented with automatic retries with exponential backoff. A request will be retried as long
+as the request is deemed retryable and the number of retry attempts has not grown larger than the configured
+retry limit (default: 2). Before defaulting to exponential backoff, the SDK will first attempt to respect
+the `Retry-After` header (as either in seconds or as an HTTP date), and then the `X-RateLimit-Reset` header
+(as a Unix timestamp in epoch seconds); failing both of those, it will fall back to exponential backoff.
+
+Which status codes are retried depends on the `retry-status-codes` generator configuration:
+
+**`legacy`** (current default): retries on
+
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (All server errors, including 500)
+
+**`recommended`**: retries on
+
+- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
+- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
+- [502](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502) (Bad Gateway)
+- [503](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503) (Service Unavailable)
+- [504](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504) (Gateway Timeout)
+
+Use the `maxRetries` client option to configure this behavior.
+
+```java
+import io.github.celitech.celitechsdk.Celitech;
+
+Celitech client = Celitech.builder().maxRetries(1).build();
 
 ```
 
-## Injecting a Custom HTTP Client
+### Timeouts
 
-You can supply your own `OkHttpClient` — for example to configure a proxy, a shared connection pool, custom TLS, timeouts, or your own interceptors. The SDK derives its client from the one you provide (preserving your transport settings and interceptors) and layers its own interceptors (such as authentication and retry) on top, so the SDK keeps working as usual.
+The SDK defaults to a 60 second timeout. You can configure this with a timeout option at the client or request level.
 
 ```java
-OkHttpClient customClient = new OkHttpClient.Builder().addInterceptor(new MyInterceptor()).build();
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.core.RequestOptions;
 
-Celitech celitech = new Celitech(CelitechConfig.builder().httpClient(customClient).build());
+// Client level
+Celitech client = Celitech
+    .builder()
+    .timeout(60)
+    .build();
 
+// Request level
+client.destinations().listDestinations(
+    RequestOptions
+        .builder()
+        .timeout(60)
+        .build()
+);
 ```
 
-`MyInterceptor` above is a placeholder for your own `okhttp3.Interceptor`.
+### Custom Headers
 
-> Your client's interceptors are added ahead of the SDK's, so on the outbound request they run before the SDK adds its own headers. A logging interceptor placed this way will **not** see SDK-injected headers such as authentication.
-
-> **Timeout precedence:** when you inject a client, the config-level `timeout` is not applied — your client's own timeout settings are preserved. Per-request, method, and service-level timeout overrides still apply, layered on top of your client.
-
-## Accessing the Raw HTTP Response
-
-Every service method returns the parsed response body by default. When you also need the status code, response headers, or the raw HTTP response, call the same method through the per-call `withRawResponse()` accessor. The default methods are unchanged, so this is fully opt-in.
+The SDK allows you to add custom headers to requests. You can configure headers at the client level or at the request level.
 
 ```java
-CelitechResponse<ListDestinationsOkResponse> response =
-    celitech.destinations.withRawResponse().listDestinations();
+import io.github.celitech.celitechsdk.Celitech;
+import io.github.celitech.celitechsdk.core.RequestOptions;
+
+// Client level
+Celitech client = Celitech
+    .builder()
+    .addHeader("X-Custom-Header", "custom-value")
+    .addHeader("X-Request-Id", "abc-123")
+    .build();
+
+// Request level
+client.destinations().listDestinations(
+    RequestOptions
+        .builder()
+        .addHeader("X-Request-Header", "request-value")
+        .build()
+);
+```
+
+### Access Raw Response Data
+
+The SDK provides access to raw response data, including headers, through the `withRawResponse()` method.
+The `withRawResponse()` method returns a raw client that wraps all responses with `getData()` and `getMetadata()` methods.
+(A normal client's `response` is identical to a raw client's `response.getData()`.)
+
+```java
+CelitechHttpResponse<ListDestinationsResponse> response =
+    client.destinations().withRawResponse().listDestinations();
 
 response.getData();
 response.getMetadata().getStatusCode();
@@ -182,100 +220,12 @@ response.getMetadata().getHeaders();
 response.getRaw();
 ```
 
-`getData()` returns the same value the default method would; `getMetadata()` exposes the status code and headers, and `getRaw()` exposes the underlying HTTP response.
+## Contributing
 
-# Sample Usage
+While we value open-source contributions to this SDK, this library is generated programmatically.
+Additions made directly to this library would have to be moved over to our generation code,
+otherwise they would be overwritten upon the next generated release. Feel free to open a PR as
+a proof of concept, but know that we will not be able to merge it as-is. We suggest opening
+an issue first to discuss with us!
 
-Below is a comprehensive example demonstrating how to authenticate and call a simple endpoint:
-
-```java
-import io.github.celitech.celitechsdk.Celitech;
-import io.github.celitech.celitechsdk.config.CelitechConfig;
-import io.github.celitech.celitechsdk.exceptions.ApiError;
-import io.github.celitech.celitechsdk.models.ListDestinationsOkResponse;
-
-public class Main {
-
-  public static void main(String[] args) {
-    CelitechConfig config = CelitechConfig.builder()
-      .clientId("CLIENT_ID")
-      .clientSecret("CLIENT_SECRET")
-      .build();
-
-    Celitech celitech = new Celitech(config);
-
-    try {
-      ListDestinationsOkResponse response = celitech.destinations.listDestinations();
-
-      System.out.println(response);
-    } catch (ApiError e) {
-      e.printStackTrace();
-    }
-
-    System.exit(0);
-  }
-}
-
-```
-
-## Services
-
-The SDK provides various services to interact with the API.
-
-<details>
-<summary>Below is a list of all available services with links to their detailed documentation:</summary>
-
-| Name                                                                 |
-| :------------------------------------------------------------------- |
-| [DestinationsService](documentation/services/DestinationsService.md) |
-| [PackagesService](documentation/services/PackagesService.md)         |
-| [PurchasesService](documentation/services/PurchasesService.md)       |
-| [ESimService](documentation/services/ESimService.md)                 |
-| [IFrameService](documentation/services/IFrameService.md)             |
-
-</details>
-
-## Models
-
-The SDK includes several models that represent the data structures used in API requests and responses. These models help in organizing and managing the data efficiently.
-
-<details>
-<summary>Below is a list of all available models with links to their detailed documentation:</summary>
-
-| Name                                                                                         | Description |
-| :------------------------------------------------------------------------------------------- | :---------- |
-| [ListDestinationsOkResponse](documentation/models/ListDestinationsOkResponse.md)             |             |
-| [ListPackagesOkResponse](documentation/models/ListPackagesOkResponse.md)                     |             |
-| [ListPackagesParameters](documentation/models/ListPackagesParameters.md)                     |             |
-| [CreatePurchaseV2OkResponse](documentation/models/CreatePurchaseV2OkResponse.md)             |             |
-| [CreatePurchaseV2Request](documentation/models/CreatePurchaseV2Request.md)                   |             |
-| [CreatePurchaseV2Parameters](documentation/models/CreatePurchaseV2Parameters.md)             |             |
-| [ListPurchasesOkResponse](documentation/models/ListPurchasesOkResponse.md)                   |             |
-| [ListPurchasesParameters](documentation/models/ListPurchasesParameters.md)                   |             |
-| [CreatePurchaseOkResponse](documentation/models/CreatePurchaseOkResponse.md)                 |             |
-| [CreatePurchaseRequest](documentation/models/CreatePurchaseRequest.md)                       |             |
-| [CreatePurchaseParameters](documentation/models/CreatePurchaseParameters.md)                 |             |
-| [TopUpEsimOkResponse](documentation/models/TopUpEsimOkResponse.md)                           |             |
-| [TopUpEsimRequest](documentation/models/TopUpEsimRequest.md)                                 |             |
-| [TopUpEsimParameters](documentation/models/TopUpEsimParameters.md)                           |             |
-| [EditPurchaseOkResponse](documentation/models/EditPurchaseOkResponse.md)                     |             |
-| [EditPurchaseRequest](documentation/models/EditPurchaseRequest.md)                           |             |
-| [EditPurchaseParameters](documentation/models/EditPurchaseParameters.md)                     |             |
-| [GetPurchaseConsumptionOkResponse](documentation/models/GetPurchaseConsumptionOkResponse.md) |             |
-| [GetEsimOkResponse](documentation/models/GetEsimOkResponse.md)                               |             |
-| [GetEsimParameters](documentation/models/GetEsimParameters.md)                               |             |
-| [GetEsimDeviceOkResponse](documentation/models/GetEsimDeviceOkResponse.md)                   |             |
-| [GetEsimHistoryOkResponse](documentation/models/GetEsimHistoryOkResponse.md)                 |             |
-| [SuspendEsimOkResponse](documentation/models/SuspendEsimOkResponse.md)                       |             |
-| [SuspendEsimParameters](documentation/models/SuspendEsimParameters.md)                       |             |
-| [TokenOkResponse](documentation/models/TokenOkResponse.md)                                   |             |
-| [GrantType](documentation/models/GrantType.md)                                               |             |
-| [ErrorResponse](documentation/models/ErrorResponse.md)                                       |             |
-
-</details>
-
-## License
-
-This SDK is licensed under the MIT License.
-
-See the [LICENSE](LICENSE) file for more details.
+On the other hand, contributions to the README are always very welcome!

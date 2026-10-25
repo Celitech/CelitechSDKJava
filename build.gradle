@@ -1,0 +1,90 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    api 'com.squareup.okhttp3:okhttp:4.12.0'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.0'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+}
+
+tasks.withType(Javadoc) {
+    failOnError false
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+java {
+    // Gradle 9 removed these as project properties; the java extension is the form that works on
+    // both 8 and 9. Fern still emits the project-property form, so this is a deliberate divergence.
+    sourceCompatibility = JavaVersion.toVersion(8)
+    targetCompatibility = JavaVersion.toVersion(8)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+group = 'io.github.celitech'
+
+version = '3.0.0'
+
+jar {
+    archiveBaseName = 'celitech-sdk'
+}
+
+sourcesJar {
+    archiveBaseName = 'celitech-sdk'
+}
+
+javadocJar {
+    archiveBaseName = 'celitech-sdk'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.github.celitech'
+            artifactId = 'celitech-sdk'
+            version = '3.0.0'
+            from components.java
+            pom {
+                name = 'CELITECH'
+                url = 'https://docs.celitech.com/'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Celitech/CelitechSDKJava.git'
+                    developerConnection = 'scm:git:ssh://github.com/Celitech/CelitechSDKJava.git'
+                    url = 'https://github.com/Celitech/CelitechSDKJava'
+                }
+                developers {
+                    developer {
+                        name = 'CELITECH'
+                        email = 'info@celitech.com'
+                        organization = 'Celitech'
+                        organizationUrl = 'https://www.celitech.com'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "$System.env.MAVEN_PUBLISH_REGISTRY_URL"
+            credentials {
+                username "$System.env.MAVEN_USERNAME"
+                password "$System.env.MAVEN_PASSWORD"
+            }
+        }
+    }
+}
