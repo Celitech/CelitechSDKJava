@@ -1,0 +1,3 @@
+rootProject.name = 'celitech-sdk'
+
+include 'sample-app'
